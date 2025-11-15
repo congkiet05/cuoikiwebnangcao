@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebQuanLiKhoaHocApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+881879b3334f237dea4050759c3251e3ba18c5b0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17475415932ce2ec2b3054dcec79026f92c40a8a")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebQuanLiKhoaHocApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebQuanLiKhoaHocApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
