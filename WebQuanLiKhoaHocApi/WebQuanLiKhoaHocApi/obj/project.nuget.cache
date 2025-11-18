@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wV9uuB5FqGo=",
+  "dgSpecHash": "BvfhhddkUIU=",
   "success": true,
   "projectFilePath": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj",
   "expectedPackageFiles": [
@@ -56,6 +56,7 @@
     "C:\\Users\\ThankPad\\.nuget\\packages\\humanizer.core.zh-cn\\2.14.1\\humanizer.core.zh-cn.2.14.1.nupkg.sha512",
     "C:\\Users\\ThankPad\\.nuget\\packages\\humanizer.core.zh-hans\\2.14.1\\humanizer.core.zh-hans.2.14.1.nupkg.sha512",
     "C:\\Users\\ThankPad\\.nuget\\packages\\humanizer.core.zh-hant\\2.14.1\\humanizer.core.zh-hant.2.14.1.nupkg.sha512",
+    "C:\\Users\\ThankPad\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.0\\microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512",
     "C:\\Users\\ThankPad\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.11\\microsoft.aspnetcore.openapi.8.0.11.nupkg.sha512",
     "C:\\Users\\ThankPad\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.24\\microsoft.aspnetcore.razor.language.6.0.24.nupkg.sha512",
     "C:\\Users\\ThankPad\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
@@ -159,15 +160,5 @@
     "C:\\Users\\ThankPad\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512",
     "C:\\Users\\ThankPad\\.nuget\\packages\\system.threading.tasks.dataflow\\7.0.0\\system.threading.tasks.dataflow.7.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "message": "Problem reading the cache file D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
-      "projectPath": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj",
-      "warningLevel": 1,
-      "filePath": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

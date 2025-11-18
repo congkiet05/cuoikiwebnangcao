@@ -294,3 +294,4 @@ D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHocA
 D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHocApi\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
 D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHocApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHocApi\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
+D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHocApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
