@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj": {}
+    "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj": {}
   },
   "projects": {
-    "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj": {
+    "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj",
+        "projectUniqueName": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj",
         "projectName": "WebQuanLiKhoaHocApi",
-        "projectPath": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj",
-        "packagesPath": "C:\\Users\\ThankPad\\.nuget\\packages\\",
-        "outputPath": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\obj\\",
+        "projectPath": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj",
+        "packagesPath": "C:\\Users\\Hieu\\.nuget\\packages\\",
+        "outputPath": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ThankPad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Hieu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

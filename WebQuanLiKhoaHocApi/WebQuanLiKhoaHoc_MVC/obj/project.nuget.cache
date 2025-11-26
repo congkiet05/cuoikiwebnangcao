@@ -1,18 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JEmy1pA8NNM=",
+  "dgSpecHash": "1xXF/mJFfSo=",
   "success": true,
-  "projectFilePath": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj",
+  "projectFilePath": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj",
   "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "message": "Problem reading the cache file D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0.",
-      "projectPath": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj",
-      "warningLevel": 1,
-      "filePath": "D:\\HK125\\125LTWNC03\\clone-cuoikiwebnangcao\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }
