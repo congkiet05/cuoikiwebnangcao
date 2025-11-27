@@ -3,16 +3,15 @@
   "WorkspaceRootPath": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahoc_mvc\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|solutionrelative:webquanlikhoahoc_mvc\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Hieu\\AppData\\Roaming\\Microsoft\\UserSecrets\\202aec49-2bb1-49ec-894e-b2531395a527\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahoc_mvc\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|solutionrelative:webquanlikhoahoc_mvc\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahocapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|solutionrelative:webquanlikhoahocapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahoc_mvc\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|solutionrelative:webquanlikhoahoc_mvc\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahocapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|solutionrelative:webquanlikhoahocapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahoc_mvc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -26,7 +25,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,41 +53,39 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\Program.cs",
+              "RelativeDocumentMoniker": "WebQuanLiKhoaHocApi\\Program.cs",
+              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\Program.cs",
+              "RelativeToolTip": "WebQuanLiKhoaHocApi\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:45:03.948Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "_ViewStart.cshtml",
-              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Views\\_ViewStart.cshtml",
-              "RelativeDocumentMoniker": "WebQuanLiKhoaHoc_MVC\\Views\\_ViewStart.cshtml",
-              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Views\\_ViewStart.cshtml",
-              "RelativeToolTip": "WebQuanLiKhoaHoc_MVC\\Views\\_ViewStart.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-26T09:37:08.164Z",
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Users\\Hieu\\AppData\\Roaming\\Microsoft\\UserSecrets\\202aec49-2bb1-49ec-894e-b2531395a527\\secrets.json",
+              "ToolTip": "C:\\Users\\Hieu\\AppData\\Roaming\\Microsoft\\UserSecrets\\202aec49-2bb1-49ec-894e-b2531395a527\\secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-26T09:44:19.862Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "WebQuanLiKhoaHoc_MVC\\Views\\Home\\Index.cshtml",
-              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "WebQuanLiKhoaHoc_MVC\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-26T09:36:57.287Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "WebQuanLiKhoaHoc_MVC\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "WebQuanLiKhoaHoc_MVC\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAmwCwAAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-26T09:30:07.717Z",
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\appsettings.json",
+              "RelativeDocumentMoniker": "WebQuanLiKhoaHocApi\\appsettings.json",
+              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\appsettings.json",
+              "RelativeToolTip": "WebQuanLiKhoaHocApi\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-26T09:41:53.892Z",
               "EditorCaption": ""
             },
             {
