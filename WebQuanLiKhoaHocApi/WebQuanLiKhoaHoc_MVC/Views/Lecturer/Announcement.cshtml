@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "Announcement Management";
+    // Thiết lập Layout cho mô hình MPA
+    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+
+    // @model YourNamespace.Models.AnnouncementViewModel
+}
+
+<div class="container-fluid p-0">
+    <h2 class="h4 mb-4">Announcement Management</h2>
+
+    <div class="row">
+
+        <div class="col-lg-5 mb-4">
+            <div class="card p-4 shadow-sm border-0">
+                @* Form tạo thông báo *@
+                @using (Html.BeginForm("PostAnnouncement", "Lecturer", FormMethod.Post, new { id = "announcementForm" }))
+                {
+                    @* @Html.AntiForgeryToken() *@
+
+                    <div class="mb-3">
+                        <label for="announcementTitle" class="form-label fw-bold">Announcement Title</label>
+                        <input type="text" class="form-control" id="announcementTitle" placeholder="e.g., Mid-term Exam Schedule">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="announcementBody" class="form-label fw-bold">Announcement Body</label>
+                        <div class="border rounded mb-1 bg-light p-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-type-bold"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-type-italic"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-list-ul"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-link"></i></button>
+                        </div>
+                        <textarea class="form-control" id="announcementBody" rows="5" placeholder="Write your announcement details here..."></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Attachments</label>
+                        <div class="border border-dashed p-4 text-center rounded bg-light">
+                            <i class="bi bi-cloud-upload d-block mb-2" style="font-size: 2rem; color: #aaa;"></i>
+                            <p class="mb-0">Click to upload or drag and drop</p>
+                            <small class="text-muted">PDF, DOCX, PNG, JPG (MAX. 5MB)</small>
+                            <input type="file" multiple class="form-control" style="opacity: 0; height: 0; overflow: hidden;" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <label for="publishImmediately" class="form-check-label fw-bold">Publish Immediately</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="publishImmediately" checked>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-light me-2">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Post Announcement</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <h5 class="fw-bold mb-3">Published & Scheduled</h5>
+
+            <div class="input-group mb-4">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0" placeholder="Search announcements...">
+            </div>
+
+            <div class="list-group list-group-flush">
+
+                @* Thông báo 1: Mid-term Exam Schedule Update (Published) *@
+                <div class="list-group-item list-group-item-action p-3 mb-3 border rounded shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h6 class="mb-1 fw-bold">Mid-term Exam Schedule Update</h6>
+                        <span class="badge bg-success-subtle text-success py-1 px-2">Published</span>
+                    </div>
+                    <small class="text-muted d-block mb-2">Published on Oct 26, 2023</small>
+                    <p class="small text-truncate mb-2">The schedule for the mid-term exams has been updated. Please check the new schedule...</p>
+                    <div class="d-flex justify-content-end">
+                        <a href="#" class="text-secondary me-2"><i class="bi bi-pencil"></i></a>
+                        <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
+                    </div>
+                </div>
+
+                @* Thông báo 2: Project Submission Deadline (Published) *@
+                <div class="list-group-item list-group-item-action p-3 mb-3 border rounded shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h6 class="mb-1 fw-bold">Project Submission Deadline</h6>
+                        <span class="badge bg-success-subtle text-success py-1 px-2">Published</span>
+                    </div>
+                    <small class="text-muted d-block mb-2">Published on Oct 20, 2023</small>
+                    <p class="small text-truncate mb-2">A quick reminder that the final project submission deadline is November 5th....</p>
+                    <div class="d-flex justify-content-end">
+                        <a href="#" class="text-secondary me-2"><i class="bi bi-pencil"></i></a>
+                        <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
+                    </div>
+                </div>
+
+                @* Thông báo 3: Guest Lecture Next Week (Scheduled) *@
+                <div class="list-group-item list-group-item-action p-3 mb-3 border rounded shadow-sm">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h6 class="mb-1 fw-bold">Guest Lecture Next Week</h6>
+                        <span class="badge bg-warning-subtle text-warning py-1 px-2">Scheduled</span>
+                    </div>
+                    <small class="text-muted d-block mb-2">Scheduled for Nov 02, 2023</small>
+                    <p class="small text-truncate mb-2">We will have a guest lecture from Dr. Jane Foster from Stark Industries on t...</p>
+                    <div class="d-flex justify-content-end">
+                        <a href="#" class="text-secondary me-2"><i class="bi bi-pencil"></i></a>
+                        <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

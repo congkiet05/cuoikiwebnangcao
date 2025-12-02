@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Assignment Management";
+    // Thiết lập Layout cho mô hình MPA
+    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+
+    // @model YourNamespace.Models.AssignmentViewModel
+}
+
+<div class="container-fluid p-0">
+    <h2 class="h4 mb-1">Assignment Management</h2>
+
+    <div class="d-flex align-items-center mb-4">
+        <div class="input-group me-3" style="max-width: 300px;">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0" placeholder="Search for an assignment...">
+        </div>
+
+        <a href="@Url.Action("Create", "Assignment")" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> Create New Assignment
+        </a>
+    </div>
+
+    <div class="d-flex align-items-center mb-4">
+        <div class="dropdown me-3">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                All Statuses
+            </button>
+            @* Menu Dropdown *@
+        </div>
+        <div class="dropdown me-3">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Course: All
+            </button>
+            @* Menu Dropdown *@
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sort by: Due Date
+            </button>
+            @* Menu Dropdown *@
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Assignment Title</th>
+                    <th>Course</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Submissions</th>
+                    <th></th> @* Cột Actions *@
+                </tr>
+            </thead>
+            <tbody>
+                @* Dữ liệu mẫu *@
+                <tr>
+                    <td><strong>Mid-Term Essay: The Renaissance</strong></td>
+                    <td>ART101</td>
+                    <td>Oct 25, 2023</td>
+                    <td><span class="badge bg-success-subtle text-success py-2 px-3">Published</span></td>
+                    <td>32/40 Submissions</td>
+                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
+                </tr>
+                <tr>
+                    <td><strong>Lab Report 3: Photosynthesis</strong></td>
+                    <td>BIO204</td>
+                    <td>Oct 28, 2023</td>
+                    <td><span class="badge bg-primary-subtle text-primary py-2 px-3">Grading</span></td>
+                    <td>40/40 (15 Graded)</td>
+                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
+                </tr>
+                <tr>
+                    <td><strong>Final Project Proposal</strong></td>
+                    <td>CS101</td>
+                    <td>
+                        <span class="text-danger">Oct 15, 2023</span>
+                        <br /><span class="badge bg-danger">Overdue</span>
+                    </td>
+                    <td><span class="badge bg-danger-subtle text-danger py-2 px-3">Overdue</span></td>
+                    <td>28/30 Submissions</td>
+                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
+                </tr>
+                <tr>
+                    <td><strong>Weekly Reading Response 5</strong></td>
+                    <td>ENG204</td>
+                    <td>Nov 02, 2023</td>
+                    <td><span class="badge bg-warning-subtle text-warning py-2 px-3">Upcoming</span></td>
+                    <td>0/25 Submissions</td>
+                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
+                </tr>
+                <tr>
+                    <td><strong>Final Exam Study Guide</strong></td>
+                    <td>PSY330</td>
+                    <td>Nov 10, 2023</td>
+                    <td><span class="badge bg-light text-muted py-2 px-3">Draft</span></td>
+                    <td>-</td>
+                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "Notification Center";
+    // Thiết lập Layout cho mô hình MPA
+    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+}
+
+<div class="container-fluid p-0">
+    <div class="row">
+
+        <div class="col-lg-7 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 mb-0 fw-bold">Notification Center</h2>
+                <button class="btn btn-sm btn-outline-secondary">Mark All as Read</button>
+            </div>
+
+            <div class="list-group list-group-flush border rounded shadow-sm">
+
+                @* 1. Thông báo khẩn cấp (Urgency) *@
+                <a href="#" class="list-group-item list-group-item-action d-flex align-items-start p-3">
+                    <div class="me-3 border-start border-danger border-5 ps-3 py-1 flex-grow-1">
+                        <h6 class="mb-1 fw-bold text-danger"><i class="bi bi-exclamation-circle-fill me-2"></i> Grading for Assignment 2 is due in 48 hours</h6>
+                        <small class="text-muted d-block">System Alert</small>
+                        <small class="text-muted">Yesterday</small>
+                    </div>
+                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Mark as Read">
+                </a>
+
+                @* 2. Thông báo bài nộp mới (New Submission) *@
+                <a href="#" class="list-group-item list-group-item-action d-flex align-items-start p-3">
+                    <div class="me-3 border-start border-warning border-5 ps-3 py-1 flex-grow-1">
+                        <h6 class="mb-1 fw-bold text-warning"><i class="bi bi-file-earmark-text-fill me-2"></i> New Assignment 3 Submission from John Doe</h6>
+                        <small class="text-muted d-block">Course: CS101 Intro to Programming</small>
+                        <small class="text-muted">5 min ago</small>
+                    </div>
+                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Mark as Read">
+                </a>
+
+                @* 3. Tin nhắn sinh viên (Student Message) *@
+                <a href="@Url.Action("Message", "Lecturer")" class="list-group-item list-group-item-action d-flex align-items-start p-3">
+                    <div class="me-3 border-start border-primary border-5 ps-3 py-1 flex-grow-1">
+                        <h6 class="mb-1 fw-bold text-primary"><i class="bi bi-chat-text-fill me-2"></i> Question about upcoming exam</h6>
+                        <small class="text-muted d-block">From: Jane Smith • Course: DS250</small>
+                        <small class="text-muted">1 hour ago</small>
+                    </div>
+                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Mark as Read">
+                </a>
+
+                @* 4. Thông báo hệ thống (System Announcement) *@
+                <a href="#" class="list-group-item list-group-item-action d-flex align-items-start p-3">
+                    <div class="me-3 border-start border-success border-5 ps-3 py-1 flex-grow-1">
+                        <h6 class="mb-1 fw-bold text-success"><i class="bi bi-check-circle-fill me-2"></i> All grades for Assignment 1 have been published</h6>
+                        <small class="text-muted d-block">System Announcement</small>
+                        <small class="text-muted">2 days ago</small>
+                    </div>
+                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Mark as Read">
+                </a>
+
+                @* Thêm các thông báo khác... *@
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card p-4 shadow-sm border-0">
+
+                <div class="input-group mb-4">
+                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control border-start-0" placeholder="Search notifications...">
+                </div>
+
+                <h6 class="fw-bold mb-2">Filter by Course</h6>
+                <select class="form-select mb-4">
+                    <option selected>All Courses</option>
+                    <option>CS101 Intro to Programming</option>
+                    <option>DS250 Data Science</option>
+                    <option>ART101 The Renaissance</option>
+                </select>
+
+                <h6 class="fw-bold mb-2">Filter by Type</h6>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filterType" id="typeAll" checked>
+                    <label class="form-check-label" for="typeAll">All Types</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filterType" id="typeSubmission">
+                    <label class="form-check-label" for="typeSubmission">New Submission</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filterType" id="typeMessage">
+                    <label class="form-check-label" for="typeMessage">Student Message</label>
+                </div>
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="radio" name="filterType" id="typeAlert">
+                    <label class="form-check-label" for="typeAlert">System Alert</label>
+                </div>
+
+                <h6 class="fw-bold mb-2">Filter by Urgency</h6>
+                <select class="form-select mb-4">
+                    <option selected>All</option>
+                    <option>High (Deadlines)</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                </select>
+
+                <h6 class="fw-bold mb-2">Filter by Status</h6>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filterStatus" id="statusAll" checked>
+                    <label class="form-check-label" for="statusAll">All</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="filterStatus" id="statusUnread">
+                    <label class="form-check-label" for="statusUnread">Unread</label>
+                </div>
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="radio" name="filterStatus" id="statusRead">
+                    <label class="form-check-label" for="statusRead">Read</label>
+                </div>
+
+                <div class="d-grid mb-2">
+                    <button class="btn btn-primary">Apply Filters</button>
+                </div>
+                <div class="d-grid">
+                    <button class="btn btn-outline-secondary">Reset</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
