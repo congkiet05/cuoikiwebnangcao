@@ -1701,6 +1701,18 @@
         }
       }
     },
+    "/api/StudentSchedule/MySchedule": {
+      "get": {
+        "tags": [
+          "StudentSchedule"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Users": {
       "get": {
         "tags": [

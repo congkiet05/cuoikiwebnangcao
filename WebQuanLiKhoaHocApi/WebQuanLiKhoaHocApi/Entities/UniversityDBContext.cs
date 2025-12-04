@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using WebQuanLiKhoaHocApi.Entities;
 
 namespace WebQuanLiKhoaHocApi.Entities;
 
@@ -34,6 +35,11 @@ public partial class UniversityDBContext : DbContext
     public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+
+    // thuận - start
+   
+
+    // thuận - end
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -247,6 +253,10 @@ public partial class UniversityDBContext : DbContext
                 .HasConstraintName("FK__User__RoleId__3D5E1FD2");
         });
 
+        // thuận -start
+        
+
+        // thuận - end
         OnModelCreatingPartial(modelBuilder);
     }
 

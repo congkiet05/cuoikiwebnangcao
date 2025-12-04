@@ -1,0 +1,88 @@
+﻿@model List<WebQuanLiKhoaHoc_MVC.Models.ScheduleViewModel>
+
+@{
+    // Tên View sẽ hiển thị trên tab trình duyệt
+    ViewData["Title"] = "Lịch Học Của Học Viên";
+}
+
+
+
+<div class="row">
+
+    <!-- Cột 1: Sidebar (Tái sử dụng nội dung từ Home/Index.cshtml) -->
+    <aside class="col-md-3">
+        <div class="sidebar-title">DANH MỤC</div>
+        <div class="sidebar-item">Email phòng GD&ĐT</div>
+        <div class="sidebar-item">Lịch công tác</div>
+        <div class="sidebar-item">Tài nguyên công nghệ</div>
+        <div class="sidebar-item">Kết nối THPT</div>
+        <div class="sidebar-item">Biểu mẫu</div>
+        <div class="sidebar-item">Thủ tục hành chính</div>
+
+        <hr class="mt-4" />
+        <div class="sidebar-title">CHỨC NĂNG HỌC VIÊN</div>
+        {{-- asp-controller/asp-action liên kết đến ScheduleController --}}
+        <a class="sidebar-item" asp-controller="Schedule" asp-action="Index">Xem Lịch Học</a>
+        <a class="sidebar-item" href="#">Thông tin cá nhân</a>
+    </aside>
+
+    <!-- Cột 2: Nội dung chính - Hiển thị Bảng Lịch Học -->
+    <section class="col-md-6">
+        <h4 class="mb-4 text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calendar-check-fill me-2" viewBox="0 0 16 16">
+                <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 4.5H0V13a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V4.5zm-9.3 9.477L4.38 12.2a.5.5 0 0 1 .71-.69l1.88 1.545 3.31-3.31a.5.5 0 0 1 .705.705l-4 4a.5.5 0 0 1-.705.005z" />
+            </svg>
+            LỊCH HỌC CỦA TÔI
+        </h4>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th style="width:15%;">Ngày</th>
+                            <th style="width:15%;">Bắt Đầu</th>
+                            <th style="width:15%;">Kết Thúc</th>
+                            <th>Khóa Học/Lớp</th>
+                            <th>Giảng Viên</th>
+                            <th style="width:10%;">Phòng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><strong>@item.TenNgayTrongTuan</strong></td>
+                                <td>@item.ThoiGianBatDau.ToString("HH\\:mm")</td>
+                                <td>@item.ThoiGianKetThuc.ToString("HH\\:mm")</td>
+                                <td>@item.TenKhoaHoc (@item.MaLopHoc)</td>
+                                <td>@item.TenGiangVien</td>
+                                <td>@item.PhongHoc</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                <h5 class="alert-heading">Không có lịch học</h5>
+                <p>Bạn chưa đăng ký khóa học nào hoặc lịch học chưa được cập nhật.</p>
+            </div>
+        }
+    </section>
+
+    <!-- Cột 3: Thông báo (Tái sử dụng nội dung từ Home/Index.cshtml) -->
+    <aside class="col-md-3">
+        <div class="notice-box mb-3 bg-primary text-white p-2 rounded">
+            <h5 class="m-0">THÔNG BÁO</h5>
+        </div>
+        <div class="notice-item border-bottom pb-2 mb-2"><b>19/11</b> - Tập huấn chuyên môn</div>
+        <div class="notice-item border-bottom pb-2 mb-2"><b>19/11</b> - Chương trình văn nghệ</div>
+        <div class="notice-item"><b>14/11</b> - Thi học sinh giỏi</div>
+    </aside>
+
+
+</div>

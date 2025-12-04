@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
