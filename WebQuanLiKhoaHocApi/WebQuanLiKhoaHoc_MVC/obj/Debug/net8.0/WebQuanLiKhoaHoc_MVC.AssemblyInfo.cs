@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebQuanLiKhoaHoc_MVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e645b8e6c21a51a1121c27d5408f77d5dd8b0890")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93e23a2d60d46ba53a3eff7e9f18a3553faa67ea")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebQuanLiKhoaHoc_MVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebQuanLiKhoaHoc_MVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
