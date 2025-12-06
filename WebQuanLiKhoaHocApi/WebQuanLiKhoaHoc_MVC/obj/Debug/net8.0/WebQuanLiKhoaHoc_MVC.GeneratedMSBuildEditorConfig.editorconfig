@@ -64,16 +64,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRMZWN0dXJlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_LayoutStudent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRTdHVkZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_Sidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_StudentNotice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50Tm90aWNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/StudentSchedule/StudentSchedule.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFNjaGVkdWxlXFN0dWRlbnRTY2hlZHVsZS5jc2h0bWw=
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_StudentSidebar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50U2lkZWJhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/_ViewImports.cshtml]

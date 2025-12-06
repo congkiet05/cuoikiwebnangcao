@@ -93,4 +93,9 @@ footer {
     color: white;
     padding: 20px;
 }
+.notice-column {
+    position: sticky;
+    top: 100px; /* chỉnh tuỳ theo chiều cao header/nav */
+}
+
 
