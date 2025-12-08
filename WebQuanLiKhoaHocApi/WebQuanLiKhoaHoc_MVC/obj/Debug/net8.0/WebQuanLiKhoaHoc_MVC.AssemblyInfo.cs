@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("c8a6e61d-789c-4c10-9f29-6d31455b211b")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebQuanLiKhoaHoc_MVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93e23a2d60d46ba53a3eff7e9f18a3553faa67ea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e5bbf2bad97bb82987bc4c90b06b380bd1f9f77")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebQuanLiKhoaHoc_MVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebQuanLiKhoaHoc_MVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

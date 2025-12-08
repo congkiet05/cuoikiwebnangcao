@@ -4,10 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c8a6e61d-789c-4c10-9f29-6d31455b211b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Views\StudentSchedule\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebQuanLiKhoaHocApi\WebQuanLiKhoaHocApi.csproj" />
   </ItemGroup>
 
 </Project>

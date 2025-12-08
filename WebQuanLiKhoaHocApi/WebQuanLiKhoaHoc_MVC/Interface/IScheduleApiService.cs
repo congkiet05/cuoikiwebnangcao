@@ -4,6 +4,6 @@ namespace WebQuanLiKhoaHoc_MVC.Interface
 {
     public interface IScheduleApiService
     {
-        Task<List<ScheduleViewModel>> GetStudentScheduleAsync();
+        Task<List<StudentScheduleViewModel>> GetStudentScheduleAsync();
     }
 }

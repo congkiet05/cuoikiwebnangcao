@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebQuanLiKhoaHocApi.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,8 @@ var jwtKey = builder.Configuration["JWT:Key"];
 var jwtIssuer = builder.Configuration["JWT:Issuer"];
 var jwtAudience = builder.Configuration["JWT:Audience"];
 
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<WebQuanLiKhoaHocApi.Entities.UniversityDBContext>( options =>

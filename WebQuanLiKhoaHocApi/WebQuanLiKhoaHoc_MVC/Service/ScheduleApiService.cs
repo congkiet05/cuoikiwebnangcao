@@ -23,7 +23,7 @@ namespace WebQuanLiKhoaHoc_MVC.Service
             // Sử dụng HttpClient đã cấu hình tên trong Program.cs
             _httpClient = httpClientFactory.CreateClient("ApiSchedule");
         }
-        public async Task<List<ScheduleViewModel>> GetStudentScheduleAsync()
+        public async Task<List<StudentScheduleViewModel>> GetStudentScheduleAsync()
         {
             var response = await _httpClient.GetAsync("Schedule/MySchedule");
 
@@ -33,12 +33,12 @@ namespace WebQuanLiKhoaHoc_MVC.Service
                 // không phân biệt chữ hoa , thường khi deserialize
                 var options  = new JsonSerializerOptions {  PropertyNameCaseInsensitive = true  };
                 // Deserialize dữ liệu JSON (từ HocVienScheduleDto) sang ScheduleViewModel
-                var schedule = JsonSerializer.Deserialize<List<ScheduleViewModel>>(content, _jsonOptions);
+                var schedule = JsonSerializer.Deserialize<List<StudentScheduleViewModel>>(content, _jsonOptions);
 
-                return schedule ?? new List<ScheduleViewModel>();
+                return schedule ?? new List<StudentScheduleViewModel>();
             }
             // Trả về danh sách rỗng nếu có lỗi
-            return new List<ScheduleViewModel>();
+            return new List<StudentScheduleViewModel>();
         }
     }
 }
