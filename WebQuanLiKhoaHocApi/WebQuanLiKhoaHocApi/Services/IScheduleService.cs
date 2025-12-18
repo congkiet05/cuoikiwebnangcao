@@ -1,9 +1,6 @@
-﻿using WebQuanLiKhoaHocApi.Dtos;
-
-namespace WebQuanLiKhoaHocApi.Services
+﻿namespace WebQuanLiKhoaHocApi.Services
 {
-    public interface IScheduleService
+    public class IScheduleService
     {
-        Task<IEnumerable<HocVienScheduleDto>> GetStudentScheduleAsync(int studentId);
     }
 }

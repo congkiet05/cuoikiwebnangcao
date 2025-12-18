@@ -29,6 +29,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-    //pattern: "{controller=Student}/{action=Dashboard}/{id?}"); //test giao diện Học viên
+    //pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Student}/{action=Dashboard}/{id?}"); //test giao diện Học viên
 app.Run();

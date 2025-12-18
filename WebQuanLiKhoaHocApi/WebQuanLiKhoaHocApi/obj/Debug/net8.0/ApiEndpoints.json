@@ -997,16 +997,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.StudentScheduleController",
-    "Method": "getMySchedule",
-    "RelativePath": "api/StudentSchedule/MySchedule",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "WebQuanLiKhoaHocApi.Controllers.UsersController",
     "Method": "GetUsers",
     "RelativePath": "api/Users",
