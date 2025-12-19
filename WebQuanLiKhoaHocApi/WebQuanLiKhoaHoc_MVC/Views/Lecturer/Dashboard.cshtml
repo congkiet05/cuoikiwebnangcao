@@ -9,14 +9,14 @@
             <div class="card border-0 shadow-sm p-4 bg-white">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="text-muted mb-1" id="today-date">Today is Wednesday, Oct 24</p>
+                        <p class="text-muted mb-1" id="today-date">Loading date...</p>
                         <h2 class="fw-bold mb-0">Good morning, <span id="welcome-name">Lecturer</span>.</h2>
                         <p class="text-muted mb-0">Here is your daily summary.</p>
                     </div>
                     <div class="d-none d-md-flex align-items-center border rounded-pill px-3 py-2 bg-light">
                         <img src="~/images/avatar.jpg" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
                         <div>
-                            <div class="fw-bold small" id="badge-name">Dr. Jane Doe</div>
+                            <div class="fw-bold small" id="badge-name">Loading...</div>
                             <div class="text-muted" style="font-size: 0.7rem;">Lecturer</div>
                         </div>
                     </div>
@@ -26,93 +26,34 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-7 mb-4">
+        <div class="col-lg-8 mb-4">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-white border-0 pt-4 px-4">
                     <h5 class="fw-bold"><i class="bi bi-calendar3 text-primary me-2"></i>Today's Schedule</h5>
                 </div>
                 <div id="schedule-list" class="card-body px-4">
-                    <div class="d-flex align-items-center p-3 mb-3 border rounded shadow-sm hover-shadow transition">
-                        <div class="text-center border-end pe-3 me-3" style="min-width: 80px;">
-                            <div class="fw-bold text-primary">10:00</div>
-                            <div class="small text-muted">AM</div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1 fw-bold">Intro to Computer Science</h6>
-                            <div class="small text-muted">
-                                <i class="bi bi-geo-alt me-1"></i> Lecture Hall A | <i class="bi bi-book me-1"></i> CS-101
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex align-items-center p-3 mb-3 border rounded shadow-sm">
-                        <div class="text-center border-end pe-3 me-3" style="min-width: 80px;">
-                            <div class="fw-bold text-primary">02:00</div>
-                            <div class="small text-muted">PM</div>
-                        </div>
-                        <div class="flex-grow-1 position-relative">
-                            <h6 class="mb-1 fw-bold">Data Structures</h6>
-                            <div class="small text-muted">
-                                <i class="bi bi-geo-alt me-1"></i> Lab 3B | <i class="bi bi-book me-1"></i> DS-101
-                            </div>
-                            <span class="badge bg-success position-absolute top-0 end-0">In Progress</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex align-items-center p-3 mb-3 border rounded shadow-sm">
-                        <div class="text-center border-end pe-3 me-3" style="min-width: 80px;">
-                            <div class="fw-bold text-primary">04:00</div>
-                            <div class="small text-muted">PM</div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1 fw-bold">Office Hours</h6>
-                            <div class="small text-muted">
-                                <i class="bi bi-geo-alt me-1"></i> Room 304
-                            </div>
-                        </div>
+                    <div class="text-center p-5 text-muted">
+                        <div class="spinner-border spinner-border-sm me-2"></div> Fetching your schedule...
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-5">
-            <div class="card border-0 shadow-sm mb-4">
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="fw-bold mb-0"><i class="bi bi-bell text-warning me-2"></i>Notifications</h5>
                         <a href="@Url.Action("Notification", "Lecturer")" class="small text-decoration-none">View all <i class="bi bi-arrow-right"></i></a>
                     </div>
-                    <div class="mb-3 p-3 bg-light rounded">
-                        <h3 class="mb-0 fw-bold">5</h3>
-                        <p class="text-muted small mb-0">Unread Notifications Count</p>
-                    </div>
-                    <div class="small border-top pt-2">
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">System Maintenance Scheduled</span>
-                            <span class="fw-bold">02:00 AM</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="card border-0 shadow-sm">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold mb-0"><i class="bi bi-chat-dots text-info me-2"></i>Messages</h5>
-                        <a href="@Url.Action("Message", "Lecturer")" class="small text-decoration-none">View all <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                    <div class="mb-3 p-3 bg-light rounded">
-                        <h3 class="mb-0 fw-bold">8</h3>
-                        <p class="text-muted small mb-0">Unread Messages</p>
+                    <div class="mb-4 p-4 bg-light rounded text-center">
+                        <h2 class="mb-0 fw-bold text-primary" id="unread-count">0</h2>
+                        <p class="text-muted small mb-0">Unread Notifications</p>
                     </div>
 
-                    <div class="d-flex align-items-center p-2 border rounded">
-                        <img src="https://via.placeholder.com/40" class="rounded-circle me-3">
-                        <div class="flex-grow-1 overflow-hidden">
-                            <div class="fw-bold small">James Doe</div>
-                            <div class="text-muted small text-truncate">Question about assignment...</div>
-                        </div>
-                        <span class="badge bg-danger rounded-pill">new</span>
+                    <div id="latest-notifications">
+                        <p class="text-muted small text-center">Checking for new alerts...</p>
                     </div>
                 </div>
             </div>
@@ -123,19 +64,72 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-            const lecturerId = 2; // ID giảng viên đang test
+            const lecturerId = 2;
+            const apiBaseUrl = "https://localhost:7274/api";
 
-            // Gọi API lấy lịch hôm nay
+            // --- 1. LẤY THÔNG TIN GIẢNG VIÊN ---
             $.ajax({
-                url: `https://localhost:7274/api/ClassSchedules/Lecturer/${lecturerId}/Today`,
+                url: `${apiBaseUrl}/Lecturers/${lecturerId}`,
+                type: "GET",
+                success: function (data) {
+                    if (data) {
+                        const nameParts = data.fullName.trim().split(' ');
+                        const firstName = nameParts[nameParts.length - 1];
+                        $('#welcome-name').text(firstName);
+                        $('#badge-name').text(data.fullName);
+                    }
+                }
+            });
+
+            // --- 2. CẬP NHẬT NGÀY THÁNG ---
+            const options = { weekday: 'long', month: 'short', day: 'numeric' };
+            const today = new Date().toLocaleDateString('en-US', options);
+            $('#today-date').text('Today is ' + today);
+
+            // --- 3. LẤY SỐ LƯỢNG THÔNG BÁO CHƯA ĐỌC (DỮ LIỆU THẬT) ---
+            $.ajax({
+                url: `${apiBaseUrl}/Notifications/Lecturer/${lecturerId}`,
+                type: "GET",
+                success: function (data) {
+                    // Lọc những thông báo có IsRead === false
+                    const unreadItems = data.filter(n => n.isRead === false);
+                    $('#unread-count').text(unreadItems.length);
+
+                    // Hiển thị nhanh 1-2 tiêu đề thông báo mới nhất bên dưới con số
+                    if (unreadItems.length > 0) {
+                        let notifyHtml = '<div class="small border-top pt-3">';
+                        unreadItems.slice(0, 2).forEach(item => {
+                            notifyHtml += `
+                                <div class="mb-2">
+                                    <span class="fw-bold text-dark d-block text-truncate">${item.title}</span>
+                                    <span class="text-muted" style="font-size:0.75rem;">${new Date(item.createdAt).toLocaleDateString()}</span>
+                                </div>`;
+                        });
+                        notifyHtml += '</div>';
+                        $('#latest-notifications').html(notifyHtml);
+                    } else {
+                        $('#latest-notifications').html('<p class="text-muted small text-center mt-3">You are all caught up!</p>');
+                    }
+                },
+                error: function() {
+                    $('#unread-count').text("!");
+                }
+            });
+
+            // --- 4. LẤY LỊCH TRÌNH HÔM NAY ---
+            $.ajax({
+                url: `${apiBaseUrl}/ClassSchedules/Lecturer/${lecturerId}/Today`,
                 type: "GET",
                 success: function (data) {
                     let html = '';
-                    if (data.length === 0) {
-                        html = '<div class="p-4 text-center text-muted">You have no classes scheduled for today.</div>';
+                    if (!data || data.length === 0) {
+                        html = `
+                            <div class="text-center p-5">
+                                <i class="bi bi-calendar-check text-muted" style="font-size: 3rem;"></i>
+                                <p class="mt-3 text-muted">No classes scheduled for today.</p>
+                            </div>`;
                     } else {
                         data.forEach(item => {
-                            // Xác định AM/PM dựa trên StartTime
                             const hour = parseInt(item.startTime.split(':')[0]);
                             const period = hour < 12 ? 'AM' : 'PM';
 
@@ -155,19 +149,20 @@
                             </div>`;
                         });
                     }
-                    // Đổ dữ liệu vào vùng chứa (Nhớ thêm id="schedule-list" vào thẻ chứa trong HTML)
                     $('#schedule-list').html(html);
                 },
                 error: function() {
-                    $('#schedule-list').html('<div class="text-danger p-3">Unable to load schedule.</div>');
+                    $('#schedule-list').html('<div class="text-danger p-3 text-center">Unable to load schedule.</div>');
                 }
             });
         });
     </script>
+
     <style>
         .hover-shadow:hover {
             box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
             border-color: #0d6efd !important;
+            cursor: pointer;
         }
 
         .transition {

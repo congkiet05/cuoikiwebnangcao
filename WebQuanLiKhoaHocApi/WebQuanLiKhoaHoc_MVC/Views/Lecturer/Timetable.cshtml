@@ -1,111 +1,32 @@
 ﻿@{
     ViewBag.Title = "My Timetable";
-    // Thiết lập Layout cho mô hình MPA
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
-
-    // @model YourNamespace.Models.TimetableViewModel
 }
 
 <div class="container-fluid p-0">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="h4 mb-0">My Timetable</h2>
-
-        <div class="btn-group me-4" role="group">
-            <input type="radio" class="btn-check" name="timeview" id="dayview" autocomplete="off">
-            <label class="btn btn-outline-secondary btn-sm" for="dayview">Day</label>
-
-            <input type="radio" class="btn-check" name="timeview" id="weekview" autocomplete="off" checked>
-            <label class="btn btn-outline-secondary btn-sm" for="weekview">Week</label>
-
-            <input type="radio" class="btn-check" name="timeview" id="monthview" autocomplete="off">
-            <label class="btn btn-outline-secondary btn-sm" for="monthview">Month</label>
-        </div>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="d-flex align-items-center">
-            <button class="btn btn-sm btn-outline-secondary me-2"><i class="bi bi-chevron-left"></i></button>
-            <button class="btn btn-sm btn-outline-secondary me-3"><i class="bi bi-chevron-right"></i></button>
-            <h5 class="mb-0 fw-bold">October 21-27, 2024</h5>
-        </div>
-        <button class="btn btn-primary"><i class="bi bi-download me-1"></i> Export</button>
-    </div>
-
     <div class="timetable-grid bg-white border rounded p-2 shadow-sm" style="overflow-x: auto;">
+        <div class="d-flex" style="min-width: 1000px;">
+            @* Đảm bảo đủ rộng cho 7 ngày *@
 
-        <div class="d-flex">
-            <div class="time-column text-muted small me-3 flex-shrink-0" style="width: 60px;">
-                <div style="height: 30px;"></div> @* Header gap *@
-                @for (int i = 9; i <= 15; i++)
+            <div class="time-column text-muted small me-2 flex-shrink-0" style="width: 60px; margin-top: 50px;">
+                @for (int i = 7; i <= 17; i++)
                 {
-                    <div style="height: 60px; border-top: 1px dashed #eee; padding-top: 5px;">@i:00 AM</div>
+                    <div class="time-slot">@(i < 12 ? i + ":00 AM" : (i == 12 ? "12:00 PM" : (i - 12) + ":00 PM"))</div>
                 }
             </div>
 
             <div class="flex-grow-1 d-flex">
                 @{
-                    var days = new List<Tuple<string, string>> {
-                                Tuple.Create("Mon", "21"),
-                                Tuple.Create("Tue", "22"),
-                                Tuple.Create("Wed", "23"),
-                                Tuple.Create("Thu", "24"),
-                                Tuple.Create("Fri", "25")
-                                };
+                    var weekDays = new List<string> { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
                 }
 
-                @foreach (var day in days)
+                @for (int i = 0; i < weekDays.Count; i++)
                 {
-                    var isToday = day.Item2 == "23"; // Ví dụ Wed là hôm nay
-                                                     <div class="day-column position-relative border-start" style="min-width: 120px; flex: 1;">
-                                                         <div class="text-center p-2 mb-1 @(isToday ? "bg-primary text-white rounded-top" : "bg-light")">
-                                                             <div class="small text-uppercase @(isToday ? "text-white" : "text-muted")">@day.Item1</div>
-                                                             <div class="fw-bold @(isToday ? "text-white" : "text-dark")">@day.Item2</div>
-                                                         </div>
-
-                        @if (day.Item1 == "Mon")
-                        {
-                            <div class="timetable-event bg-info text-white rounded p-1 position-absolute" style="top: 30px; left: 5px; right: 5px; height: 30px;">
-                                <div class="small fw-bold">CS101 Intro</div>
-                                <div class="small">10:00 - 11:30 | Hall A</div>
-                            </div>
-                            <div class="timetable-event bg-purple text-white rounded p-1 position-absolute" style="top: 120px; left: 5px; right: 5px; height: 30px;">
-                                <div class="small fw-bold">PhD Sync</div>
-                                <div class="small">1:00 - 3:00</div>
-                            </div>
-                        }
-                        @if (day.Item1 == "Tue")
-                        {
-                            <div class="timetable-event bg-success text-white rounded p-1 position-absolute" style="top: 70px; left: 5px; right: 5px; height: 30px;">
-                                <div class="small fw-bold">Office Hours</div>
-                                <div class="small">11:00 - 1:00 | Room 301</div>
-                            </div>
-                        }
-                        @if (day.Item1 == "Wed")
-                        {
-                            <div class="timetable-event bg-info text-white rounded p-1 position-absolute" style="top: 30px; left: 5px; right: 5px; height: 30px;">
-                                <div class="small fw-bold">CS101 Intro</div>
-                                <div class="small">10:00 - 11:30 | Hall A</div>
-                            </div>
-                        }
-                        @if (day.Item1 == "Thu")
-                        {
-                            <div class="timetable-event bg-success text-white rounded p-1 position-absolute" style="top: 120px; left: 5px; right: 5px; height: 30px;">
-                                <div class="small fw-bold">Office Hours</div>
-                                <div class="small">1:00 - 3:00 | Room 301</div>
-                            </div>
-                            <div class="timetable-event bg-orange text-white rounded p-1 position-absolute" style="top: 170px; left: 5px; right: 5px; height: 30px;">
-                                <div class="small fw-bold">Faculty Mtg.</div>
-                                <div class="small">3:00 - 4:00</div>
-                            </div>
-                        }
-                        @if (day.Item1 == "Fri")
-                        {
-                            <div class="timetable-event bg-info text-white rounded p-1 position-absolute" style="top: -10px; left: 5px; right: 5px; height: 30px;">
-                                <div class="small fw-bold">CS420 Adv. AI</div>
-                                <div class="small">9:00 - 10:30 | Lab 5B</div>
-                            </div>
-                        }
+                    var dayValue = i + 1;
+                    <div class="day-column position-relative border-start" id="day-@dayValue" style="flex: 1;">
+                        <div class="day-header text-center p-2 mb-1 bg-light border-bottom">
+                            <div class="small text-uppercase text-muted">@weekDays[i]</div>
+                        </div>
                     </div>
                 }
             </div>
@@ -114,37 +35,92 @@
 </div>
 
 @section scripts {
+    <script>
+        $(document).ready(function () {
+            const lecturerId = 2;
+            const apiBaseUrl = "https://localhost:7274/api";
+            const startHour = 7; // Mốc bắt đầu là 7h sáng
+            const rowHeight = 60; // 1 giờ = 60px (1 phút = 1px)
+
+            $.ajax({
+                url: `${apiBaseUrl}/ClassSchedules/Lecturer/${lecturerId}`,
+                type: "GET",
+                success: function (data) {
+                    $(".timetable-event").remove();
+
+                    data.forEach(item => {
+                        // 1. Phân tích Start Time
+                        const start = item.startTime.split(':');
+                        const hS = parseInt(start[0]);
+                        const mS = parseInt(start[1]);
+
+                        // 2. Phân tích End Time
+                        const end = item.endTime.split(':');
+                        const hE = parseInt(end[0]);
+                        const mE = parseInt(end[1]);
+
+                        // 3. Tính vị trí Top: (Giờ hiện tại - Giờ bắt đầu) * 60 + số phút + offset header (50px)
+                        const topPos = ((hS - startHour) * rowHeight) + mS + 50;
+
+                        // 4. Tính chiều cao thẻ: (Tổng phút kết thúc - Tổng phút bắt đầu)
+                        const duration = (hE * 60 + mE) - (hS * 60 + mS);
+
+                        // 5. Chọn màu sắc theo môn học (hoặc ngẫu nhiên)
+                        const colors = ['bg-info', 'bg-success', 'bg-warning', 'bg-primary', 'bg-purple'];
+                        const colorClass = colors[item.courseCode.length % colors.length];
+
+                        const eventHtml = `
+                            <div class="timetable-event ${colorClass} text-white rounded shadow-sm position-absolute"
+                                 style="top: ${topPos}px; left: 4px; right: 4px; height: ${duration}px;">
+                                <div class="p-1 overflow-hidden">
+                                    <div class="fw-bold" style="font-size: 0.75rem;">${item.courseCode}</div>
+                                    <div style="font-size: 0.65rem;">
+                                        ${item.startTime}-${item.endTime}<br>
+                                        <i class="bi bi-geo-alt"></i> ${item.room || 'N/A'}
+                                    </div>
+                                </div>
+                            </div>`;
+
+                        $(`#day-${item.dayOfWeek}`).append(eventHtml);
+                    });
+                }
+            });
+        });
+    </script>
+
     <style>
-        /* Custom CSS cho Timetable (Cần được đặt trong Site.css hoặc trong đây) */
-        .time-column > div {
-            min-height: 60px; /* Mỗi giờ là 60px */
+        .time-slot {
+            height: 60px;
+            border-top: 1px dashed #eee;
+            padding-top: 5px;
             line-height: 1;
         }
 
         .day-column {
-            min-height: 400px; /* Chiều cao tối thiểu của lưới */
+            min-height: 660px; /* (17h - 7h) * 60px = 600px + header */
+            background-image: linear-gradient(#f9f9f9 1px, transparent 1px);
+            background-size: 100% 60px;
+        }
+
+        .day-header {
+            height: 50px;
         }
 
         .timetable-event {
-            padding: 5px;
-            font-size: 0.8rem;
             z-index: 10;
+            border-left: 3px solid rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
         }
-        /* Màu custom */
+
+            .timetable-event:hover {
+                transform: scale(1.02);
+                z-index: 50;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important;
+            }
+
         .bg-purple {
-            background-color: #9370DB !important;
-        }
-
-        .bg-orange {
-            background-color: #FF8C00 !important;
-        }
-
-        .bg-info {
-            background-color: #6495ED !important;
-        }
-
-        .bg-success {
-            background-color: #3CB371 !important;
+            background-color: #6f42c1 !important;
         }
     </style>
 }

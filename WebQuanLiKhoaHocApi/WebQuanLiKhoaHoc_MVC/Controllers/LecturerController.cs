@@ -32,5 +32,13 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
         {
             return View();
         }
+        public IActionResult Settings()
+        {
+            return View();
+        }
+        public IActionResult Help()
+        {
+            return View();
+        }
     }
 }

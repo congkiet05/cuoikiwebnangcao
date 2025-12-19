@@ -14,7 +14,8 @@
             width: 250px; /* Chiều rộng Sidebar khi mở */
             min-height: 100vh;
             transition: margin-left .3s ease-out; /* Hiệu ứng chuyển động */
-            padding: 0;
+            padding: 10px 0 0 10px;
+			box-sizing: border-box;
         }
 
         /* Toggled State (Sidebar Ẩn) */
@@ -32,11 +33,57 @@
             display: flex;
             align-items: center;
         }
+
+        #sidebar-wrapper .nav-link:hover {
+            opacity: 0.7 !important; /* Giảm độ mờ */
+            background-color: #f8f9fa; /* Nền xám cực nhẹ */
+            transform: translateX(5px); /* Nhích sang phải 5px */
+            color: #0d6efd !important; /* Đổi màu chữ sang xanh primary khi hover */
+        }
+
+        /* Định nghĩa màu sắc cho Dark Mode */
+        body.dark-mode {
+            background-color: #121212 !important;
+            color: #e0e0e0 !important;
+        }
+
+            body.dark-mode .card,
+            body.dark-mode #sidebar-wrapper,
+            body.dark-mode .topbar {
+                background-color: #1e1e1e !important;
+                border-color: #333 !important;
+                color: #fff !important;
+            }
+
+            body.dark-mode .nav-link:not(.active) {
+                color: #bbb !important;
+            }
+
+            body.dark-mode .text-muted {
+                color: #888 !important;
+            }
+
+            body.dark-mode .list-group-item {
+                background-color: #1e1e1e !important;
+                color: #fff !important;
+                border-color: #333 !important;
+            }
+
+        /* Hiệu ứng chuyển mượt cho toàn trang */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
     </style>
 
 </head>
 
 <body id="page-top" class="toggled">
+    <script>
+        // Chạy ngay lập tức trước khi render nội dung để tránh nháy sáng
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
     <div id="wrapper" class="d-flex">
 
         <div class="sidebar-wrapper bg-white shadow-sm" id="sidebar-wrapper">

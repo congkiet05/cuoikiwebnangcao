@@ -20,26 +20,29 @@ namespace WebQuanLiKhoaHocApi.Controllers
         [HttpGet("Lecturer/{lecturerId}")]
         public async Task<IActionResult> GetSchedulesByLecturer(int lecturerId)
         {
-            var schedules = await _context.ClassSchedules
+            // Bước 1: Truy vấn và sắp xếp theo giá trị gốc (TimeOnly) để SQL Server hiểu được
+            var rawSchedules = await _context.ClassSchedules
                 .Include(s => s.Class)
                     .ThenInclude(c => c.Course)
                 .Where(s => s.Class.LecturerId == lecturerId)
-                .Select(s => new
-                {
-                    s.ScheduleId,
-                    s.DayOfWeek,
-                    StartTime = s.StartTime.ToString("HH:mm"), // Chuyển TimeOnly sang string cho JSON
-                    EndTime = s.EndTime.ToString("HH:mm"),
-                    s.Room,
-                    CourseName = s.Class.Course.CourseName,
-                    CourseCode = s.Class.Course.CourseCode,
-                    s.Class.ClassCode
-                })
                 .OrderBy(s => s.DayOfWeek)
-                .ThenBy(s => s.StartTime)
+                .ThenBy(s => s.StartTime) // Sắp xếp theo TimeOnly gốc
                 .ToListAsync();
 
-            return Ok(schedules);
+            // Bước 2: Chuyển đổi định dạng chuỗi trên bộ nhớ (Client-side)
+            var result = rawSchedules.Select(s => new
+            {
+                s.ScheduleId,
+                s.DayOfWeek,
+                StartTime = s.StartTime.ToString("HH:mm"),
+                EndTime = s.EndTime.ToString("HH:mm"),
+                s.Room,
+                CourseName = s.Class.Course.CourseName,
+                CourseCode = s.Class.Course.CourseCode,
+                s.Class.ClassCode
+            });
+
+            return Ok(result);
         }
 
         // 2. Lấy lịch dạy của giảng viên trong ngày hôm nay

@@ -48,6 +48,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Help.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcSGVscC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Message.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcTWVzc2FnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -58,6 +62,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Settings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcU2V0dGluZ3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Timetable.cshtml]

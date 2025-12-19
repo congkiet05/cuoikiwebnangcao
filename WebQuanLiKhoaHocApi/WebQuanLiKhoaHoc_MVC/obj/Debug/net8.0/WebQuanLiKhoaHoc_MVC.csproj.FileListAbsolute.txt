@@ -580,3 +580,4 @@ D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_
 D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_MVC\obj\Debug\net8.0\WebQuanLiKhoaHoc_MVC.csproj.AssemblyReference.cache
 D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_MVC\obj\Debug\net8.0\WebQuanLiKhoaHoc_MVC.MvcApplicationPartsAssemblyInfo.cs
 D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_MVC\obj\Debug\net8.0\WebQuanL.A77EA551.Up2Date
+D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_MVC\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll

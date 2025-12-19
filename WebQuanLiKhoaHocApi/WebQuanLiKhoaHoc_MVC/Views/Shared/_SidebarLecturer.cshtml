@@ -64,12 +64,12 @@
 <hr class="mt-auto" />
 <ul class="nav flex-column">
     <li class="nav-item mb-2">
-        <a class="nav-link text-secondary rounded p-2" href="#">
+        <a class="nav-link text-secondary @GetActive("Settings", "Lecturer") rounded p-2" href="@Url.Action("Settings", "Lecturer")">
             <i class="bi bi-gear-fill me-2"></i> Settings
         </a>
     </li>
     <li class="nav-item mb-2">
-        <a class="nav-link text-secondary rounded p-2" href="#">
+        <a class="nav-link text-secondary @GetActive("Help", "Lecturer") rounded p-2" href="@Url.Action("Help", "Lecturer")">
             <i class="bi bi-question-circle-fill me-2"></i> Help
         </a>
     </li>
