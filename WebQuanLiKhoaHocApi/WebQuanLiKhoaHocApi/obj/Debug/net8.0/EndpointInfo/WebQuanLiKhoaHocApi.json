@@ -822,98 +822,14 @@
         }
       }
     },
-    "/api/Notifications": {
-      "get": {
-        "tags": [
-          "Notifications"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Notification"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Notification"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Notification"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Notifications"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Notifications/{id}": {
+    "/api/Notifications/lecturer/{lecturerId}": {
       "get": {
         "tags": [
           "Notifications"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "lecturerId",
             "in": "path",
             "required": true,
             "schema": {
@@ -924,27 +840,12 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/Notifications/{id}/MarkAsRead": {
       "put": {
         "tags": [
           "Notifications"
@@ -960,38 +861,21 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/api/Notifications/lecturer/{lecturerId}/MarkAllRead": {
+      "put": {
         "tags": [
           "Notifications"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "lecturerId",
             "in": "path",
             "required": true,
             "schema": {
