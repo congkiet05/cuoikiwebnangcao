@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebQuanLiKhoaHoc_MVC.Service;
 using WebQuanLiKhoaHocApi.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ builder.Services.AddDbContext<UniversityDBContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpClient<HoSoHocVienService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

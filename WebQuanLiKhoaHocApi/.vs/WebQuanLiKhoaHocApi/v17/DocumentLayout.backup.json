@@ -3,20 +3,8 @@
   "WorkspaceRootPath": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahocapi\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|solutionrelative:webquanlikhoahocapi\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahoc_mvc\\controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|solutionrelative:webquanlikhoahoc_mvc\\controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahoc_mvc\\service\\scheduleapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ED05C513-B513-4395-9EFA-CAC221C25F1F}|WebQuanLiKhoaHoc_MVC\\WebQuanLiKhoaHoc_MVC.csproj|solutionrelative:webquanlikhoahoc_mvc\\service\\scheduleapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahocapi\\dtos\\hocvienscheduledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|solutionrelative:webquanlikhoahocapi\\dtos\\hocvienscheduledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|d:\\study\\chuongtrinhdaotao\\nam3\\ki1\\web_nangcao\\webnangcao_cuoiki\\webquanlikhoahocapi\\webquanlikhoahocapi\\controllers\\studentschedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48EEE78D-A9B5-4445-9DC2-C20D6223851A}|WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi.csproj|solutionrelative:webquanlikhoahocapi\\controllers\\studentschedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,8 +14,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "StudentScheduleController.cs",
+              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\Controllers\\StudentScheduleController.cs",
+              "RelativeDocumentMoniker": "WebQuanLiKhoaHocApi\\Controllers\\StudentScheduleController.cs",
+              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\Controllers\\StudentScheduleController.cs",
+              "RelativeToolTip": "WebQuanLiKhoaHocApi\\Controllers\\StudentScheduleController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T10:30:48.509Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
@@ -51,58 +52,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{6d4078d1-5951-4ed1-ac0e-0a8099c1cce5}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "NotificationsController.cs",
-              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\Controllers\\NotificationsController.cs",
-              "RelativeDocumentMoniker": "WebQuanLiKhoaHocApi\\Controllers\\NotificationsController.cs",
-              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\Controllers\\NotificationsController.cs",
-              "RelativeToolTip": "WebQuanLiKhoaHocApi\\Controllers\\NotificationsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T14:31:42.772Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "StudentController.cs",
-              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Controllers\\StudentController.cs",
-              "RelativeDocumentMoniker": "WebQuanLiKhoaHoc_MVC\\Controllers\\StudentController.cs",
-              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Controllers\\StudentController.cs",
-              "RelativeToolTip": "WebQuanLiKhoaHoc_MVC\\Controllers\\StudentController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABUAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T13:23:02.841Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ScheduleApiService.cs",
-              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Service\\ScheduleApiService.cs",
-              "RelativeDocumentMoniker": "WebQuanLiKhoaHoc_MVC\\Service\\ScheduleApiService.cs",
-              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Service\\ScheduleApiService.cs",
-              "RelativeToolTip": "WebQuanLiKhoaHoc_MVC\\Service\\ScheduleApiService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T13:22:20.788Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "HocVienScheduleDto.cs",
-              "DocumentMoniker": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\Dtos\\HocVienScheduleDto.cs",
-              "RelativeDocumentMoniker": "WebQuanLiKhoaHocApi\\Dtos\\HocVienScheduleDto.cs",
-              "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHocApi\\Dtos\\HocVienScheduleDto.cs",
-              "RelativeToolTip": "WebQuanLiKhoaHocApi\\Dtos\\HocVienScheduleDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T13:21:23.075Z",
-              "EditorCaption": ""
             }
           ]
         },

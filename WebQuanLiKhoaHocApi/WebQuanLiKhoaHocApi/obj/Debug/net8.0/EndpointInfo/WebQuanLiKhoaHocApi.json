@@ -776,6 +776,45 @@
         }
       }
     },
+    "/api/HocVien/HoSoHocVien/{MaHocVien}": {
+      "get": {
+        "tags": [
+          "HoSoHocVien"
+        ],
+        "parameters": [
+          {
+            "name": "MaHocVien",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HocVien_HoSoCaNhan"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HocVien_HoSoCaNhan"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HocVien_HoSoCaNhan"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Lecturers": {
       "get": {
         "tags": [
@@ -2072,6 +2111,34 @@
             "items": {
               "$ref": "#/components/schemas/Class"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HocVien_HoSoCaNhan": {
+        "type": "object",
+        "properties": {
+          "maHocVien": {
+            "type": "string",
+            "nullable": true
+          },
+          "hoVaTen": {
+            "type": "string",
+            "nullable": true
+          },
+          "ngaySinh": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "nganhHoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "khoaNhapHoc": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },
