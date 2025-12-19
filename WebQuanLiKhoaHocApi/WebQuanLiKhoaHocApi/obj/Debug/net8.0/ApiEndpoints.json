@@ -85,7 +85,7 @@
         "IsRequired": true
       },
       {
-        "Name": "announcement",
+        "Name": "dto",
         "Type": "WebQuanLiKhoaHocApi.Entities.Announcement",
         "IsRequired": true
       }
@@ -107,6 +107,32 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.AnnouncementsController",
+    "Method": "GetAnnouncementsByLecturer",
+    "RelativePath": "api/Announcements/by-lecturer/{lecturerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lecturerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[WebQuanLiKhoaHocApi.Entities.Announcement, WebQuanLiKhoaHocApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "WebQuanLiKhoaHocApi.Controllers.AuthController",
@@ -232,6 +258,32 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.ClassesController",
+    "Method": "GetClassesByLecturer",
+    "RelativePath": "api/Classes/by-lecturer/{lecturerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lecturerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[WebQuanLiKhoaHocApi.Entities.Class, WebQuanLiKhoaHocApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "WebQuanLiKhoaHocApi.Controllers.ClassSchedulesController",
@@ -559,6 +611,32 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.LecturersController",
+    "Method": "GetClassesByLecturer",
+    "RelativePath": "api/Lecturers/by-lecturer/{lecturerId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lecturerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[WebQuanLiKhoaHocApi.Entities.Class, WebQuanLiKhoaHocApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "WebQuanLiKhoaHocApi.Controllers.NotificationsController",

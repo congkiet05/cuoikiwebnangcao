@@ -1,0 +1,58 @@
+﻿@model WebQuanLiKhoaHoc_MVC.Models.DTOs.AnnouncementDto
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewBag.Title = "Edit Announcement";
+    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+}
+<h4>Edit Announcement</h4>
+
+<form asp-action="EditAnnouncement"
+      asp-controller="Lecturer"
+      method="post">
+
+    <!-- BẮT BUỘC: ID -->
+    <input type="hidden" asp-for="AnnouncementId" />
+
+    <!-- KHÔNG cho user sửa -->
+    <input type="hidden" asp-for="AuthorId" />
+    <input type="hidden" asp-for="CreatedAt" />
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Body" class="form-label"></label>
+        <textarea asp-for="Body"
+                  class="form-control"
+                  rows="5"></textarea>
+        <span asp-validation-for="Body" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TargetClassId" class="form-label"></label>
+        <select asp-for="TargetClassId"
+                asp-items="ViewBag.TargetClassList"
+                class="form-select">
+            <option value="">-- Select class --</option>
+        </select>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+        <a asp-action="Announcement"
+           asp-controller="Lecturer"
+           class="btn btn-light">
+            Cancel
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i> Save Changes
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

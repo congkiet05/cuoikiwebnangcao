@@ -24,14 +24,18 @@ namespace WebQuanLiKhoaHocApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Class>>> GetClasses()
         {
-            return await _context.Classes.ToListAsync();
+            return await _context.Classes
+            .Include(c => c.Course)  // <-- lấy thêm thông tin môn học
+            .ToListAsync();
         }
 
         // GET: api/Classes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Class>> GetClass(int id)
         {
-            var @class = await _context.Classes.FindAsync(id);
+            var @class = await _context.Classes
+        .Include(c => c.Course)
+        .FirstOrDefaultAsync(c => c.ClassId == id);
 
             if (@class == null)
             {
@@ -102,6 +106,17 @@ namespace WebQuanLiKhoaHocApi.Controllers
         private bool ClassExists(int id)
         {
             return _context.Classes.Any(e => e.ClassId == id);
+        }
+
+        [HttpGet("by-lecturer/{lecturerId}")]
+        public async Task<ActionResult<IEnumerable<Class>>> GetClassesByLecturer(int lecturerId)
+        {
+            var classes = await _context.Classes
+                .Include(c => c.Course)
+                .Where(c => c.LecturerId == lecturerId)
+                .ToListAsync();
+
+            return classes;
         }
     }
 }

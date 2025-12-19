@@ -17,6 +17,9 @@ builder.Services.AddDbContext<WebQuanLiKhoaHocApi.Entities.UniversityDBContext>(
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        options.JsonSerializerOptions.Encoder =
+            System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+
         options.JsonSerializerOptions.ReferenceHandler = 
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });

@@ -35,7 +35,7 @@ namespace WebQuanLiKhoaHocApi.Controllers
 
             // 2. Kiểm tra user & password (Dùng thuộc tính "Password" từ Model)
             // (Lưu ý: Đây là cách kiểm tra không an toàn, sẽ nói ở dưới)
-            if (user == null || user.PasswordHash != loginRequest.Password) 
+            if (user == null || user.Password != loginRequest.Password) 
             {
                 return Unauthorized(new { message = "Tài khoản hoặc mật khẩu không hợp lệ." });
             }

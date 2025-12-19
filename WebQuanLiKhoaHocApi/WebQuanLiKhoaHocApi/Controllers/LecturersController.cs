@@ -117,5 +117,20 @@ namespace WebQuanLiKhoaHocApi.Controllers
         {
             return _context.Lecturers.Any(e => e.LecturerId == id);
         }
+        [HttpGet("by-lecturer/{lecturerId}")]
+        public async Task<ActionResult<IEnumerable<Class>>> GetClassesByLecturer(int lecturerId)
+        {
+            var classes = await _context.Classes
+                .Include(c => c.Course) // rất quan trọng
+                .Where(c => c.LecturerId == lecturerId)
+                .ToListAsync();
+
+            if (!classes.Any())
+                return NotFound("Lecturer has no classes.");
+
+            return classes;
+        }
     }
+
+
 }

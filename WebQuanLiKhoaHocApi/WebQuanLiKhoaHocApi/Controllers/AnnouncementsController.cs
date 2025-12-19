@@ -44,39 +44,31 @@ namespace WebQuanLiKhoaHocApi.Controllers
         // PUT: api/Announcements/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAnnouncement(int id, Announcement announcement)
+        public async Task<IActionResult> PutAnnouncement(int id, Announcement dto)
         {
-            if (id != announcement.AnnouncementId)
-            {
+            if (id != dto.AnnouncementId)
                 return BadRequest();
-            }
 
-            _context.Entry(announcement).State = EntityState.Modified;
+            var ann = await _context.Announcements.FindAsync(id);
+            if (ann == null)
+                return NotFound();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AnnouncementExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            // CHỈ update field cho phép
+            ann.Title = dto.Title;
+            ann.Body = dto.Body;
+            ann.TargetClassId = dto.TargetClassId;
+            ann.IsGlobal = dto.IsGlobal;
+            ann.UpdatedAt = DateTime.Now;
 
+            await _context.SaveChangesAsync();
             return NoContent();
         }
-
         // POST: api/Announcements
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Announcement>> PostAnnouncement(Announcement announcement)
         {
+            announcement.CreatedAt = DateTime.Now;
             _context.Announcements.Add(announcement);
             await _context.SaveChangesAsync();
 
@@ -97,6 +89,15 @@ namespace WebQuanLiKhoaHocApi.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+        // GET: api/Announcements/by-lecturer/3
+        [HttpGet("by-lecturer/{lecturerId}")]
+        public async Task<ActionResult<IEnumerable<Announcement>>> GetAnnouncementsByLecturer(int lecturerId)
+        {
+            return await _context.Announcements
+                .Where(a => a.AuthorId == lecturerId)
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync();
         }
 
         private bool AnnouncementExists(int id)
