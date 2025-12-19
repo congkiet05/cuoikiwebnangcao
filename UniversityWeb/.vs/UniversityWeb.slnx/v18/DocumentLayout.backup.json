@@ -1,0 +1,290 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|d:\\bai_tap_thay_nam\\universityweb\\universityweb\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\controllers\\studentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\views\\student\\thongbao.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\views\\student\\thongbao.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\views\\student\\dangkymon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\views\\student\\dangkymon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\views\\student\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\views\\student\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\models\\universitydbmodel.context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\models\\universitydbmodel.context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\models\\universitydbmodel.context.tt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\models\\universitydbmodel.context.tt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\views\\student\\thoikhoabieu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\views\\student\\thoikhoabieu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\views\\student\\thamgiahoc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\views\\student\\thamgiahoc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|D:\\Bai_tap_thay_Nam\\UniversityWeb\\universityweb\\models\\universitydbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "RelativeMoniker": "D:0:0:{D1C1B97A-C860-47C2-BD83-E9BD6B50FEDB}|UniversityWeb\\UniversityWeb.csproj|solutionrelative:universityweb\\models\\universitydbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 271,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "UniversityWeb\\Views\\Account\\Login.cshtml",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "UniversityWeb\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAgwJAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-18T17:22:19.366Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "UniversityWeb\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "UniversityWeb\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAzwBIAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T17:17:02.216Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DangKyMon.cshtml",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\DangKyMon.cshtml",
+              "RelativeDocumentMoniker": "UniversityWeb\\Views\\Student\\DangKyMon.cshtml",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\DangKyMon.cshtml",
+              "RelativeToolTip": "UniversityWeb\\Views\\Student\\DangKyMon.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-18T17:20:25.79Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ThongBao.cshtml",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\ThongBao.cshtml",
+              "RelativeDocumentMoniker": "UniversityWeb\\Views\\Student\\ThongBao.cshtml",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\ThongBao.cshtml",
+              "RelativeToolTip": "UniversityWeb\\Views\\Student\\ThongBao.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-18T17:21:31.499Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "StudentController.cs",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Controllers\\StudentController.cs",
+              "RelativeDocumentMoniker": "UniversityWeb\\Controllers\\StudentController.cs",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Controllers\\StudentController.cs",
+              "RelativeToolTip": "UniversityWeb\\Controllers\\StudentController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T17:18:37.374Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\Index.cshtml",
+              "RelativeDocumentMoniker": "UniversityWeb\\Views\\Student\\Index.cshtml",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\Index.cshtml",
+              "RelativeToolTip": "UniversityWeb\\Views\\Student\\Index.cshtml",
+              "ViewState": "AgIAACUAAAAAAAAAAAAswEYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-18T17:20:01.461Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UniversityDBModel.Context.cs",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Models\\UniversityDBModel.Context.cs",
+              "RelativeDocumentMoniker": "UniversityWeb\\Models\\UniversityDBModel.Context.cs",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Models\\UniversityDBModel.Context.cs",
+              "RelativeToolTip": "UniversityWeb\\Models\\UniversityDBModel.Context.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwA8AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T17:37:30.956Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Web.config",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Web.config",
+              "RelativeDocumentMoniker": "UniversityWeb\\Web.config",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Web.config",
+              "RelativeToolTip": "UniversityWeb\\Web.config",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAvwHUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-12-18T17:11:00.412Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "UniversityDBModel.Context.tt",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Models\\UniversityDBModel.Context.tt",
+              "RelativeDocumentMoniker": "UniversityWeb\\Models\\UniversityDBModel.Context.tt",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Models\\UniversityDBModel.Context.tt",
+              "RelativeToolTip": "UniversityWeb\\Models\\UniversityDBModel.Context.tt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-12-18T17:41:13.822Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ThoiKhoaBieu.cshtml",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\ThoiKhoaBieu.cshtml",
+              "RelativeDocumentMoniker": "UniversityWeb\\Views\\Student\\ThoiKhoaBieu.cshtml",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\ThoiKhoaBieu.cshtml",
+              "RelativeToolTip": "UniversityWeb\\Views\\Student\\ThoiKhoaBieu.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-18T17:21:13.5Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ThamGiaHoc.cshtml",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\ThamGiaHoc.cshtml",
+              "RelativeDocumentMoniker": "UniversityWeb\\Views\\Student\\ThamGiaHoc.cshtml",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\Student\\ThamGiaHoc.cshtml",
+              "RelativeToolTip": "UniversityWeb\\Views\\Student\\ThamGiaHoc.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-18T17:20:47.361Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "UniversityWeb\\Views\\_ViewStart.cshtml",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Views\\_ViewStart.cshtml",
+              "RelativeToolTip": "UniversityWeb\\Views\\_ViewStart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-18T17:19:00.049Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UniversityDBModel.edmx [Diagram1]",
+              "DocumentMoniker": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Models\\UniversityDBModel.edmx",
+              "RelativeDocumentMoniker": "UniversityWeb\\Models\\UniversityDBModel.edmx",
+              "ToolTip": "D:\\Bai_tap_thay_Nam\\UniversityWeb\\UniversityWeb\\Models\\UniversityDBModel.edmx [Diagram1]",
+              "RelativeToolTip": "UniversityWeb\\Models\\UniversityDBModel.edmx [Diagram1]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
+              "WhenOpened": "2025-12-18T17:14:49.865Z",
+              "EditorCaption": " [Diagram1]"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 129,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

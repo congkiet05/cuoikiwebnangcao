@@ -1,0 +1,21 @@
+﻿@model IEnumerable<UniversityWeb.Models.Announcement>
+
+@{
+    ViewBag.Title = "Thông báo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h3 class="text-danger mb-3">🔔 Thông báo</h3>
+
+    @foreach (var tb in Model)
+    {
+        <div class="alert alert-info shadow-sm">
+            <h5 class="fw-bold">@tb.Title</h5>
+            <p>@tb.Content</p>
+            <small class="text-muted">
+                Ngày đăng: @tb.CreatedAt.ToString("dd/MM/yyyy")
+            </small>
+        </div>
+    }
+</div>

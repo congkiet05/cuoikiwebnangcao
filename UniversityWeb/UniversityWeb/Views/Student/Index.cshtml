@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Trang sinh viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+
+    <!-- TIÊU ĐỀ -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary">🎓 HỆ THỐNG QUẢN LÝ SINH VIÊN</h2>
+        <p class="text-muted">Chào mừng bạn đến với cổng thông tin sinh viên</p>
+    </div>
+
+    <!-- MENU CHỨC NĂNG -->
+    <div class="row g-4">
+
+        <!-- ĐĂNG KÝ MÔN -->
+        <div class="col-md-3">
+            <div class="card shadow h-100 text-center">
+                <div class="card-body">
+                    <h5 class="card-title">📘 Đăng ký môn học</h5>
+                    <p class="card-text">Xem danh sách lớp và đăng ký học phần</p>
+                    <a href="/Student/DangKyMon" class="btn btn-primary w-100">
+                        Vào chức năng
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- THAM GIA HỌC -->
+        <div class="col-md-3">
+            <div class="card shadow h-100 text-center">
+                <div class="card-body">
+                    <h5 class="card-title">📚 Tham gia học</h5>
+                    <p class="card-text">Danh sách lớp bạn đã đăng ký</p>
+                    <a href="/Student/ThamGiaHoc" class="btn btn-success w-100">
+                        Xem lớp học
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- THỜI KHÓA BIỂU -->
+        <div class="col-md-3">
+            <div class="card shadow h-100 text-center">
+                <div class="card-body">
+                    <h5 class="card-title">🗓 Thời khóa biểu</h5>
+                    <p class="card-text">Xem lịch học theo tuần</p>
+                    <a href="/Student/ThoiKhoaBieu" class="btn btn-warning w-100 text-white">
+                        Xem TKB
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- THÔNG BÁO -->
+        <div class="col-md-3">
+            <div class="card shadow h-100 text-center">
+                <div class="card-body">
+                    <h5 class="card-title">🔔 Thông báo</h5>
+                    <p class="card-text">Thông báo từ nhà trường & giảng viên</p>
+                    <a href="/Student/ThongBao" class="btn btn-danger w-100">
+                        Xem thông báo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

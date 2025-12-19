@@ -1,0 +1,13 @@
+﻿@model IEnumerable<UniversityWeb.Models.Class>
+
+<h2>Môn học đã đăng ký</h2>
+
+<table class="table table-bordered">
+    @foreach (var c in Model)
+    {
+        <tr>
+            <td>@c.Course.CourseName</td>
+            <td>@c.ClassCode</td>
+        </tr>
+    }
+</table>
