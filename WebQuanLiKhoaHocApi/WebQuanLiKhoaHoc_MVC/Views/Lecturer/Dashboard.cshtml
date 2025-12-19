@@ -1,103 +1,177 @@
 ﻿@{
     ViewBag.Title = "Dashboard";
-    // Thiết lập Layout cho mô hình MPA
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
-
-    // Giả định Model để hiển thị dữ liệu (Courses, Timetable...)
-    // @model YourNamespace.Models.DashboardViewModel
 }
 
-<div class="card p-4 shadow-sm">
-
-    <h2 class="h4 mb-1">Course Management & Timetable</h2>
-    <p class="text-muted">View and manage your courses and weekly schedule.</p>
-
-    <div class="row mt-4">
-
-        <div class="col-lg-4 mb-4">
-            <div class="card bg-light p-3 border-0">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="card-title mb-0">Weekly Timetable</h5>
-                    <div class="d-flex">
-                        <span class="text-muted small me-2">October 21 - 25, 2024</span>
-                        <button class="btn btn-sm btn-outline-secondary p-0 px-2 mx-1 rounded-circle"><i class="bi bi-chevron-left"></i></button>
-                        <button class="btn btn-sm btn-outline-secondary p-0 px-2 rounded-circle"><i class="bi bi-chevron-right"></i></button>
+<div class="container-fluid p-0">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm p-4 bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1" id="today-date">Today is Wednesday, Oct 24</p>
+                        <h2 class="fw-bold mb-0">Good morning, <span id="welcome-name">Lecturer</span>.</h2>
+                        <p class="text-muted mb-0">Here is your daily summary.</p>
+                    </div>
+                    <div class="d-none d-md-flex align-items-center border rounded-pill px-3 py-2 bg-light">
+                        <img src="~/images/avatar.jpg" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                        <div>
+                            <div class="fw-bold small" id="badge-name">Dr. Jane Doe</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">Lecturer</div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="row row-cols-5 g-1 text-center small">
-                    <div class="col fw-bold text-uppercase">Mon</div>
-                    <div class="col fw-bold text-uppercase">Tue</div>
-                    <div class="col fw-bold text-uppercase">Wed</div>
-                    <div class="col fw-bold text-uppercase">Thu</div>
-                    <div class="col fw-bold text-uppercase">Fri</div>
-
-                    @* Dữ liệu mẫu (Cần CSS tùy chỉnh cho màu sắc bg-info, bg-warning, bg-success) *@
-                    <div class="col p-1">
-                        <div class="p-2 rounded bg-info text-white">
-                            CS202<br />Lab<br />13:00-15:00<br />Lab 2B
+    <div class="row">
+        <div class="col-lg-7 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-bold"><i class="bi bi-calendar3 text-primary me-2"></i>Today's Schedule</h5>
+                </div>
+                <div id="schedule-list" class="card-body px-4">
+                    <div class="d-flex align-items-center p-3 mb-3 border rounded shadow-sm hover-shadow transition">
+                        <div class="text-center border-end pe-3 me-3" style="min-width: 80px;">
+                            <div class="fw-bold text-primary">10:00</div>
+                            <div class="small text-muted">AM</div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 fw-bold">Intro to Computer Science</h6>
+                            <div class="small text-muted">
+                                <i class="bi bi-geo-alt me-1"></i> Lecture Hall A | <i class="bi bi-book me-1"></i> CS-101
+                            </div>
                         </div>
                     </div>
-                    <div class="col p-1"></div>
-                    <div class="col p-1">
-                        <div class="p-2 rounded bg-warning text-dark">
-                            CS451<br />Lec<br />10:00-12:00<br />Hall A
+
+                    <div class="d-flex align-items-center p-3 mb-3 border rounded shadow-sm">
+                        <div class="text-center border-end pe-3 me-3" style="min-width: 80px;">
+                            <div class="fw-bold text-primary">02:00</div>
+                            <div class="small text-muted">PM</div>
+                        </div>
+                        <div class="flex-grow-1 position-relative">
+                            <h6 class="mb-1 fw-bold">Data Structures</h6>
+                            <div class="small text-muted">
+                                <i class="bi bi-geo-alt me-1"></i> Lab 3B | <i class="bi bi-book me-1"></i> DS-101
+                            </div>
+                            <span class="badge bg-success position-absolute top-0 end-0">In Progress</span>
                         </div>
                     </div>
-                    <div class="col p-1"></div>
-                    <div class="col p-1">
-                        <div class="p-2 rounded bg-success text-white">
-                            CS101<br />Lab<br />14:00-16:00<br />Lab 1A
+
+                    <div class="d-flex align-items-center p-3 mb-3 border rounded shadow-sm">
+                        <div class="text-center border-end pe-3 me-3" style="min-width: 80px;">
+                            <div class="fw-bold text-primary">04:00</div>
+                            <div class="small text-muted">PM</div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 fw-bold">Office Hours</h6>
+                            <div class="small text-muted">
+                                <i class="bi bi-geo-alt me-1"></i> Room 304
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-8">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">My Courses (@* @Model.Courses.Count *@)</h5>
-                <a href="@Url.Action("CreateCourse", "Lecturer")" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-1"></i> Add New Course
-                </a>
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0"><i class="bi bi-bell text-warning me-2"></i>Notifications</h5>
+                        <a href="@Url.Action("Notification", "Lecturer")" class="small text-decoration-none">View all <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                    <div class="mb-3 p-3 bg-light rounded">
+                        <h3 class="mb-0 fw-bold">5</h3>
+                        <p class="text-muted small mb-0">Unread Notifications Count</p>
+                    </div>
+                    <div class="small border-top pt-2">
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">System Maintenance Scheduled</span>
+                            <span class="fw-bold">02:00 AM</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="input-group mb-4">
-                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control border-start-0" placeholder="Search by course name or code...">
-            </div>
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0"><i class="bi bi-chat-dots text-info me-2"></i>Messages</h5>
+                        <a href="@Url.Action("Message", "Lecturer")" class="small text-decoration-none">View all <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                    <div class="mb-3 p-3 bg-light rounded">
+                        <h3 class="mb-0 fw-bold">8</h3>
+                        <p class="text-muted small mb-0">Unread Messages</p>
+                    </div>
 
-            <div class="table-responsive">
-                <table class="table align-middle table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Course Title & Code</th>
-                            <th>Students</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @* @foreach (var course in Model.Courses) *@
-                        <tr>
-                            <td>
-                                <strong>Introduction to Programming - CS101</strong>
-                            </td>
-                            <td>124</td>
-                            <td><span class="badge bg-success py-2 px-3">Active</span></td>
-                            <td><a href="@Url.Action("Details", "Lecturer", new { id = "CS101" })" class="btn btn-link p-0 text-primary">View Details</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>Advanced Database Systems - CS451</strong>
-                            </td>
-                            <td>45</td>
-                            <td><span class="badge bg-secondary py-2 px-3">Archived</span></td>
-                            <td><a href="@Url.Action("Details", "Lecturer", new { id = "CS451" })" class="btn btn-link p-0 text-primary">View Details</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <div class="d-flex align-items-center p-2 border rounded">
+                        <img src="https://via.placeholder.com/40" class="rounded-circle me-3">
+                        <div class="flex-grow-1 overflow-hidden">
+                            <div class="fw-bold small">James Doe</div>
+                            <div class="text-muted small text-truncate">Question about assignment...</div>
+                        </div>
+                        <span class="badge bg-danger rounded-pill">new</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            const lecturerId = 2; // ID giảng viên đang test
+
+            // Gọi API lấy lịch hôm nay
+            $.ajax({
+                url: `https://localhost:7274/api/ClassSchedules/Lecturer/${lecturerId}/Today`,
+                type: "GET",
+                success: function (data) {
+                    let html = '';
+                    if (data.length === 0) {
+                        html = '<div class="p-4 text-center text-muted">You have no classes scheduled for today.</div>';
+                    } else {
+                        data.forEach(item => {
+                            // Xác định AM/PM dựa trên StartTime
+                            const hour = parseInt(item.startTime.split(':')[0]);
+                            const period = hour < 12 ? 'AM' : 'PM';
+
+                            html += `
+                            <div class="d-flex align-items-center p-3 mb-3 border rounded shadow-sm hover-shadow transition">
+                                <div class="text-center border-end pe-3 me-3" style="min-width: 80px;">
+                                    <div class="fw-bold text-primary">${item.startTime}</div>
+                                    <div class="small text-muted">${period}</div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold">${item.courseName}</h6>
+                                    <div class="small text-muted">
+                                        <i class="bi bi-geo-alt me-1"></i> ${item.room || 'N/A'} |
+                                        <i class="bi bi-book me-1"></i> ${item.courseCode}
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+                    }
+                    // Đổ dữ liệu vào vùng chứa (Nhớ thêm id="schedule-list" vào thẻ chứa trong HTML)
+                    $('#schedule-list').html(html);
+                },
+                error: function() {
+                    $('#schedule-list').html('<div class="text-danger p-3">Unable to load schedule.</div>');
+                }
+            });
+        });
+    </script>
+    <style>
+        .hover-shadow:hover {
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+            border-color: #0d6efd !important;
+        }
+
+        .transition {
+            transition: all 0.3s ease;
+        }
+    </style>
+}

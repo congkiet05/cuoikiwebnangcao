@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\StudentSchedule\" />
+    <Compile Remove="Views\StudentSchedule\**" />
+    <Content Remove="Views\StudentSchedule\**" />
+    <EmbeddedResource Remove="Views\StudentSchedule\**" />
+    <None Remove="Views\StudentSchedule\**" />
   </ItemGroup>
 
   <ItemGroup>

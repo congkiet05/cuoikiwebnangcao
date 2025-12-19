@@ -235,92 +235,15 @@
   },
   {
     "ContainingType": "WebQuanLiKhoaHocApi.Controllers.ClassSchedulesController",
-    "Method": "GetClassSchedules",
-    "RelativePath": "api/ClassSchedules",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[WebQuanLiKhoaHocApi.Entities.ClassSchedule, WebQuanLiKhoaHocApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.ClassSchedulesController",
-    "Method": "PostClassSchedule",
-    "RelativePath": "api/ClassSchedules",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "classSchedule",
-        "Type": "WebQuanLiKhoaHocApi.Entities.ClassSchedule",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "WebQuanLiKhoaHocApi.Entities.ClassSchedule",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.ClassSchedulesController",
-    "Method": "GetClassSchedule",
-    "RelativePath": "api/ClassSchedules/{id}",
+    "Method": "GetSchedulesByLecturer",
+    "RelativePath": "api/ClassSchedules/Lecturer/{lecturerId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "lecturerId",
         "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "WebQuanLiKhoaHocApi.Entities.ClassSchedule",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.ClassSchedulesController",
-    "Method": "PutClassSchedule",
-    "RelativePath": "api/ClassSchedules/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "classSchedule",
-        "Type": "WebQuanLiKhoaHocApi.Entities.ClassSchedule",
         "IsRequired": true
       }
     ],
@@ -328,14 +251,14 @@
   },
   {
     "ContainingType": "WebQuanLiKhoaHocApi.Controllers.ClassSchedulesController",
-    "Method": "DeleteClassSchedule",
-    "RelativePath": "api/ClassSchedules/{id}",
-    "HttpMethod": "DELETE",
+    "Method": "GetTodaySchedules",
+    "RelativePath": "api/ClassSchedules/Lecturer/{lecturerId}/Today",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "lecturerId",
         "Type": "System.Int32",
         "IsRequired": true
       }

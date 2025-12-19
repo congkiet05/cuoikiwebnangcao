@@ -40,7 +40,7 @@
     <div id="wrapper" class="d-flex">
 
         <div class="sidebar-wrapper bg-white shadow-sm" id="sidebar-wrapper">
-            @Html.Partial("_Sidebar")
+            @Html.Partial("_SidebarLecturer")
         </div>
 
         <div id="content-wrapper" class="d-flex flex-column flex-grow-1">
@@ -80,6 +80,20 @@
                 // ✅ Thao tác này sẽ xóa hoặc thêm class "toggled" vào thẻ <body>
                 // CSS sẽ tự động ẩn/hiện Sidebar dựa vào class này
                 $("body").toggleClass("toggled");
+            });
+        });
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://localhost:7274/api/Lecturers/2",
+                type: "GET",
+                success: function (data) {
+                    // Đổ tên vào Sidebar
+                    $('#sidebar-fullname').text(data.fullName);
+                },
+                error: function () {
+                    $('#sidebar-fullname').text("Error Loading");
+                }
             });
         });
     </script>
