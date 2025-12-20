@@ -17,7 +17,11 @@ public partial class Student
 
     public int? Year { get; set; }
 
+    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+
     public virtual ICollection<Registration> Registrations { get; set; } = new List<Registration>();
 
     public virtual User StudentNavigation { get; set; } = null!;
+
+    public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
 }

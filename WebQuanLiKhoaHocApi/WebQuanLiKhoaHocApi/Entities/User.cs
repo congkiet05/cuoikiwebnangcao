@@ -23,6 +23,8 @@ public partial class User
 
     public virtual ICollection<Announcement> Announcements { get; set; } = new List<Announcement>();
 
+    public virtual ICollection<ClassMessage> ClassMessages { get; set; } = new List<ClassMessage>();
+
     public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
 
     public virtual Lecturer? Lecturer { get; set; }
