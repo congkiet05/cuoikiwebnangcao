@@ -1,94 +1,220 @@
-﻿@{
-    ViewBag.Title = "My Profile";
+﻿@model WebQuanLiKhoaHoc_MVC.Models.DTOs.LecturerDto
+@{
+    ViewBag.Title = "Hồ sơ cá nhân";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
-
-    // @model YourNamespace.Models.LecturerProfile
 }
 
-<div class="card p-4 shadow-sm">
-
-    <h2 class="h4 mb-1">My Profile</h2>
-    <p class="text-muted mb-4">Update your personal and professional information.</p>
-
-    @using (Html.BeginForm("UpdateProfile", "Lecturer", FormMethod.Post, new { id = "profileForm" }))
-    {
-        @* @Html.AntiForgeryToken() *@
-
-        <div class="row">
-            <div class="col-lg-4 mb-4">
-                <div class="p-3 text-center border rounded h-100">
-
-                    <div class="position-relative d-inline-block mb-3">
-                        <img src="~/images/avatar.jpg" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                        <a href="#" class="btn btn-sm btn-light rounded-circle position-absolute top-0 start-100 translate-middle border border-primary p-1">
-                            <i class="bi bi-pencil" style="font-size: 0.75rem;"></i>
-                        </a>
-                    </div>
-
-                    <h5>Dr. Jane Doe</h5>
-                    <p class="text-muted mb-1">Associate Professor</p>
-                    <p class="text-muted small">Department of Computer Science</p>
-
-                    <h6 class="text-start mt-4 mb-2 border-top pt-3">Bio</h6>
-                    <textarea class="form-control" rows="4">Passionate about machine learning and its applications in healthcare. Committed to fostering a dynamic and inclusive learning environment.</textarea>
-
-                </div>
-            </div>
-
-            <div class="col-lg-8">
-
-                <h5 class="mb-3">Contact Information</h5>
-                <div class="row mb-4">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small text-muted">Email Address</label>
-                        <input type="email" class="form-control" value="jane.doe@university.edu" readonly>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small text-muted">Phone Number</label>
-                        <input type="text" class="form-control" value="(123) 456-7890">
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label class="form-label small text-muted">Office Location</label>
-                        <input type="text" class="form-control" value="Science Building, Room 302">
-                    </div>
-                </div>
-
-                <h5 class="mb-3">Academic Background</h5>
-                <div class="mb-4">
-                    <div class="d-flex justify-content-between align-items-start border-bottom pb-2 mb-2">
-                        <div>
-                            <strong>Ph.D. in Computer Science</strong>
-                            <p class="text-muted small mb-0">Stanford University, 2012</p>
-                        </div>
-                        <a href="#" class="btn btn-sm text-secondary p-0"><i class="bi bi-pencil"></i></a>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-start border-bottom pb-2 mb-2">
-                        <div>
-                            <strong>M.S. in Computer Science</strong>
-                            <p class="text-muted small mb-0">Stanford University, 2008</p>
-                        </div>
-                        <a href="#" class="btn btn-sm text-secondary p-0"><i class="bi bi-pencil"></i></a>
-                    </div>
-                    <a href="#" class="btn btn-link btn-sm"><i class="bi bi-plus-circle me-1"></i> Add Qualification</a>
-                </div>
-
-                <h5 class="mb-3">Research Interests</h5>
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                    <span class="badge bg-primary text-white p-2">Machine Learning <a href="#" class="text-white ms-1" style="text-decoration: none;">&times;</a></span>
-                    <span class="badge bg-primary text-white p-2">AI Ethics <a href="#" class="text-white ms-1" style="text-decoration: none;">&times;</a></span>
-                    <span class="badge bg-primary text-white p-2">Computational Biology <a href="#" class="text-white ms-1" style="text-decoration: none;">&times;</a></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Add Interest...">
-
-            </div>
-        </div>
-
-        <hr class="mt-5 mb-3" />
-        <div class="d-flex justify-content-end">
-            <a href="@Url.Action("Dashboard", "Lecturer")" class="btn btn-light me-2">Cancel</a>
-
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </div>
+<style>
+    :root {
+        --primary-blue: #0d6efd;
+        --soft-bg: #f8f9fa;
     }
 
+    /* Bo góc và làm mịn Card */
+    .profile-card {
+        border-radius: 15px;
+        border: none;
+        background: #fff;
+    }
+
+    /* Hiệu ứng cho vùng ảnh đại diện */
+    .avatar-section {
+        background-color: var(--soft-bg);
+        border-radius: 15px 0 0 15px;
+    }
+
+    @@media (max-width: 991.98px) {
+        .avatar-section {
+            border-radius: 15px 15px 0 0;
+            border-right: none !important;
+            border-bottom: 1px solid #dee2e6;
+        }
+    }
+
+    /* Tùy chỉnh input */
+    .form-label {
+        color: #495057;
+        letter-spacing: 0.2px;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+    }
+
+    /* Nút bấm có chiều sâu */
+    .btn-save {
+        background-color: var(--primary-blue);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-save:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+        }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="d-flex align-items-center mb-4">
+        <div class="bg-primary text-white p-2 rounded-3 me-3">
+            <i class="bi bi-person-badge fs-4"></i>
+        </div>
+        <div>
+            <h2 class="h4 mb-0 fw-bold text-dark">Hồ sơ của tôi</h2>
+            <p class="text-muted small mb-0">Quản lý thông tin định danh và bảo mật tài khoản hệ thống.</p>
+        </div>
+    </div>
+
+    <div class="card profile-card shadow-sm overflow-hidden">
+        <div class="row g-0">
+            <div class="col-lg-4 avatar-section p-5 text-center border-end">
+                <div class="position-relative d-inline-block mb-4">
+                    <img src="~/images/avatar.jpg" class="rounded-circle shadow"
+                         style="width: 160px; height: 160px; object-fit: cover; border: 5px solid #fff;">
+                    <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-white rounded-circle p-2" title="Đang trực tuyến"></span>
+                </div>
+                <h4 class="fw-bold text-dark mb-1">@Model.FullName</h4>
+                <p class="text-muted mb-3">Giảng viên chuyên môn</p>
+                <div class="badge bg-primary px-3 py-2 rounded-pill shadow-sm">
+                    <i class="bi bi-id-card me-2"></i>Mã NV: @Model.StaffNumber
+                </div>
+            </div>
+
+            <div class="col-lg-8 p-4 p-md-5">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success border-0 shadow-sm d-flex align-items-center mb-4" role="alert">
+                        <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                        <div>@TempData["SuccessMessage"]</div>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center mb-4" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                        <div>@TempData["ErrorMessage"]</div>
+                    </div>
+                }
+
+                <form asp-action="UpdateProfile" method="post" id="profileForm">
+                    <input type="hidden" asp-for="LecturerId" />
+                    <input type="hidden" asp-for="StaffNumber" />
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="vr me-2 text-primary" style="width: 4px; height: 20px; opacity: 1;"></div>
+                        <h5 class="fw-bold mb-0 text-dark">Thông tin cá nhân</h5>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-uppercase">Tên đăng nhập</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-person text-muted"></i></span>
+                                <input type="text" class="form-control bg-light fw-medium" value="@Model.Username" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-uppercase">Email liên hệ</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-envelope text-primary"></i></span>
+                                <input type="email" name="Email" class="form-control" value="@Model.Email" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-uppercase">Họ và tên giảng viên</label>
+                            <input type="text" name="FullName" class="form-control" value="@Model.FullName" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-uppercase">Khoa / Bộ môn công tác</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-building text-primary"></i></span>
+                                <input type="text" name="Department" class="form-control" value="@Model.Department">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mt-5 mb-4">
+                        <div class="vr me-2 text-danger" style="width: 4px; height: 20px; opacity: 1;"></div>
+                        <h5 class="fw-bold mb-0 text-dark">Bảo mật tài khoản</h5>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-uppercase">Mật khẩu mới</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-key text-danger"></i></span>
+                                <input type="password" id="NewPassword" name="NewPassword" class="form-control" placeholder="Để trống nếu không đổi">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-uppercase">Xác nhận mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="bi bi-shield-check text-danger"></i></span>
+                                <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu mới">
+                            </div>
+                            <div id="passwordError" class="text-danger small mt-2" style="display:none;">
+                                <i class="bi bi-x-circle me-1"></i> Mật khẩu xác nhận không khớp, vui lòng kiểm tra lại.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-3 d-flex justify-content-end gap-3 border-top">
+                        <a href="@Url.Action("Dashboard", "Lecturer")" class="btn btn-light border px-4 fw-bold text-secondary">
+                            <i class="bi bi-x-lg me-2"></i>Hủy bỏ
+                        </a>
+                        <button type="submit" id="btnSave" class="btn btn-primary btn-save px-5 py-2 fw-bold shadow-sm">
+                            <i class="bi bi-cloud-upload me-2"></i>Lưu thay đổi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('profileForm').onsubmit = function (e) {
+            const newPass = document.getElementById('NewPassword').value;
+            const confirmPass = document.getElementById('ConfirmPassword').value;
+            const errorDiv = document.getElementById('passwordError');
+            const btn = document.getElementById('btnSave');
+
+            // Reset trạng thái lỗi
+            errorDiv.style.display = 'none';
+            document.getElementById('ConfirmPassword').classList.remove('is-invalid');
+
+            if (newPass !== "") {
+                // 1. Kiểm tra độ dài tối thiểu
+                if (newPass.length < 6) {
+                    alert("Mật khẩu bảo mật phải có ít nhất 6 ký tự!");
+                    e.preventDefault();
+                    return false;
+                }
+
+                // 2. Kiểm tra tính đồng nhất
+                if (newPass !== confirmPass) {
+                    errorDiv.style.display = 'block';
+                    document.getElementById('ConfirmPassword').classList.add('is-invalid');
+                    e.preventDefault();
+                    return false;
+                }
+            }
+
+            // Hiệu ứng xử lý (UX)
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Đang đồng bộ...';
+        };
+
+        // Xử lý ẩn lỗi realtime khi người dùng nhập liệu lại
+        document.getElementById('ConfirmPassword').addEventListener('input', function() {
+            if (this.classList.contains('is-invalid')) {
+                this.classList.remove('is-invalid');
+                document.getElementById('passwordError').style.display = 'none';
+            }
+        });
+    </script>
+}

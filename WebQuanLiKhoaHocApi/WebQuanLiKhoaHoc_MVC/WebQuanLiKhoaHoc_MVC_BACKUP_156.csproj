@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.22" />
-<<<<<<< HEAD
 
     <Compile Remove="Interface\**" />
     <Content Remove="Interface\**" />
@@ -28,8 +27,6 @@
   <ItemGroup>
     <Folder Include="Views\StudentSchedule\" />
 
-=======
->>>>>>> 51bb6f4132a8be2659f777ee4e204164f35d626e
   </ItemGroup>
 
   <ItemGroup>

@@ -1,115 +1,170 @@
-﻿@{
-    ViewBag.Title = "Announcement Management";
-    // Thiết lập Layout cho mô hình MPA
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewBag.Title = "Quản lý Thông báo";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
 
-    // @model YourNamespace.Models.AnnouncementViewModel
+    // Lấy ID Giảng viên hiện tại (tạm thời để là 3)
+    var currentLecturerId = 3;
 }
+<style>
+    /* Biến màu chủ đạo */
+    :root {
+        --primary-blue: #0d6efd;
+        --soft-blue: #e7f1ff;
+        --dark-blue: #0a58ca;
+    }
+
+    /* Bo góc và đổ bóng cho Card */
+    .card {
+        border-radius: 12px;
+        border: none;
+        transition: transform 0.2s ease;
+    }
+
+    /* Hiệu ứng danh sách thông báo */
+    .announcement-card {
+        border-left: 5px solid var(--primary-blue) !important;
+        background-color: #ffffff;
+        transition: all 0.3s ease;
+    }
+
+        .announcement-card:hover {
+            background-color: var(--soft-blue);
+            transform: translateX(5px);
+        }
+
+    /* Tùy chỉnh input và select */
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+
+    /* Khu vực tải tệp (nếu dùng sau này) */
+    .attachment-area {
+        border: 2px dashed #b4d3ff;
+        background-color: #f0f7ff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        color: var(--dark-blue);
+    }
+</style>
+<style>
+    /* CSS cho khu vực tải tệp đính kèm */
+    .attachment-area {
+        border: 2px dashed #dee2e6;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+        .attachment-area:hover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+</style>
 
 <div class="container-fluid p-0">
-    <h2 class="h4 mb-4">Announcement Management</h2>
+    <div class="d-flex align-items-center mb-4">
+        <div class="bg-primary text-white p-2 rounded-3 me-3">
+            <i class="bi bi-megaphone fs-4"></i>
+        </div>
+        <h2 class="h4 mb-0 fw-bold text-dark">Quản lý Thông báo</h2>
+    </div>
 
     <div class="row">
-
+        @* CỘT TRÁI: SOẠN THẢO *@
         <div class="col-lg-5 mb-4">
-            <div class="card p-4 shadow-sm border-0">
-                @* Form tạo thông báo *@
-                @using (Html.BeginForm("PostAnnouncement", "Lecturer", FormMethod.Post, new { id = "announcementForm" }))
-                {
-                    @* @Html.AntiForgeryToken() *@
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header bg-primary py-3">
+                    <h5 class="card-title mb-0 text-white fw-bold"><i class="bi bi-pencil-square me-2"></i>Soạn thông báo mới</h5>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("PostAnnouncement", "Lecturer", FormMethod.Post))
+                    {
+                        <input type="hidden" name="AuthorId" value="@currentLecturerId" />
+                        <input type="hidden" name="IsGlobal" value="False" />
 
-                    <div class="mb-3">
-                        <label for="announcementTitle" class="form-label fw-bold">Announcement Title</label>
-                        <input type="text" class="form-control" id="announcementTitle" placeholder="e.g., Mid-term Exam Schedule">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="announcementBody" class="form-label fw-bold">Announcement Body</label>
-                        <div class="border rounded mb-1 bg-light p-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-type-bold"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-type-italic"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-list-ul"></i></button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-link"></i></button>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary">Tiêu đề thông báo</label>
+                            <input type="text" class="form-control form-control-lg fs-6" name="Title"
+                                   placeholder="VD: Lịch thi giữa kỳ..." required>
                         </div>
-                        <textarea class="form-control" id="announcementBody" rows="5" placeholder="Write your announcement details here..."></textarea>
-                    </div>
 
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">Attachments</label>
-                        <div class="border border-dashed p-4 text-center rounded bg-light">
-                            <i class="bi bi-cloud-upload d-block mb-2" style="font-size: 2rem; color: #aaa;"></i>
-                            <p class="mb-0">Click to upload or drag and drop</p>
-                            <small class="text-muted">PDF, DOCX, PNG, JPG (MAX. 5MB)</small>
-                            <input type="file" multiple class="form-control" style="opacity: 0; height: 0; overflow: hidden;" />
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary">Nội dung chi tiết</label>
+                            <textarea class="form-control" name="Body" rows="6"
+                                  placeholder="Nhập nội dung thông báo..." required></textarea>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <label for="publishImmediately" class="form-check-label fw-bold">Publish Immediately</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="publishImmediately" checked>
+                        <div class="p-3 rounded-3 mb-4" style="background-color: var(--soft-blue);">
+                            <label class="form-label fw-bold text-primary"><i class="bi bi-people-fill me-2"></i>Lớp học nhận tin</label>
+                            <select class="form-select border-primary" name="TargetClassId" required>
+                                <option value="" disabled selected>-- Chọn lớp học mục tiêu --</option>
+                                @if (ViewBag.TargetClassList != null)
+                                {
+                                    foreach (var item in (IEnumerable<SelectListItem>)ViewBag.TargetClassList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-light me-2">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Post Announcement</button>
-                    </div>
-                }
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="reset" class="btn btn-light px-4">Làm lại</button>
+                            <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                                <i class="bi bi-send-check-fill me-2"></i>Đăng thông báo
+                            </button>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
 
+        @* CỘT PHẢI: DANH SÁCH *@
         <div class="col-lg-7">
-            <h5 class="fw-bold mb-3">Published & Scheduled</h5>
-
-            <div class="input-group mb-4">
-                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control border-start-0" placeholder="Search announcements...">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0">Lịch sử thông báo</h5>
+                <span class="badge bg-primary rounded-pill">@(ViewBag.PostedAnnouncements != null ? ((List<WebQuanLiKhoaHoc_MVC.Models.DTOs.AnnouncementDto>)ViewBag.PostedAnnouncements).Count : 0) Tin đã đăng</span>
             </div>
 
-            <div class="list-group list-group-flush">
+            <div class="input-group mb-4 shadow-sm rounded-3 overflow-hidden">
+                <span class="input-group-text bg-white border-end-0 text-primary"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0 ps-0" placeholder="Tìm kiếm theo tiêu đề...">
+            </div>
 
-                @* Thông báo 1: Mid-term Exam Schedule Update (Published) *@
-                <div class="list-group-item list-group-item-action p-3 mb-3 border rounded shadow-sm">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <h6 class="mb-1 fw-bold">Mid-term Exam Schedule Update</h6>
-                        <span class="badge bg-success-subtle text-success py-1 px-2">Published</span>
-                    </div>
-                    <small class="text-muted d-block mb-2">Published on Oct 26, 2023</small>
-                    <p class="small text-truncate mb-2">The schedule for the mid-term exams has been updated. Please check the new schedule...</p>
-                    <div class="d-flex justify-content-end">
-                        <a href="#" class="text-secondary me-2"><i class="bi bi-pencil"></i></a>
-                        <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
-                    </div>
-                </div>
-
-                @* Thông báo 2: Project Submission Deadline (Published) *@
-                <div class="list-group-item list-group-item-action p-3 mb-3 border rounded shadow-sm">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <h6 class="mb-1 fw-bold">Project Submission Deadline</h6>
-                        <span class="badge bg-success-subtle text-success py-1 px-2">Published</span>
-                    </div>
-                    <small class="text-muted d-block mb-2">Published on Oct 20, 2023</small>
-                    <p class="small text-truncate mb-2">A quick reminder that the final project submission deadline is November 5th....</p>
-                    <div class="d-flex justify-content-end">
-                        <a href="#" class="text-secondary me-2"><i class="bi bi-pencil"></i></a>
-                        <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
-                    </div>
-                </div>
-
-                @* Thông báo 3: Guest Lecture Next Week (Scheduled) *@
-                <div class="list-group-item list-group-item-action p-3 mb-3 border rounded shadow-sm">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <h6 class="mb-1 fw-bold">Guest Lecture Next Week</h6>
-                        <span class="badge bg-warning-subtle text-warning py-1 px-2">Scheduled</span>
-                    </div>
-                    <small class="text-muted d-block mb-2">Scheduled for Nov 02, 2023</small>
-                    <p class="small text-truncate mb-2">We will have a guest lecture from Dr. Jane Foster from Stark Industries on t...</p>
-                    <div class="d-flex justify-content-end">
-                        <a href="#" class="text-secondary me-2"><i class="bi bi-pencil"></i></a>
-                        <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
-                    </div>
-                </div>
+            <div class="scroll-area" style="max-height: 700px; overflow-y: auto;">
+                @if (ViewBag.PostedAnnouncements != null)
+                {
+                    var announcements = (List<WebQuanLiKhoaHoc_MVC.Models.DTOs.AnnouncementDto>)ViewBag.PostedAnnouncements;
+                    foreach (var ann in announcements)
+                    {
+                        <div class="card announcement-card mb-3 shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="fw-bold text-dark mb-0">@ann.Title</h6>
+                                    <span class="badge bg-light text-primary border border-primary">
+                                        <i class="bi bi-calendar3 me-1"></i> @ann.CreatedAt.ToString("dd/MM/yyyy")
+                                    </span>
+                                </div>
+                                <p class="text-muted small mb-3" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                    @ann.Body
+                                </p>
+                                <div class="d-flex justify-content-end gap-2 border-top pt-2">
+                                    <a asp-action="EditAnnouncement" asp-route-id="@ann.AnnouncementId" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        <i class="bi bi-pencil me-1"></i> Sửa
+                                    </a>
+                                    <form asp-action="DeleteAnnouncement" method="post" onsubmit="return confirm('Xoá thông báo này?');" class="d-inline">
+                                        <input type="hidden" name="id" value="@ann.AnnouncementId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                            <i class="bi bi-trash me-1"></i> Xoá
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         </div>
     </div>

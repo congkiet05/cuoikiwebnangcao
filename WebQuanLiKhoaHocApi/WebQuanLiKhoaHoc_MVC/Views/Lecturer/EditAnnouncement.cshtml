@@ -1,0 +1,80 @@
+﻿@model WebQuanLiKhoaHoc_MVC.Models.DTOs.AnnouncementDto
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewBag.Title = "Chỉnh sửa Thông báo";
+    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+}
+
+<div class="container-fluid p-0">
+    <div class="d-flex align-items-center mb-4">
+        <a asp-action="Announcement" asp-controller="Lecturer" class="btn btn-outline-secondary btn-sm me-3">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <h2 class="h4 mb-0">Chỉnh sửa thông báo</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 p-4">
+                <form asp-action="EditAnnouncement" asp-controller="Lecturer" method="post">
+
+                    <input type="hidden" asp-for="AnnouncementId" />
+
+                    <input type="hidden" asp-for="AuthorId" />
+                    <input type="hidden" asp-for="CreatedAt" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tiêu đề thông báo</label>
+                        <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề..." />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nội dung chi tiết</label>
+                        <textarea asp-for="Body" class="form-control" rows="8" placeholder="Nhập nội dung thông báo..."></textarea>
+                        <span asp-validation-for="Body" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Lớp học mục tiêu</label>
+                        <select asp-for="TargetClassId"
+                                asp-items="ViewBag.TargetClassList"
+                                class="form-select">
+                            <option value="">-- Chọn lớp học nhận tin --</option>
+                        </select>
+                        <span asp-validation-for="TargetClassId" class="text-danger small"></span>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="Announcement"
+                           asp-controller="Lecturer"
+                           class="btn btn-light px-4">
+                            Hủy bỏ
+                        </a>
+
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-save me-1"></i> Lưu thay đổi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="alert alert-info border-0 shadow-sm">
+                <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Lưu ý:</h6>
+                <ul class="small mb-0 ps-3">
+                    <li>Tiêu đề nên ngắn gọn và súc tích.</li>
+                    <li>Nội dung cần rõ ràng để sinh viên dễ nắm bắt.</li>
+                    <li>Ngày tạo sẽ được giữ nguyên, chỉ cập nhật thời gian sửa đổi cuối cùng.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

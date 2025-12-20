@@ -8,6 +8,16 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<UniversityDBContext>(options =>
     options.UseSqlServer(connectionString));
 
+var apiBaseUrl = builder.Configuration.GetValue<String>("ApiSettings:BaseUrl");
+
+// Đăng ký HttpClient dùng chung cho toàn bộ project
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
+// ... các cấu hình khác ...
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<HoSoHocVienService>();

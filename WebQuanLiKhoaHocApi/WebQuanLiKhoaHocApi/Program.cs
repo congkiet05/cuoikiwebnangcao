@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebQuanLiKhoaHocApi.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
 using System.Text;
-using WebQuanLiKhoaHocApi.Interfaces.HocVien;
-using WebQuanLiKhoaHocApi.Services.HocVien;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,18 +9,6 @@ var jwtKey = builder.Configuration["JWT:Key"];
 var jwtIssuer = builder.Configuration["JWT:Issuer"];
 var jwtAudience = builder.Configuration["JWT:Audience"];
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()    // Cho phép bất kỳ nguồn nào (domain nào)
-              .AllowAnyMethod()    // Cho phép bất kỳ phương thức nào (GET, POST, PUT, DELETE...)
-              .AllowAnyHeader();    // Cho phép bất kỳ Header nào
-    });
-});
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<WebQuanLiKhoaHocApi.Entities.UniversityDBContext>( options =>
@@ -33,6 +17,9 @@ builder.Services.AddDbContext<WebQuanLiKhoaHocApi.Entities.UniversityDBContext>(
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        options.JsonSerializerOptions.Encoder =
+            System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+
         options.JsonSerializerOptions.ReferenceHandler = 
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
@@ -65,8 +52,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
-builder.Services.AddScoped<IHoSoHocVien, HoSoHocVienService>();
-builder.Services.AddScoped<ILichHoc,LichHocService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -78,8 +64,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAll");
-
 app.UseAuthentication();
 
 app.UseAuthorization();
@@ -87,3 +71,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
