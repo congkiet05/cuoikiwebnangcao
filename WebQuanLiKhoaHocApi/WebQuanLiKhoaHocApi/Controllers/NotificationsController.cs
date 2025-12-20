@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLiKhoaHocApi.Entities;
 
@@ -20,88 +15,59 @@ namespace WebQuanLiKhoaHocApi.Controllers
             _context = context;
         }
 
-        // GET: api/Notifications
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Notification>>> GetNotifications()
+        // 1. Lấy danh sách thông báo của giảng viên (Admin post)
+        // GET: api/Notifications/lecturer/2
+        [HttpGet("lecturer/{lecturerId}")]
+        public async Task<IActionResult> GetNotificationsByLecturer(int lecturerId)
         {
-            return await _context.Notifications.ToListAsync();
+            var notifications = await _context.Notifications
+                .Include(n => n.Announcement) // Lấy thông tin từ bảng Announcement
+                .Where(n => n.UserId == lecturerId)
+                .OrderByDescending(n => n.CreatedAt) // Mới nhất lên đầu
+                .Select(n => new
+                {
+                    n.NotificationId,
+                    n.Announcement.Title,
+                    n.Announcement.Body,
+                    n.IsRead,
+                    n.CreatedAt,
+                    AuthorName = "Admin" // Vì bạn muốn hiển thị thông báo của Admin
+                })
+                .ToListAsync();
+
+            return Ok(notifications);
         }
 
-        // GET: api/Notifications/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Notification>> GetNotification(int id)
+        // 2. Đánh dấu một thông báo là đã đọc
+        // PUT: api/Notifications/2/MarkAsRead
+        [HttpPut("{id}/MarkAsRead")]
+        public async Task<IActionResult> MarkAsRead(int id)
         {
             var notification = await _context.Notifications.FindAsync(id);
+            if (notification == null) return NotFound();
 
-            if (notification == null)
-            {
-                return NotFound();
-            }
+            notification.IsRead = true;
+            await _context.SaveChangesAsync();
 
-            return notification;
+            return NoContent();
         }
 
-        // PUT: api/Notifications/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutNotification(int id, Notification notification)
+        // 3. Đánh dấu TẤT CẢ thông báo của giảng viên là đã đọc
+        // PUT: api/Notifications/lecturer/2/MarkAllRead
+        [HttpPut("lecturer/{lecturerId}/MarkAllRead")]
+        public async Task<IActionResult> MarkAllRead(int lecturerId)
         {
-            if (id != notification.NotificationId)
-            {
-                return BadRequest();
-            }
+            var unreadNotifications = await _context.Notifications
+                .Where(n => n.UserId == lecturerId && n.IsRead == false)
+                .ToListAsync();
 
-            _context.Entry(notification).State = EntityState.Modified;
-
-            try
+            if (unreadNotifications.Any())
             {
+                unreadNotifications.ForEach(n => n.IsRead = true);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NotificationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
             return NoContent();
-        }
-
-        // POST: api/Notifications
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Notification>> PostNotification(Notification notification)
-        {
-            _context.Notifications.Add(notification);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetNotification", new { id = notification.NotificationId }, notification);
-        }
-
-        // DELETE: api/Notifications/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteNotification(int id)
-        {
-            var notification = await _context.Notifications.FindAsync(id);
-            if (notification == null)
-            {
-                return NotFound();
-            }
-
-            _context.Notifications.Remove(notification);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool NotificationExists(int id)
-        {
-            return _context.Notifications.Any(e => e.NotificationId == id);
         }
     }
 }

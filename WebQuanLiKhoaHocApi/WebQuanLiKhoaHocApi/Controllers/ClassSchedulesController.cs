@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLiKhoaHocApi.Entities;
 
@@ -20,88 +15,67 @@ namespace WebQuanLiKhoaHocApi.Controllers
             _context = context;
         }
 
-        // GET: api/ClassSchedules
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClassSchedule>>> GetClassSchedules()
+        // 1. Lấy toàn bộ lịch dạy của một giảng viên
+        // GET: api/ClassSchedules/Lecturer/2
+        [HttpGet("Lecturer/{lecturerId}")]
+        public async Task<IActionResult> GetSchedulesByLecturer(int lecturerId)
         {
-            return await _context.ClassSchedules.ToListAsync();
+            // Bước 1: Truy vấn và sắp xếp theo giá trị gốc (TimeOnly) để SQL Server hiểu được
+            var rawSchedules = await _context.ClassSchedules
+                .Include(s => s.Class)
+                    .ThenInclude(c => c.Course)
+                .Where(s => s.Class.LecturerId == lecturerId)
+                .OrderBy(s => s.DayOfWeek)
+                .ThenBy(s => s.StartTime) // Sắp xếp theo TimeOnly gốc
+                .ToListAsync();
+
+            // Bước 2: Chuyển đổi định dạng chuỗi trên bộ nhớ (Client-side)
+            var result = rawSchedules.Select(s => new
+            {
+                s.ScheduleId,
+                s.DayOfWeek,
+                StartTime = s.StartTime.ToString("HH:mm"),
+                EndTime = s.EndTime.ToString("HH:mm"),
+                s.Room,
+                CourseName = s.Class.Course.CourseName,
+                CourseCode = s.Class.Course.CourseCode,
+                s.Class.ClassCode
+            });
+
+            return Ok(result);
         }
 
-        // GET: api/ClassSchedules/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ClassSchedule>> GetClassSchedule(int id)
+        // 2. Lấy lịch dạy của giảng viên trong ngày hôm nay
+        // GET: api/ClassSchedules/Lecturer/2/Today
+        [HttpGet("Lecturer/{lecturerId}/Today")]
+        public async Task<IActionResult> GetTodaySchedules(int lecturerId)
         {
-            var classSchedule = await _context.ClassSchedules.FindAsync(id);
-
-            if (classSchedule == null)
+            var dayNow = DateTime.Now.DayOfWeek;
+            byte dayOfWeekDb = dayNow switch
             {
-                return NotFound();
-            }
+                DayOfWeek.Sunday => 7,
+                _ => (byte)dayNow
+            };
 
-            return classSchedule;
-        }
-
-        // PUT: api/ClassSchedules/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutClassSchedule(int id, ClassSchedule classSchedule)
-        {
-            if (id != classSchedule.ScheduleId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(classSchedule).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClassScheduleExists(id))
+            var todaySchedules = await _context.ClassSchedules
+                .Include(s => s.Class)
+                    .ThenInclude(c => c.Course)
+                .Where(s => s.Class.LecturerId == lecturerId && s.DayOfWeek == dayOfWeekDb)
+                // ✅ Sắp xếp theo giá trị TimeOnly gốc (EF Core dịch được cái này)
+                .OrderBy(s => s.StartTime)
+                .Select(s => new
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                    s.ScheduleId,
+                    // Định dạng chuỗi ở đây để trả về cho Client
+                    StartTime = s.StartTime.ToString("HH:mm"),
+                    EndTime = s.EndTime.ToString("HH:mm"),
+                    s.Room,
+                    CourseName = s.Class.Course.CourseName,
+                    CourseCode = s.Class.Course.CourseCode
+                })
+                .ToListAsync();
 
-            return NoContent();
-        }
-
-        // POST: api/ClassSchedules
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ClassSchedule>> PostClassSchedule(ClassSchedule classSchedule)
-        {
-            _context.ClassSchedules.Add(classSchedule);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetClassSchedule", new { id = classSchedule.ScheduleId }, classSchedule);
-        }
-
-        // DELETE: api/ClassSchedules/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClassSchedule(int id)
-        {
-            var classSchedule = await _context.ClassSchedules.FindAsync(id);
-            if (classSchedule == null)
-            {
-                return NotFound();
-            }
-
-            _context.ClassSchedules.Remove(classSchedule);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ClassScheduleExists(int id)
-        {
-            return _context.ClassSchedules.Any(e => e.ScheduleId == id);
+            return Ok(todaySchedules);
         }
     }
 }

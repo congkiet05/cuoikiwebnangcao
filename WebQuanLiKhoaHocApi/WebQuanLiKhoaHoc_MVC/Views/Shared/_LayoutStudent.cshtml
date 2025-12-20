@@ -37,12 +37,15 @@
         <div class="row">
             
             <div class="col-md-3">
-                @await Html.PartialAsync("_StudentSidebar")
+                @await Html.PartialAsync("_StudentSidebarLeft")
+            </div>
+            
+            <div class="col-md-6">
+                @RenderBody()
             </div>
 
-         
-            <div class="col-md-9">
-                @RenderBody()   
+            <div class="col-md-3">
+                @await Html.PartialAsync("_StudentSidebarRight")
             </div>
         </div>
     </main>

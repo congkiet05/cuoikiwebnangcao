@@ -1,4 +1,12 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.EntityFrameworkCore;
+using WebQuanLiKhoaHoc_MVC.Service;
+using WebQuanLiKhoaHocApi.Entities;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<UniversityDBContext>(options =>
+    options.UseSqlServer(connectionString));
 
 var apiBaseUrl = builder.Configuration.GetValue<String>("ApiSettings:BaseUrl");
 
@@ -12,7 +20,8 @@ builder.Services.AddHttpClient("ApiClient", client =>
 // ... các cấu hình khác ...
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpClient<HoSoHocVienService>();
+builder.Services.AddHttpClient<HocVienLichHoc>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +41,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-    //pattern: "{controller=Student}/{action=Dashboard}/{id?}"); test giao diện Học viên
+    //pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Student}/{action=Dashboard}/{id?}"); //test giao diện Học viên
 app.Run();
