@@ -1,0 +1,25 @@
+## [Visual Studio]
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.userosscache
+*.sln.docstates
+
+## [Build Results]
+*.exe
+*.dll
+*.pdb
+*.suo
+
+## [User-specific files]
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## [Roslyn cache]
+.base_generated_files/
+
+## [Others]
+.DS_Store
