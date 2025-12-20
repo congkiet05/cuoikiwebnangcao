@@ -1,25 +1,38 @@
-## [Visual Studio]
-.vs/
+## [Build Results]
 [Bb]in/
 [Oo]bj/
+[Rr]elease/
+[Dd]ebug/
+TestResults/
+[Xx]64/
+[Xx]86/
+
+## [Visual Studio]
+.vs/
 *.user
 *.userosscache
 *.sln.docstates
-
-## [Build Results]
-*.exe
-*.dll
-*.pdb
 *.suo
+*.ide/
 
-## [User-specific files]
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
+## [NuGet Packages]
+# Thư mục packages cực kỳ nặng trong .NET Framework
+packages/
+# Trừ file config để Git biết cần restore package nào
+!packages/repositories.config
 
-## [Roslyn cache]
-.base_generated_files/
+## [ASP.NET Core]
+# File cấu hình chứa bí mật (Secret) của Core API
+appsettings.Development.json
+appsettings.Local.json
 
-## [Others]
-.DS_Store
+## [Client-side / Web Application]
+# Nếu bạn có dùng Node.js/React/Vue bên trong
+node_modules/
+dist/
+wwwroot/lib/ (tùy thuộc vào việc bạn có muốn commit thư viện ngoài không)
+
+## [Publish]
+*.publish.xml
+*.pubxml
+*.pubxml.user
