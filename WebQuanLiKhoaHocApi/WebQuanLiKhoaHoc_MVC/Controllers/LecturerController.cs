@@ -19,7 +19,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
         }
         public async Task<IActionResult> Announcement()
         {
-            int lecturerId = 3;
+            int lecturerId = 4;
             ViewBag.CurrentLecturerId = lecturerId;
 
             try
@@ -66,7 +66,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAnnouncement(AnnouncementDto request)
         {
-            request.AuthorId = 3;
+            request.AuthorId = 4;
             request.CreatedAt = DateTime.Now;
 
             try
@@ -107,7 +107,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> EditAnnouncement(int id)
         {
-            int lecturerId = 3;
+            int lecturerId = 4;
 
             var response = await _client.GetAsync($"Announcements/{id}");
             if (!response.IsSuccessStatusCode)
@@ -132,8 +132,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> EditAnnouncement(AnnouncementDto dto)
         {
-            dto.AuthorId = 3; // sau này lấy từ token
-                              // KHÔNG set CreatedAt
+            dto.AuthorId = 4; 
 
             var response = await _client.PutAsJsonAsync(
                 $"Announcements/{dto.AnnouncementId}", dto);
@@ -161,13 +160,186 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
         {
             return View();
         }
-        public IActionResult Assignment()
+        public async Task<IActionResult> Assignment()
         {
+            int lecturerId = 4; 
+            await LoadCommonData(lecturerId);
             return View();
         }
-        public IActionResult Profile()
+
+        [HttpPost]
+        public async Task<IActionResult> PostAssignment(AssignmentDto request)
         {
-            return View();
+            int lecturerId = 4;
+            request.CreatedAt = DateTime.Now;
+
+            try
+            {
+               
+                var response = await _client.PostAsJsonAsync("Assignments", request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = "Giao bài tập thành công!";
+                    return RedirectToAction("Assignment");
+                }
+
+                var errorMsg = await response.Content.ReadAsStringAsync();
+                ViewBag.ErrorMessage = "Lỗi server: " + errorMsg;
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Lỗi kết nối: " + ex.Message;
+            }
+
+            // Load lại dữ liệu để hiển thị lại Form khi có lỗi
+            await LoadCommonData(lecturerId);
+            return View("Assignment");
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateAssignment(AssignmentDto dto)
+        {
+            try
+            {
+                // Gọi API PUT (Nhớ kiểm tra route Assignments/{id})
+                var response = await _client.PutAsJsonAsync($"Assignments/{dto.AssignmentId}", dto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = "Cập nhật bài tập thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không thể cập nhật bài tập.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Lỗi: " + ex.Message;
+            }
+
+            return RedirectToAction("Assignment");
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteAssignment(int id)
+        {
+            try
+            {
+                var response = await _client.DeleteAsync($"Assignments/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = "Xóa bài tập thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không thể xóa bài tập này.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Lỗi: " + ex.Message;
+            }
+            return RedirectToAction("Assignment");
+        }
+
+
+        private async Task LoadCommonData(int lecturerId)
+        {
+            try
+            {
+                // 1. Lấy danh sách lớp
+                var classes = await _client.GetFromJsonAsync<List<ClassDto>>($"Classes/by-lecturer/{lecturerId}");
+                ViewBag.TargetClassList = classes?.Select(c => new SelectListItem
+                {
+                    Value = c.ClassId.ToString(),
+                    Text = $"{c.ClassCode} - {c.Semester}"
+                }).ToList() ?? new List<SelectListItem>();
+
+                // 2. Lấy danh sách bài tập (SỬA ĐOẠN NÀY)
+                var response = await _client.GetAsync($"Assignments/by-lecturer/{lecturerId}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Cấu hình để không phân biệt chữ hoa/thường khi map JSON
+                    var options = new System.Text.Json.JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    var assignments = await response.Content.ReadFromJsonAsync<List<AssignmentDto>>(options);
+                    ViewBag.PostedAssignments = assignments ?? new List<AssignmentDto>();
+                }
+                else
+                {
+                    // Nếu API báo lỗi (404, 500...), log lỗi ra để kiểm tra
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    ViewBag.ErrorMessage = $"API Error: {response.StatusCode} - {errorContent}";
+                    ViewBag.PostedAssignments = new List<AssignmentDto>();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.PostedAssignments = new List<AssignmentDto>();
+                ViewBag.ErrorMessage = "Lỗi kết nối hoặc Mapping dữ liệu: " + ex.Message;
+            }
+        }
+        // GET: Lecturer/Profile
+        public async Task<IActionResult> Profile()
+        {
+            int lecturerId = 4;
+            // Thêm "api/" vào trước Lecturers nếu BaseAddress chưa có
+            var response = await _client.GetAsync($"Lecturers/{lecturerId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    var model = await response.Content.ReadFromJsonAsync<LecturerDto>();
+                    return View(model);
+                }
+                catch (Exception ex)
+                {
+                    return Content("Lỗi đọc dữ liệu JSON: " + ex.Message);
+                }
+            }
+
+            // Nếu lỗi, hiện mã lỗi thay vì chuyển trang
+            var errorBody = await response.Content.ReadAsStringAsync();
+            return Content($"API bị lỗi: {response.StatusCode}. Chi tiết: {errorBody}");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Tăng cường bảo mật cho Form
+        public async Task<IActionResult> UpdateProfile(LecturerDto model)
+        {
+            // 1. Kiểm tra dữ liệu đầu vào cơ bản (nếu cần)
+            if (!ModelState.IsValid)
+            {
+                return View("Profile", model);
+            }
+
+            try
+            {
+             
+                var response = await _client.PutAsJsonAsync($"Lecturers/{model.LecturerId}", model);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = "Cập nhật hồ sơ thành công!";
+                    return RedirectToAction("Profile");
+                }
+                else
+                {
+                    // Đọc lỗi chi tiết từ API nếu có (ví dụ lỗi 400, 500)
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    TempData["ErrorMessage"] = $"Lỗi cập nhật: {response.StatusCode}";
+                    return RedirectToAction("Profile");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Lỗi kết nối hệ thống: " + ex.Message;
+                return RedirectToAction("Profile");
+            }
         }
     }
 }

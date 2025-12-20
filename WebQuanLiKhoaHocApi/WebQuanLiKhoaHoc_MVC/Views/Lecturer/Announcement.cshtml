@@ -1,14 +1,54 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Rendering
-@* Sử dụng @model nếu bạn dùng ViewModel thay vì ViewBag *@
 @{
-    ViewBag.Title = "Announcement Management";
+    ViewBag.Title = "Quản lý Thông báo";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
 
-    // Lấy LecturerId từ Controller (được gán trong Action)
-    // Giá trị này được sử dụng trong trường ẩn AuthorId
+    // Lấy ID Giảng viên hiện tại (tạm thời để là 3)
     var currentLecturerId = 3;
 }
+<style>
+    /* Biến màu chủ đạo */
+    :root {
+        --primary-blue: #0d6efd;
+        --soft-blue: #e7f1ff;
+        --dark-blue: #0a58ca;
+    }
 
+    /* Bo góc và đổ bóng cho Card */
+    .card {
+        border-radius: 12px;
+        border: none;
+        transition: transform 0.2s ease;
+    }
+
+    /* Hiệu ứng danh sách thông báo */
+    .announcement-card {
+        border-left: 5px solid var(--primary-blue) !important;
+        background-color: #ffffff;
+        transition: all 0.3s ease;
+    }
+
+        .announcement-card:hover {
+            background-color: var(--soft-blue);
+            transform: translateX(5px);
+        }
+
+    /* Tùy chỉnh input và select */
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+
+    /* Khu vực tải tệp (nếu dùng sau này) */
+    .attachment-area {
+        border: 2px dashed #b4d3ff;
+        background-color: #f0f7ff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        color: var(--dark-blue);
+    }
+</style>
 <style>
     /* CSS cho khu vực tải tệp đính kèm */
     .attachment-area {
@@ -24,129 +64,106 @@
 </style>
 
 <div class="container-fluid p-0">
-    <h2 class="h4 mb-4">
-        <i class="bi bi-megaphone me-2 text-primary"></i>Announcement Management
-    </h2>
-
-    @* Hiển thị thông báo lỗi API (nếu có) *@
-    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-    {
-        <div class="alert alert-danger mb-4">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>@ViewBag.ErrorMessage
+    <div class="d-flex align-items-center mb-4">
+        <div class="bg-primary text-white p-2 rounded-3 me-3">
+            <i class="bi bi-megaphone fs-4"></i>
         </div>
-    }
+        <h2 class="h4 mb-0 fw-bold text-dark">Quản lý Thông báo</h2>
+    </div>
 
     <div class="row">
-
+        @* CỘT TRÁI: SOẠN THẢO *@
         <div class="col-lg-5 mb-4">
-            <div class="card p-4 shadow-lg border-0">
-                <h5 class="fw-bold mb-4 text-primary">Compose New Announcement</h5>
+            <div class="card shadow-sm border-0 overflow-hidden">
+                <div class="card-header bg-primary py-3">
+                    <h5 class="card-title mb-0 text-white fw-bold"><i class="bi bi-pencil-square me-2"></i>Soạn thông báo mới</h5>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("PostAnnouncement", "Lecturer", FormMethod.Post))
+                    {
+                        <input type="hidden" name="AuthorId" value="@currentLecturerId" />
+                        <input type="hidden" name="IsGlobal" value="False" />
 
-                @using (Html.BeginForm("PostAnnouncement", "Lecturer", FormMethod.Post))
-                {
-                    @* Trường ẩn (Bắt buộc cho Database) *@
-                    <input type="hidden" name="AuthorId" value="@currentLecturerId" />
-                    <input type="hidden" name="IsGlobal" value="False" />
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Title</label>
-                        <input type="text" class="form-control" name="Title"
-                               placeholder="e.g., Mid-term Exam Schedule" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Body Content</label>
-                        <textarea class="form-control rounded-bottom" name="Body" rows="5"
-                              placeholder="Write your announcement details here..." required></textarea>
-                    </div>
-
-                    <hr class="my-4" />
-
-                    <h6 class="fw-bold mb-3">
-                        <i class="bi bi-share me-2"></i>Target Class
-                    </h6>
-
-                    <div class="mb-4">
-                        <label for="targetClassId" class="form-label">Select Class to Target</label>
-
-                        <select class="form-select" id="targetClassId" name="TargetClassId" required>
-                            <option value="" disabled selected>-- Select a Class --</option>
-
-                            @if (ViewBag.TargetClassList != null)
-                            {
-                                @* Lặp qua danh sách SelectListItem đã chuẩn bị trong Controller *@
-                                foreach (var item in (IEnumerable<SelectListItem>)ViewBag.TargetClassList)
-                                {
-                                    <option value="@item.Value">
-                                        @item.Text
-                                    </option>
-                                }
-                            }
-                        </select>
-                        <div class="form-text">
-                            Students in this class will receive the notification.
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary">Tiêu đề thông báo</label>
+                            <input type="text" class="form-control form-control-lg fs-6" name="Title"
+                                   placeholder="VD: Lịch thi giữa kỳ..." required>
                         </div>
-                    </div> 
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-light me-2" onclick="window.location.reload();">Cancel</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-send-fill me-1"></i> Post Announcement
-                        </button>
-                    </div>
-                }
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary">Nội dung chi tiết</label>
+                            <textarea class="form-control" name="Body" rows="6"
+                                  placeholder="Nhập nội dung thông báo..." required></textarea>
+                        </div>
+
+                        <div class="p-3 rounded-3 mb-4" style="background-color: var(--soft-blue);">
+                            <label class="form-label fw-bold text-primary"><i class="bi bi-people-fill me-2"></i>Lớp học nhận tin</label>
+                            <select class="form-select border-primary" name="TargetClassId" required>
+                                <option value="" disabled selected>-- Chọn lớp học mục tiêu --</option>
+                                @if (ViewBag.TargetClassList != null)
+                                {
+                                    foreach (var item in (IEnumerable<SelectListItem>)ViewBag.TargetClassList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="reset" class="btn btn-light px-4">Làm lại</button>
+                            <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                                <i class="bi bi-send-check-fill me-2"></i>Đăng thông báo
+                            </button>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
 
+        @* CỘT PHẢI: DANH SÁCH *@
         <div class="col-lg-7">
-            <h5 class="fw-bold mb-3">Published & Scheduled Announcements</h5>
-
-            <div class="input-group mb-4">
-                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control border-start-0"
-                       placeholder="Search announcements...">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0">Lịch sử thông báo</h5>
+                <span class="badge bg-primary rounded-pill">@(ViewBag.PostedAnnouncements != null ? ((List<WebQuanLiKhoaHoc_MVC.Models.DTOs.AnnouncementDto>)ViewBag.PostedAnnouncements).Count : 0) Tin đã đăng</span>
             </div>
 
-            <div class="list-group list-group-flush">
+            <div class="input-group mb-4 shadow-sm rounded-3 overflow-hidden">
+                <span class="input-group-text bg-white border-end-0 text-primary"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0 ps-0" placeholder="Tìm kiếm theo tiêu đề...">
+            </div>
+
+            <div class="scroll-area" style="max-height: 700px; overflow-y: auto;">
                 @if (ViewBag.PostedAnnouncements != null)
                 {
                     var announcements = (List<WebQuanLiKhoaHoc_MVC.Models.DTOs.AnnouncementDto>)ViewBag.PostedAnnouncements;
-
                     foreach (var ann in announcements)
                     {
-                        <div class="list-group-item p-3 mb-3 border rounded shadow-sm">
-                            <div class="d-flex justify-content-between">
-                                <h6 class="fw-bold text-primary">@ann.Title</h6>
-                                <small class="text-muted">@ann.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
-                            </div>
-                            <p class="small text-dark mb-2">@ann.Body</p>
-                            <div class="d-flex justify-content-end gap-2">
-                                <a asp-action="EditAnnouncement"
-                                   asp-route-id="@ann.AnnouncementId"
-                                   class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-
-
-                                <form asp-action="DeleteAnnouncement"
-                                      asp-controller="Lecturer"
-                                      method="post"
-                                      onsubmit="return confirm('Bạn có chắc muốn xoá thông báo này?');"
-                                      class="d-inline">
-
-                                    <input type="hidden" name="id" value="@ann.AnnouncementId" />
-
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
-                                </form>
-
+                        <div class="card announcement-card mb-3 shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="fw-bold text-dark mb-0">@ann.Title</h6>
+                                    <span class="badge bg-light text-primary border border-primary">
+                                        <i class="bi bi-calendar3 me-1"></i> @ann.CreatedAt.ToString("dd/MM/yyyy")
+                                    </span>
+                                </div>
+                                <p class="text-muted small mb-3" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                    @ann.Body
+                                </p>
+                                <div class="d-flex justify-content-end gap-2 border-top pt-2">
+                                    <a asp-action="EditAnnouncement" asp-route-id="@ann.AnnouncementId" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        <i class="bi bi-pencil me-1"></i> Sửa
+                                    </a>
+                                    <form asp-action="DeleteAnnouncement" method="post" onsubmit="return confirm('Xoá thông báo này?');" class="d-inline">
+                                        <input type="hidden" name="id" value="@ann.AnnouncementId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                            <i class="bi bi-trash me-1"></i> Xoá
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     }
-                }
-                else
-                {
-                    <p class="text-center text-muted">No announcements found.</p>
                 }
             </div>
         </div>

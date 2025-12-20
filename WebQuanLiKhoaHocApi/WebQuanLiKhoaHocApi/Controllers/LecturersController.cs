@@ -26,52 +26,63 @@ namespace WebQuanLiKhoaHocApi.Controllers
         {
             return await _context.Lecturers.ToListAsync();
         }
-
         // GET: api/Lecturers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lecturer>> GetLecturer(int id)
         {
-            var lecturer = await _context.Lecturers.FindAsync(id);
+            // Sử dụng Include để lấy thông tin từ bảng User (LecturerNavigation)
+            var lecturer = await _context.Lecturers
+                .Include(l => l.LecturerNavigation)
+                .FirstOrDefaultAsync(l => l.LecturerId == id);
 
             if (lecturer == null)
             {
                 return NotFound();
             }
 
+            // Gán dữ liệu từ bảng User vào các trường [NotMapped] của Lecturer
+            lecturer.Email = lecturer.LecturerNavigation.Email;
+            lecturer.Username = lecturer.LecturerNavigation.Username;
+
             return lecturer;
         }
 
-        // PUT: api/Lecturers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLecturer(int id, Lecturer lecturer)
         {
-            if (id != lecturer.LecturerId)
-            {
-                return BadRequest();
-            }
+            var existingLecturer = await _context.Lecturers
+                .Include(l => l.LecturerNavigation)
+                .FirstOrDefaultAsync(l => l.LecturerId == id);
 
-            _context.Entry(lecturer).State = EntityState.Modified;
+            if (existingLecturer == null) return NotFound();
 
             try
             {
+                // 1. Cập nhật thông tin giảng viên
+                existingLecturer.FullName = lecturer.FullName;
+                existingLecturer.Department = lecturer.Department;
+
+                if (existingLecturer.LecturerNavigation != null)
+                {
+                    // 2. Cập nhật Email
+                    existingLecturer.LecturerNavigation.Email = lecturer.Email;
+
+                    // 3. CẬP NHẬT MẬT KHẨU (Nếu có nhập mới)
+                    if (!string.IsNullOrEmpty(lecturer.NewPassword))
+                    {
+                        // Lưu ý: Nên mã hóa mật khẩu trước khi lưu nếu hệ thống có dùng Bcrypt/Identity
+                        existingLecturer.LecturerNavigation.Password = lecturer.NewPassword;
+                    }
+                }
+
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!LecturerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest("Lỗi: " + ex.Message);
             }
-
-            return NoContent();
         }
-
         // POST: api/Lecturers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

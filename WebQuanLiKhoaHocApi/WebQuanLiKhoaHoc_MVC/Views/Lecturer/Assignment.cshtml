@@ -1,104 +1,358 @@
-﻿@{
-    ViewBag.Title = "Assignment Management";
-    // Thiết lập Layout cho mô hình MPA
+﻿@model IEnumerable<WebQuanLiKhoaHoc_MVC.Models.DTOs.AssignmentDto>
+@{
+    ViewBag.Title = "Quản lý Bài tập";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
-
-    // @model YourNamespace.Models.AssignmentViewModel
 }
 
+<style>
+    :root {
+        --primary-blue: #0d6efd;
+        --hover-blue: #f0f7ff;
+        --soft-bg: #f8f9fa;
+    }
+
+    /* Bo góc và đổ bóng cho Table Container */
+    .table-main-container {
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    /* Hiệu ứng hàng trong bảng */
+    .table thead th {
+        background-color: var(--soft-bg);
+        color: #495057;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border-bottom: 2px solid #dee2e6;
+        padding: 15px;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+        .clickable-row:hover {
+            background-color: var(--hover-blue) !important;
+        }
+
+    /* Badge & Progress Bar */
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.75rem;
+    }
+
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 10px;
+    }
+
+    /* Custom Scrollbar cho Modal */
+    textarea.form-control {
+        resize: none;
+    }
+
+    .search-box {
+        max-width: 350px;
+    }
+</style>
+
 <div class="container-fluid p-0">
-    <h2 class="h4 mb-1">Assignment Management</h2>
-
-    <div class="d-flex align-items-center mb-4">
-        <div class="input-group me-3" style="max-width: 300px;">
-            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control border-start-0" placeholder="Search for an assignment...">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="h4 mb-1 fw-bold text-dark"><i class="bi bi-journal-text me-2 text-primary"></i>Quản lý Bài tập</h2>
+            <p class="text-muted small">Tạo bài tập, theo dõi thời hạn và thống kê lượt nộp bài của sinh viên.</p>
         </div>
-
-        <a href="@Url.Action("Create", "Assignment")" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-1"></i> Create New Assignment
-        </a>
+        <button type="button" class="btn btn-primary px-4 py-2 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#createAssignmentModal">
+            <i class="bi bi-plus-lg me-2"></i>Tạo bài tập mới
+        </button>
     </div>
 
-    <div class="d-flex align-items-center mb-4">
-        <div class="dropdown me-3">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                All Statuses
-            </button>
-            @* Menu Dropdown *@
-        </div>
-        <div class="dropdown me-3">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Course: All
-            </button>
-            @* Menu Dropdown *@
-        </div>
-        <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Sort by: Due Date
-            </button>
-            @* Menu Dropdown *@
+    <div class="card border-0 shadow-sm mb-4 p-3 bg-white">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="input-group search-box">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" id="assignmentSearch" class="form-control border-start-0 ps-0 bg-light" placeholder="Tìm kiếm bài tập...">
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-8 d-flex justify-content-md-end gap-2">
+                <div class="dropdown">
+                    <button class="btn btn-light border dropdown-toggle" type="button" id="filterClassBtn" data-bs-toggle="dropdown">
+                        <i class="bi bi-funnel me-1"></i> Lớp: Tất cả
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="filterByClass('Tất cả')">Tất cả lớp</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        @if (ViewBag.TargetClassList != null)
+                        {
+                            foreach (var cls in (List<SelectListItem>)ViewBag.TargetClassList)
+                            {
+                                var shortName = cls.Text.Split('-')[0].Trim();
+                                <li><a class="dropdown-item" href="javascript:void(0)" onclick="filterByClass('@shortName')">@cls.Text</a></li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-light border dropdown-toggle" type="button" id="sortDateBtn" data-bs-toggle="dropdown">
+                        <i class="bi bi-sort-down me-1"></i> Sắp xếp: Hạn nộp
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="sortAssignments('asc')">Hạn nộp: Cũ nhất trước</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="sortAssignments('desc')">Hạn nộp: Mới nhất trước</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table align-middle table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Assignment Title</th>
-                    <th>Course</th>
-                    <th>Due Date</th>
-                    <th>Status</th>
-                    <th>Submissions</th>
-                    <th></th> @* Cột Actions *@
-                </tr>
-            </thead>
-            <tbody>
-                @* Dữ liệu mẫu *@
-                <tr>
-                    <td><strong>Mid-Term Essay: The Renaissance</strong></td>
-                    <td>ART101</td>
-                    <td>Oct 25, 2023</td>
-                    <td><span class="badge bg-success-subtle text-success py-2 px-3">Published</span></td>
-                    <td>32/40 Submissions</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Lab Report 3: Photosynthesis</strong></td>
-                    <td>BIO204</td>
-                    <td>Oct 28, 2023</td>
-                    <td><span class="badge bg-primary-subtle text-primary py-2 px-3">Grading</span></td>
-                    <td>40/40 (15 Graded)</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Final Project Proposal</strong></td>
-                    <td>CS101</td>
-                    <td>
-                        <span class="text-danger">Oct 15, 2023</span>
-                        <br /><span class="badge bg-danger">Overdue</span>
-                    </td>
-                    <td><span class="badge bg-danger-subtle text-danger py-2 px-3">Overdue</span></td>
-                    <td>28/30 Submissions</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Weekly Reading Response 5</strong></td>
-                    <td>ENG204</td>
-                    <td>Nov 02, 2023</td>
-                    <td><span class="badge bg-warning-subtle text-warning py-2 px-3">Upcoming</span></td>
-                    <td>0/25 Submissions</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Final Exam Study Guide</strong></td>
-                    <td>PSY330</td>
-                    <td>Nov 10, 2023</td>
-                    <td><span class="badge bg-light text-muted py-2 px-3">Draft</span></td>
-                    <td>-</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="table-main-container">
+        <div class="table-responsive">
+            <table class="table align-middle table-hover mb-0" id="assignmentTable">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Tên bài tập</th>
+                        <th>Lớp học</th>
+                        <th>Hạn nộp</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th>Tiến độ nộp bài</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.PostedAssignments != null && ((List<WebQuanLiKhoaHoc_MVC.Models.DTOs.AssignmentDto>)ViewBag.PostedAssignments).Any())
+                    {
+                        foreach (var item in (List<WebQuanLiKhoaHoc_MVC.Models.DTOs.AssignmentDto>)ViewBag.PostedAssignments)
+                        {
+                            var now = DateTime.Now;
+                            bool isOverdue = item.DueDate.HasValue && item.DueDate.Value < now;
+                            bool isUpcoming = item.DueDate.HasValue && item.DueDate.Value > now && item.DueDate.Value < now.AddDays(3);
+
+                            <tr class="clickable-row" onclick="openEditModal('@item.AssignmentId', '@item.Title', '@item.ClassId', '@item.DueDate?.ToString("yyyy-MM-ddTHH:mm")', `@item.Description`)">
+                                <td class="ps-4">
+                                    <div class="fw-bold text-dark">@item.Title</div>
+                                    <div class="text-muted small">Mã BT: #@item.AssignmentId</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">@item.ClassCode</span>
+                                </td>
+                                <td>
+                                    <div class="@(isOverdue ? "text-danger fw-bold" : "text-dark")">
+                                        <i class="bi bi-clock-history me-1"></i>@item.DueDate?.ToString("dd/MM/yyyy HH:mm")
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    @if (isOverdue)
+                                    {
+                                        <span class="badge badge-status bg-danger-subtle text-danger border border-danger-subtle">Đã đóng</span>
+                                    }
+                                    else if (isUpcoming)
+                                    {
+                                        <span class="badge badge-status bg-warning-subtle text-warning-emphasis border border-warning-subtle">Sắp hết hạn</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-status bg-success-subtle text-success border border-success-subtle">Đang nhận</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <span class="fw-bold text-primary small me-2">@item.SubmissionCount/@item.TotalStudents</span>
+                                        @{
+                                            var percentage = item.TotalStudents > 0 ? (item.SubmissionCount * 100 / item.TotalStudents) : 0;
+                                            var colorClass = percentage == 100 ? "bg-success" : (percentage > 50 ? "bg-primary" : "bg-warning");
+                                        }
+                                        <span class="text-muted" style="font-size: 0.7rem;">(@percentage%)</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px; width: 150px;">
+                                        <div class="progress-bar @colorClass shadow-none" style="width: @percentage%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="py-4">
+                                    <i class="bi bi-inbox-fill text-light fs-1"></i>
+                                    <p class="text-muted mt-2">Chưa có bài tập nào được tạo.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<div class="modal fade" id="createAssignmentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white py-3">
+                <h5 class="modal-title fw-bold"><i class="bi bi-plus-circle me-2"></i>Tạo bài tập mới</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="PostAssignment" asp-controller="Lecturer" method="post">
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tiêu đề bài tập</label>
+                        <input type="text" name="Title" class="form-control" placeholder="Nhập tiêu đề..." required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Lớp học mục tiêu</label>
+                        @Html.DropDownList("ClassId", (List<SelectListItem>)ViewBag.TargetClassList, "-- Chọn lớp học --", new { @class = "form-select", required = "required" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Hạn nộp bài</label>
+                        <input type="datetime-local" name="DueDate" class="form-control" required />
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label fw-bold">Yêu cầu & Hướng dẫn</label>
+                        <textarea name="Description" class="form-control" rows="5" placeholder="Mô tả nội dung bài tập..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light border-0">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm">Đăng bài tập</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editAssignmentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white py-3">
+                <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>Chỉnh sửa bài tập</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="UpdateAssignment" asp-controller="Lecturer" method="post">
+                <input type="hidden" id="editAssignmentId" name="AssignmentId" />
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tiêu đề bài tập</label>
+                        <input type="text" id="displayTitle" name="Title" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Lớp học</label>
+                        @Html.DropDownList("ClassId", (List<SelectListItem>)ViewBag.TargetClassList, new { @id = "displayClassId", @class = "form-select", required = "required" })
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Hạn nộp bài</label>
+                        <input type="datetime-local" id="displayDueDate" name="DueDate" class="form-control" required />
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label fw-bold">Mô tả hướng dẫn</label>
+                        <textarea id="displayDescription" name="Description" class="form-control" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light border-0 d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-danger px-3" onclick="confirmDeleteFromModal()">
+                        <i class="bi bi-trash me-1"></i> Xóa
+                    </button>
+                    <div>
+                        <button type="button" class="btn btn-light px-3" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">Cập nhật</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Mở Modal Sửa
+        function openEditModal(id, title, classId, dueDate, description) {
+            document.getElementById('editAssignmentId').value = id;
+            document.getElementById('displayTitle').value = title;
+            document.getElementById('displayClassId').value = classId;
+            document.getElementById('displayDueDate').value = dueDate;
+            document.getElementById('displayDescription').value = description;
+
+            var myModal = new bootstrap.Modal(document.getElementById('editAssignmentModal'));
+            myModal.show();
+        }
+
+        // Xóa từ Modal
+        function confirmDeleteFromModal() {
+            const id = document.getElementById('editAssignmentId').value;
+            if (confirm('Bạn có chắc chắn muốn xóa bài tập này không?')) {
+                const form = document.createElement('form');
+                form.method = 'post';
+                form.action = '/Lecturer/DeleteAssignment/' + id;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // Lọc theo lớp
+        function filterByClass(className) {
+            const btn = document.getElementById('filterClassBtn');
+            btn.innerHTML = `<i class="bi bi-funnel me-1"></i> Lớp: ${className}`;
+
+            const rows = document.querySelectorAll('#assignmentTable tbody tr');
+            rows.forEach(row => {
+                if (row.cells.length > 1) {
+                    const classCell = row.cells[1].innerText;
+                    if (className === 'Tất cả' || classCell.includes(className)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        }
+
+        // Tìm kiếm Real-time
+        document.getElementById('assignmentSearch').addEventListener('keyup', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#assignmentTable tbody tr');
+
+            rows.forEach(row => {
+                const title = row.cells[0].innerText.toLowerCase();
+                if (title.includes(filter)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+
+        // Sắp xếp theo ngày
+        function sortAssignments(order) {
+            const tbody = document.querySelector('#assignmentTable tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            if (rows.length <= 1 && rows[0].cells.length === 1) return;
+
+            const sortedRows = rows.sort((a, b) => {
+                const dateA = parseDate(a.cells[2].innerText);
+                const dateB = parseDate(b.cells[2].innerText);
+                return order === 'asc' ? dateA - dateB : dateB - dateA;
+            });
+
+            tbody.innerHTML = "";
+            sortedRows.forEach(row => tbody.appendChild(row));
+        }
+
+        function parseDate(dateStr) {
+            try {
+                const parts = dateStr.trim().split(/\s+/);
+                const dmy = parts[0].split('/');
+                const hm = parts[1] ? parts[1].split(':') : [0, 0];
+                return new Date(dmy[2], dmy[1] - 1, dmy[0], hm[0], hm[1]);
+            } catch (e) {
+                return new Date(0);
+            }
+        }
+    </script>
+}

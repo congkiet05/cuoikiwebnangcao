@@ -35,9 +35,11 @@ public partial class UniversityDBContext : DbContext
     public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Assignment> Assignments { get; set; }
+    public virtual DbSet<Submission> Submissions { get; set; }
 
     // thuận - start
-   
+
 
     // thuận - end
 
