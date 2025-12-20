@@ -861,9 +861,6 @@
         }
       }
     },
-<<<<<<< HEAD
-    "/api/Notifications/lecturer/{lecturerId}": {
-=======
     "/api/HocVien/LichHoc/{MaHocVien}": {
       "get": {
         "tags": [
@@ -886,92 +883,7 @@
         }
       }
     },
-    "/api/Notifications": {
-      "get": {
-        "tags": [
-          "Notifications"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Notification"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Notification"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Notification"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Notifications"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Notification"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Notification"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Notifications/{id}": {
->>>>>>> HuuThuan_XayDungTrangHocVien
+    "/api/Notifications/lecturer/{lecturerId}": {
       "get": {
         "tags": [
           "Notifications"

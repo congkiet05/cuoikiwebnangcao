@@ -17,127 +17,117 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebQuanLiKhoaHoc_MVC
 build_property.RootNamespace = WebQuanLiKhoaHoc_MVC
-build_property.ProjectDir = D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_MVC\
+build_property.ProjectDir = D:\study\ChuongTrinhDaoTao\Nam3\Ki1\Web_NangCao\WebNangCao_CuoiKi\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_MVC\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\HK125\125LTWNC03\clone-cuoikiwebnangcao\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_MVC
+build_property.MSBuildProjectDirectory = D:\study\ChuongTrinhDaoTao\Nam3\Ki1\Web_NangCao\WebNangCao_CuoiKi\WebQuanLiKhoaHocApi\WebQuanLiKhoaHoc_MVC
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Home/Index.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Home/Privacy.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Announcement.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Announcement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcQW5ub3VuY2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Assignment.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Assignment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcQXNzaWdubWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Dashboard.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Help.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Help.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcSGVscC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Message.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Message.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcTWVzc2FnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Notification.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Notification.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcTm90aWZpY2F0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Profile.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Settings.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Settings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcU2V0dGluZ3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Timetable.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Lecturer/Timetable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcVGltZXRhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/Error.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_LayoutLecturer.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_LayoutLecturer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRMZWN0dXJlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_LayoutStudent.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_LayoutStudent.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRTdHVkZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_SidebarLecturer.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_SidebarLecturer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFyTGVjdHVyZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_StudentNotice.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_StudentNotice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50Tm90aWNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-<<<<<<< HEAD
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_StudentSidebar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50U2lkZWJhci5jc2h0bWw=
-=======
 [D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_StudentSidebarLeft.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50U2lkZWJhckxlZnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_StudentSidebarRight.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50U2lkZWJhclJpZ2h0LmNzaHRtbA==
->>>>>>> HuuThuan_XayDungTrangHocVien
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/Dashboard.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-<<<<<<< HEAD
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/StudentSchedule.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxTdHVkZW50U2NoZWR1bGUuY3NodG1s
-=======
 [D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/HoSoHocVien.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxIb1NvSG9jVmllbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/LichHoc.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxMaWNoSG9jLmNzaHRtbA==
->>>>>>> HuuThuan_XayDungTrangHocVien
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/_ViewStartStudent.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/_ViewStartStudent.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxfVmlld1N0YXJ0U3R1ZGVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/_ViewImports.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/_ViewStart.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/HK125/125LTWNC03/clone-cuoikiwebnangcao/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_Layout.cshtml]
+[D:/study/ChuongTrinhDaoTao/Nam3/Ki1/Web_NangCao/WebNangCao_CuoiKi/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-ykvuc92seq

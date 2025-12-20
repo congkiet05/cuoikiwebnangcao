@@ -56,7 +56,7 @@
               "RelativeDocumentMoniker": "WebQuanLiKhoaHoc_MVC\\Service\\HoSoHocVienService.cs",
               "ToolTip": "D:\\study\\ChuongTrinhDaoTao\\Nam3\\Ki1\\Web_NangCao\\WebNangCao_CuoiKi\\WebQuanLiKhoaHocApi\\WebQuanLiKhoaHoc_MVC\\Service\\HoSoHocVienService.cs",
               "RelativeToolTip": "WebQuanLiKhoaHoc_MVC\\Service\\HoSoHocVienService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABcAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-20T01:51:53.052Z",
               "EditorCaption": ""
@@ -71,8 +71,7 @@
               "RelativeToolTip": "WebQuanLiKhoaHocApi\\Services\\HocVien\\LichHocService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-20T01:51:33.425Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-20T01:51:33.425Z"
             },
             {
               "$type": "Document",
@@ -84,8 +83,7 @@
               "RelativeToolTip": "WebQuanLiKhoaHocApi\\Services\\HocVien\\HoSoHocVienService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-20T01:50:07.423Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-20T01:50:07.423Z"
             }
           ]
         },
