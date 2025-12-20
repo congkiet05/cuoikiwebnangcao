@@ -15,7 +15,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebQuanLiKhoaHocApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2c0ca3257ff41ef61ae94fa08e4f571f193a63a")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+937f7606768708443b5b0e86409e04dfab707c64")]
+>>>>>>> HuuThuan_XayDungTrangHocVien
 [assembly: System.Reflection.AssemblyProductAttribute("WebQuanLiKhoaHocApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebQuanLiKhoaHocApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

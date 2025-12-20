@@ -2,7 +2,7 @@
 
 <div class="sidebar-title">HỌC VIÊN</div>
 
-<a href="#" class="sidebar-item d-flex align-items-center">
+<a href="@Url.Action("Dashboard", "Student")" class="sidebar-item d-flex align-items-center">
     <i class="bi bi-grid-1x2-fill me-2"></i>
     <span>Dashboard</span>
 </a>
@@ -22,7 +22,7 @@
     <span>Tin nhắn</span>
 </a>
 
-<a href="@Url.Action("StudentSchedule", "Student")" class="sidebar-item d-flex align-items-center">
+<a href="@Url.Action("LichHoc", "LichHoc")" class="sidebar-item d-flex align-items-center">
     <i class="bi bi-calendar-event me-2"></i>
     <span>Lịch học</span>
 </a>
@@ -32,11 +32,19 @@
     <span>Bài tập / Assignment</span>
 </a>
 
-<a href="#" class="sidebar-item d-flex align-items-center">
+<a href="@Url.Action("HoSoHocVien","HoSoHocVien" ,  new {MaHocVien = "SV001"})" class="sidebar-item d-flex align-items-center">
     <i class="bi bi-person-circle me-2"></i>
     <span>Hồ sơ cá nhân</span>
 </a>
+<a href="#" class="sidebar-item d-flex align-items-center">
+    <i class="bi bi-file-earmark-text me-2"></i>
+    <span>Xem Điểm</span>
+</a>
 
+<a href="#" class="sidebar-item d-flex align-items-center">
+    <i class="bi bi-file-earmark-text me-2"></i>
+    <span>Đăng Kí Môn Học</span>
+</a>
 <hr class="my-2" />
 
 <a href="#" class="sidebar-item d-flex align-items-center">

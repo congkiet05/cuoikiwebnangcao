@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Remove="Views\StudentSchedule\**" />
     <Content Remove="Views\StudentSchedule\**" />
     <EmbeddedResource Remove="Views\StudentSchedule\**" />
@@ -16,6 +17,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.22" />
+=======
+    <Compile Remove="Interface\**" />
+    <Content Remove="Interface\**" />
+    <EmbeddedResource Remove="Interface\**" />
+    <None Remove="Interface\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\StudentSchedule\" />
+>>>>>>> HuuThuan_XayDungTrangHocVien
   </ItemGroup>
 
   <ItemGroup>

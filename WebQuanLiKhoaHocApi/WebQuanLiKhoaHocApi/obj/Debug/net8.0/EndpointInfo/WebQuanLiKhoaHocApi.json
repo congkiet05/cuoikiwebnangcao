@@ -637,6 +637,45 @@
         }
       }
     },
+    "/api/HocVien/HoSoHocVien/{MaHocVien}": {
+      "get": {
+        "tags": [
+          "HoSoHocVien"
+        ],
+        "parameters": [
+          {
+            "name": "MaHocVien",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/HocVien_HoSoCaNhan"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HocVien_HoSoCaNhan"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HocVien_HoSoCaNhan"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Lecturers": {
       "get": {
         "tags": [
@@ -822,7 +861,117 @@
         }
       }
     },
+<<<<<<< HEAD
     "/api/Notifications/lecturer/{lecturerId}": {
+=======
+    "/api/HocVien/LichHoc/{MaHocVien}": {
+      "get": {
+        "tags": [
+          "LichHoc"
+        ],
+        "parameters": [
+          {
+            "name": "MaHocVien",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notifications": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Notification"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Notifications/{id}": {
+>>>>>>> HuuThuan_XayDungTrangHocVien
       "get": {
         "tags": [
           "Notifications"
@@ -1446,18 +1595,6 @@
         }
       }
     },
-    "/api/StudentSchedule/MySchedule": {
-      "get": {
-        "tags": [
-          "StudentSchedule"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Users": {
       "get": {
         "tags": [
@@ -1829,6 +1966,34 @@
             "items": {
               "$ref": "#/components/schemas/Class"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HocVien_HoSoCaNhan": {
+        "type": "object",
+        "properties": {
+          "maHocVien": {
+            "type": "string",
+            "nullable": true
+          },
+          "hoVaTen": {
+            "type": "string",
+            "nullable": true
+          },
+          "ngaySinh": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "nganhHoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "khoaNhapHoc": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

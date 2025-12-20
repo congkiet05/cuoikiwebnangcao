@@ -375,6 +375,48 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.HocVien.HoSoHocVienController",
+    "Method": "LayHoSoHocVien",
+    "RelativePath": "api/HocVien/HoSoHocVien/{MaHocVien}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "MaHocVien",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "WebQuanLiKhoaHocApi.Dtos.HocVien_HoSoCaNhan",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.HocVien.LichHocController",
+    "Method": "LayLichHoc",
+    "RelativePath": "api/HocVien/LichHoc/{MaHocVien}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "MaHocVien",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebQuanLiKhoaHocApi.Controllers.LecturersController",
     "Method": "GetLecturers",
     "RelativePath": "api/Lecturers",
@@ -856,16 +898,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.StudentScheduleController",
-    "Method": "getMySchedule",
-    "RelativePath": "api/StudentSchedule/MySchedule",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": []
   },
   {
