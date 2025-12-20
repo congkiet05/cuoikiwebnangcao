@@ -17,11 +17,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.22" />
-
-    <Compile Remove="Interface\**" />
-    <Content Remove="Interface\**" />
-    <EmbeddedResource Remove="Interface\**" />
-    <None Remove="Interface\**" />
   </ItemGroup>
 
   <ItemGroup>

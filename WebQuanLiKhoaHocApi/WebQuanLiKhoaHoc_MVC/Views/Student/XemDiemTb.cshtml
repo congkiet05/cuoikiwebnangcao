@@ -1,0 +1,81 @@
+﻿@model List<WebQuanLiKhoaHoc_MVC.Models.HocVien.HocVien_XemDiemTBModels>
+
+@{
+    ViewData["Title"] = "Tra Cứu Điểm Trung Bình";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Tra Cứu Kết Quả Học Tập</h2>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form asp-action="XemDiemTrungBinh" asp-controller="XemDiemTB" method="get" class="row g-3 justify-content-center">
+                <div class="col-auto">
+                    <label for="inputMaSV" class="col-form-label fw-bold">Nhập Mã Sinh Viên:</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text"
+                           class="form-control"
+                           id="inputMaSV"
+                           name="MaHocVien"
+                           value="@ViewBag.CurrentFilter"
+                           placeholder="Ví dụ: SV001" required>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-search"></i> Xem Điểm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="alert alert-info">
+            <strong>Sinh viên:</strong> @Model[0].TenHocVien - <strong>MSSV:</strong> @Model[0].MaHocVien <br />
+            <strong>Khoa:</strong> @Model[0].NganhHoc
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã Học Phần</th>
+                        <th>Tên Học Phần</th>
+                        <th>Giảng Viên</th>
+                        <th>Học Kỳ</th>
+                        <th class="text-center">Điểm Trung Bình</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.MaHocPhan</td>
+                            <td>@item.TenHocPhan</td>
+                            <td>@item.GiangVien</td>
+                            <td>@item.HocKi</td>
+                            <td class="text-center fw-bold">
+                                @if (item.DiemTrungBinh >= 5)
+                                {
+                                    <span class="text-success">@item.DiemTrungBinh</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">@item.DiemTrungBinh</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else if (ViewBag.CurrentFilter != null)
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            Không tìm thấy dữ liệu điểm cho mã sinh viên: <strong>@ViewBag.CurrentFilter</strong>
+        </div>
+    }
+</div>

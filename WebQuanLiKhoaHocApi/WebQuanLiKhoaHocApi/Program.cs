@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WebQuanLiKhoaHocApi.Interfaces.HocVien;
+using WebQuanLiKhoaHocApi.Services.HocVien;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +54,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
-
+builder.Services.AddScoped<IHoSoHocVien, HoSoHocVienService>();
+builder.Services.AddScoped<ILichHoc, LichHocService>();
+builder.Services.AddScoped<IXemDiem, HocVien_XemDiemTrungBinhService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
