@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebQuanLiKhoaHocApi.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
 using System.Text;
+using WebQuanLiKhoaHocApi.Entities;
+using WebQuanLiKhoaHocApi.Hubs;
 using WebQuanLiKhoaHocApi.Interfaces.HocVien;
 using WebQuanLiKhoaHocApi.Services.HocVien;
 
@@ -15,13 +15,16 @@ var jwtAudience = builder.Configuration["JWT:Audience"];
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("SignalRCors", policy =>
     {
-        policy.AllowAnyOrigin()    // Cho phép bất kỳ nguồn nào (domain nào)
-              .AllowAnyMethod()    // Cho phép bất kỳ phương thức nào (GET, POST, PUT, DELETE...)
-              .AllowAnyHeader();    // Cho phép bất kỳ Header nào
+        policy.WithOrigins("https://localhost:7137") // URL chính xác của trang Web (xem ở thanh địa chỉ trình duyệt)
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials(); // Bắt buộc phải có để SignalR hoạt động qua CORS
     });
 });
+
+builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -30,6 +33,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<WebQuanLiKhoaHocApi.Entities.UniversityDBContext>( options =>
     options.UseSqlServer(connectionString)
 );
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -78,12 +82,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAll");
+app.UseCors("SignalRCors");
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

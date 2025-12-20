@@ -99,6 +99,41 @@ namespace WebQuanLiKhoaHocApi.Controllers
             return NoContent();
         }
 
+        // GET: api/Classes/Lecturer/2
+        [HttpGet("Lecturer/{lecturerId}")]
+        public async Task<IActionResult> GetClassesByLecturer(int lecturerId)
+        {
+            var classes = await _context.Classes
+                .Include(c => c.Course) // Load thông tin môn học để lấy tên môn
+                .Where(c => c.LecturerId == lecturerId)
+                .Select(c => new {
+                    c.ClassId,
+                    c.ClassCode,
+                    CourseName = c.Course != null ? c.Course.CourseName : "No Course Name"
+                })
+                .ToListAsync();
+
+            return Ok(classes);
+        }
+
+        // GET: api/Classes/Student/5
+        [HttpGet("Student/{studentId}")]
+        public async Task<IActionResult> GetClassesByStudent(int studentId)
+        {
+            var classes = await _context.Registrations
+                .Where(r => r.StudentId == studentId && r.Status == "Enrolled") // Chỉ lấy lớp đã đăng ký học
+                .Include(r => r.Class)
+                    .ThenInclude(c => c.Course)
+                .Select(r => new {
+                    r.Class.ClassId,
+                    r.Class.ClassCode,
+                    CourseName = r.Class.Course != null ? r.Class.Course.CourseName : "No Course Name"
+                })
+                .ToListAsync();
+
+            return Ok(classes);
+        }
+
         private bool ClassExists(int id)
         {
             return _context.Classes.Any(e => e.ClassId == id);

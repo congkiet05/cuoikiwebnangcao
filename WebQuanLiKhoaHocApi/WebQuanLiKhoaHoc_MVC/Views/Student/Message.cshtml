@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Class Messages";
-    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
 }
 
 <div class="container-fluid p-0 shadow-sm rounded-3 overflow-hidden bg-white" style="height: 80vh;">
@@ -49,11 +49,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
     <script>
         $(document).ready(function () {
-            const lecturerId = 2;
+            // 1. CẤU HÌNH ĐỊNH DANH
+            const studentId = 10; // ID học viên (Nên lấy từ Session/User Claims thực tế)
             const apiBaseUrl = "https://localhost:7274/api";
             let currentClassId = null;
 
-            // --- 1. KHỞI TẠO KẾT NỐI ---
+            // --- 2. KHỞI TẠO KẾT NỐI SIGNALR ---
             const connection = new signalR.HubConnectionBuilder()
                 .withUrl("https://localhost:7274/chatHub")
                 .withAutomaticReconnect()
@@ -61,33 +62,30 @@
 
             // Nhận tin nhắn từ Server
             connection.on("ReceiveMessage", function (data) {
-                // Chỉ hiển thị nếu tin nhắn thuộc lớp đang mở
-                // Lưu ý: data.senderId (chữ s thường) do SignalR tự camelCase
                 if (currentClassId == data.classId || !data.classId) {
                     renderMessage(data.senderId, data.content, data.sentAt);
                 }
             });
 
-            // Bắt đầu kết nối
             connection.start()
                 .then(() => console.log("SignalR Connected!"))
                 .catch(err => console.error("SignalR Connection Error: ", err));
 
-            // --- 2. LOAD DANH SÁCH LỚP HỌC ---
+            // --- 3. LOAD DANH SÁCH LỚP HỌC CỦA HỌC VIÊN ---
             $.ajax({
-                // Đổi URL sang API Classes vừa tạo
-                url: `${apiBaseUrl}/Classes/Lecturer/${lecturerId}`,
+                // GỌI API LẤY LỚP THEO STUDENT ID
+                url: `${apiBaseUrl}/Classes/Student/${studentId}`,
                 type: "GET",
                 success: function (data) {
                     let html = '';
-                    if (data.length === 0) {
-                        html = '<div class="p-3 text-center text-muted small">No classes found for this lecturer.</div>';
+                    if (!data || data.length === 0) {
+                        html = '<div class="p-3 text-center text-muted small">Bạn chưa đăng ký lớp học nào.</div>';
                     } else {
                         data.forEach(c => {
                             html += `
                                 <a href="#" class="list-group-item list-group-item-action p-3 border-0 class-item"
                                    data-id="${c.classId}" data-name="${c.courseName}">
-                                    <div class="fw-bold text-primary">${c.classCode}</div>
+                                    <div class="fw-bold text-success">${c.classCode}</div>
                                     <div class="small text-muted text-truncate">${c.courseName}</div>
                                 </a>`;
                         });
@@ -95,26 +93,25 @@
                     $('#class-list').html(html);
                 },
                 error: function(err) {
-                    console.error("Lỗi load lớp:", err);
-                    $('#class-list').html('<div class="p-3 text-danger small">Error loading class list.</div>');
+                    console.error("Lỗi load lớp học viên:", err);
+                    $('#class-list').html('<div class="p-3 text-danger small">Không thể tải danh sách lớp học.</div>');
                 }
             });
 
-            // --- 3. SỰ KIỆN CHỌN LỚP ---
+            // --- 4. SỰ KIỆN CHỌN LỚP ---
             $(document).on('click', '.class-item', function (e) {
                 e.preventDefault();
-                const selectedId = $(this).attr('data-id'); // Lấy ID chắc chắn hơn
+                const selectedId = $(this).attr('data-id');
 
                 if (!selectedId) return;
 
                 currentClassId = selectedId;
-                $('.class-item').removeClass('active bg-primary-subtle');
-                $(this).addClass('active bg-primary-subtle');
+                $('.class-item').removeClass('active bg-success-subtle');
+                $(this).addClass('active bg-success-subtle');
 
                 $('#chat-header, #chat-input-area').removeClass('d-none');
                 $('#current-class-name').text($(this).data('name'));
 
-                // Chỉ gọi invoke khi đã kết nối
                 if (connection.state === signalR.HubConnectionState.Connected) {
                     connection.invoke("JoinClassGroup", currentClassId.toString())
                         .catch(err => console.error(err));
@@ -123,22 +120,22 @@
                 loadOldMessages(currentClassId);
             });
 
-            // --- 4. GỬI TIN NHẮN ---
+            // --- 5. GỬI TIN NHẮN ---
             function sendMessage() {
                 const content = $('#message-input').val();
 
                 if (connection.state !== signalR.HubConnectionState.Connected) {
-                    alert("Chưa kết nối được máy chủ chat!");
+                    alert("Mất kết nối với máy chủ!");
                     return;
                 }
 
                 if (content.trim() !== "" && currentClassId) {
-                    // Chuyển đổi ID sang kiểu số để khớp với Backend (int classId)
-                    connection.invoke("SendMessage", parseInt(currentClassId), lecturerId, content)
+                    // GỬI STUDENT ID LÀM SENDER ID
+                    connection.invoke("SendMessage", parseInt(currentClassId), studentId, content)
                         .then(() => {
                             $('#message-input').val('').focus();
                         })
-                        .catch(err => console.error("Send Error: ", err));
+                        .catch(err => console.error("Gửi tin lỗi: ", err));
                 }
             }
 
@@ -147,27 +144,27 @@
                 if (e.which == 13) sendMessage();
             });
 
-            // --- 5. HÀM HỖ TRỢ ---
+            // --- 6. HÀM HỖ TRỢ ---
             function loadOldMessages(classId) {
                 if (!classId) return;
-                $('#message-body').empty().html('<div class="m-auto spinner-border text-primary"></div>');
+                $('#message-body').empty().html('<div class="m-auto spinner-border text-success"></div>');
 
                 $.get(`${apiBaseUrl}/ClassMessages/${classId}`, function (messages) {
                     $('#message-body').empty();
                     messages.forEach(m => {
                         renderMessage(m.senderId, m.content, m.sentAt);
                     });
-                    // Cuộn xuống cuối
                     $('#message-body').scrollTop($('#message-body')[0].scrollHeight);
-                }).fail(err => {
-                    $('#message-body').html('<div class="m-auto text-danger">Không thể tải tin nhắn cũ.</div>');
+                }).fail(() => {
+                    $('#message-body').html('<div class="m-auto text-danger">Lỗi tải lịch sử chat.</div>');
                 });
             }
 
             function renderMessage(senderId, content, time) {
-                const isMe = senderId === lecturerId;
+                // SO SÁNH VỚI STUDENT ID ĐỂ XÁC ĐỊNH TIN NHẮN CỦA MÌNH
+                const isMe = senderId === studentId;
                 const msgHtml = `
-                    <div class="message-item mb-3 ${isMe ? 'align-self-end bg-primary text-white' : 'align-self-start bg-white text-dark'} p-3 rounded shadow-sm" style="max-width: 75%;">
+                    <div class="message-item mb-3 ${isMe ? 'align-self-end bg-success text-white' : 'align-self-start bg-white text-dark'} p-3 rounded shadow-sm" style="max-width: 75%;">
                         <p class="mb-0">${content}</p>
                         <small class="${isMe ? 'text-white-50' : 'text-muted'}" style="font-size: 0.65rem;">${time}</small>
                     </div>`;

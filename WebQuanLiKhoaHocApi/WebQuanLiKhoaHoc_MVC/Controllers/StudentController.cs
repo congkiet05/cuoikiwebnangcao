@@ -18,7 +18,10 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
             _context = context;
         }
 
-        
-        
+        public IActionResult Message()
+        {
+            return View(); // -> Views/Student/Dashboard.cshtml
+        }
+
     }
 }
