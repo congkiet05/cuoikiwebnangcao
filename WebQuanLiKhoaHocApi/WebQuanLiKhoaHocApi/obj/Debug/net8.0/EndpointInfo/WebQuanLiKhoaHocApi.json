@@ -1000,6 +1000,28 @@
         }
       }
     },
+    "/api/HocVien/LichHoc/{MaHocVien}": {
+      "get": {
+        "tags": [
+          "LichHoc"
+        ],
+        "parameters": [
+          {
+            "name": "MaHocVien",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Notifications": {
       "get": {
         "tags": [

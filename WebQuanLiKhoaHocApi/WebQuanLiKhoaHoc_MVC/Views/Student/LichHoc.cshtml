@@ -1,0 +1,169 @@
+﻿
+
+<h2 class="mb-4">Lịch học của bạn</h2>
+
+@model List<WebQuanLiKhoaHoc_MVC.Models.HocVien.LichHocModel>
+
+@{
+    ViewData["Title"] = "Lịch học cá nhân";
+    // Lấy giá trị tìm kiếm cũ để điền lại vào ô input
+    var currentFilter = ViewBag.CurrentFilter as string;
+}
+
+<div class="container-fluid p-0">
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-body">
+            <form asp-action="LichHoc" method="get" class="row g-3">
+                <div class="col-md-9">
+                    <input type="text" class="form-control" name="MaHocVien"
+                           value="@currentFilter"
+                           placeholder="Nhập mã sinh viên (Ví dụ: SV001)...">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Xem Lịch
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="d-flex justify-content-between mb-3 overflow-auto" id="day-filters">
+            <button class="btn btn-outline-primary day-btn active" onclick="filterSchedule('all')">Tất cả</button>
+            <button class="btn btn-outline-primary day-btn" onclick="filterSchedule(2)">Thứ 2</button>
+            <button class="btn btn-outline-primary day-btn" onclick="filterSchedule(3)">Thứ 3</button>
+            <button class="btn btn-outline-primary day-btn" onclick="filterSchedule(4)">Thứ 4</button>
+            <button class="btn btn-outline-primary day-btn" onclick="filterSchedule(5)">Thứ 5</button>
+            <button class="btn btn-outline-primary day-btn" onclick="filterSchedule(6)">Thứ 6</button>
+            <button class="btn btn-outline-primary day-btn" onclick="filterSchedule(7)">Thứ 7</button>
+            <button class="btn btn-outline-primary day-btn" onclick="filterSchedule(0)">Chủ Nhật</button>
+        </div>
+
+        <div id="schedule-container">
+            @foreach (var item in Model)
+            {
+                // Quy đổi DayOfWeek sang tên tiếng Việt để hiển thị
+                string tenThu = item.Thu == 0 ? "Chủ Nhật" : "Thứ " + item.Thu;
+
+                // data-day="@item.Thu" là mấu chốt để JS tìm và lọc
+                <div class="card mb-3 schedule-item border-start border-4 border-primary shadow-sm" data-day="@item.Thu">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title text-primary fw-bold mb-0">
+                                <i class="bi bi-book me-2"></i>@item.TenMonHoc
+                            </h5>
+                            <span class="badge bg-info text-dark">@tenThu</span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="mb-1"><i class="bi bi-clock me-2"></i><strong>Thời gian:</strong> @item.GioBatDau - @item.GioKetThuc</p>
+                                <p class="mb-1"><i class="bi bi-geo-alt me-2"></i><strong>Phòng:</strong> @item.PhongHoc</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1"><i class="bi bi-person-badge me-2"></i><strong>Giảng viên:</strong> @item.TenGiangVien</p>
+                                <p class="mb-1"><i class="bi bi-qr-code me-2"></i><strong>Mã lớp:</strong> @item.MaLopHoc</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div id="no-schedule-msg" class="alert alert-warning d-none text-center">
+            Không có lịch học nào trong ngày này.
+        </div>
+    }
+    else if (ViewBag.CurrentFilter != null)
+    {
+        <div class="alert alert-info text-center mt-4">
+            Không tìm thấy lịch học nào cho mã sinh viên: <strong>@ViewBag.CurrentFilter</strong>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function filterSchedule(selectedDay) {
+            // 1. Xử lý nút bấm (Active state)
+            // Xóa class active ở tất cả các nút
+            var buttons = document.getElementsByClassName('day-btn');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+                // Nếu click vào nút nào thì thêm class active cho nút đó
+                // (Logic này làm đơn giản, nếu muốn chính xác từng nút cần truyền 'this' vào hàm)
+            }
+            // Add active style to the clicked button (cần chỉnh lại logic truyền event nếu muốn highlight đúng nút)
+             event.target.classList.add('active');
+
+
+            // 2. Lọc danh sách môn học
+            var items = document.getElementsByClassName('schedule-item');
+            var visibleCount = 0;
+
+            for (var i = 0; i < items.length; i++) {
+                var itemDay = items[i].getAttribute('data-day');
+
+                if (selectedDay === 'all' || itemDay == selectedDay) {
+                    items[i].classList.remove('d-none'); // Hiện
+                    visibleCount++;
+                } else {
+                    items[i].classList.add('d-none'); // Ẩn
+                }
+            }
+
+            // 3. Hiển thị thông báo nếu ngày đó trống lịch
+            var msg = document.getElementById('no-schedule-msg');
+            if (visibleCount === 0) {
+                msg.classList.remove('d-none');
+            } else {
+                msg.classList.add('d-none');
+            }
+        }
+
+        // Tự động chọn ngày hôm nay khi mới vào trang
+        document.addEventListener("DOMContentLoaded", function() {
+            var today = new Date().getDay(); // 0 là CN, 1 là T2...
+            // JS trả về 1 là Thứ 2, nhưng data của bạn có thể là 2.
+            // Cần map lại nếu hệ thống DB của bạn lưu 2 là Thứ 2.
+
+            // Logic map ngày của JS (0-6) sang hệ thống của bạn (Giả sử DB: 2-7, CN=0 hoặc 8)
+            var mapDay = today + 1; // Ví dụ: Hôm nay thứ 6 (JS=5) -> DB=6
+            if(today === 0) mapDay = 0; // Nếu là CN
+
+            // Kích hoạt nút tương ứng (nếu muốn) hoặc để mặc định là 'all'
+            // filterSchedule(mapDay);
+        });
+    </script>
+
+    <style>
+        /* CSS tuỳ chỉnh cho thẻ Card */
+        .schedule-item {
+            transition: transform 0.2s, box-shadow 0.2s;
+            background-color: #fff; /* Nền trắng */
+            border-radius: 8px; /* Bo góc */
+        }
+
+        .schedule-item:hover {
+            transform: translateY(-3px); /* Nổi lên nhẹ khi di chuột */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+            background-color: #f8f9fa; /* Đổi màu nền nhẹ */
+        }
+
+        /* Nút chọn thứ */
+        .day-btn {
+            min-width: 80px;
+            margin-right: 5px;
+            border-radius: 20px;
+        }
+
+        /* Màu khi nút được chọn */
+        .day-btn.active {
+            background-color: #0d6efd;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+}

@@ -478,6 +478,22 @@
     ]
   },
   {
+    "ContainingType": "WebQuanLiKhoaHocApi.Controllers.HocVien.LichHocController",
+    "Method": "LayLichHoc",
+    "RelativePath": "api/HocVien/LichHoc/{MaHocVien}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "MaHocVien",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebQuanLiKhoaHocApi.Controllers.LecturersController",
     "Method": "GetLecturers",
     "RelativePath": "api/Lecturers",

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using WebQuanLiKhoaHocApi.Entities;
 using WebQuanLiKhoaHocApi.Interfaces.HocVien;
 using NuGet.Protocol.Plugins;
+using WebQuanLiKhoaHocApi.Services.HocVien;
 
 namespace WebQuanLiKhoaHocApi.Controllers.HocVien
 {

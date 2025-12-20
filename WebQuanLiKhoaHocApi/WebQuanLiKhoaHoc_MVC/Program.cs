@@ -11,6 +11,7 @@ builder.Services.AddDbContext<UniversityDBContext>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<HoSoHocVienService>();
+builder.Services.AddHttpClient<HocVienLichHoc>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

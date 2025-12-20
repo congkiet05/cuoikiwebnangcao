@@ -56,6 +56,7 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<IHoSoHocVien, HoSoHocVienService>();
+builder.Services.AddScoped<ILichHoc,LichHocService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
