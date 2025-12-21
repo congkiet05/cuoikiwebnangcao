@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using WebQuanLiKhoaHoc_MVC.Service;
+using WebQuanLiKhoaHoc_MVC.Service.Login;
 using WebQuanLiKhoaHocApi.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<UniversityDBContext>(options =>
     options.UseSqlServer(connectionString));
+
+// Huu Thuan - Dang Ki Su Dung Cookie Authentication
+builder.Services.AddHttpClient<AuthApiService>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Nếu chưa đăng nhập thì tự chuyển về đây
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Không có quyền thì chuyển về đây
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -32,5 +44,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     //pattern: "{controller=Home}/{action=Index}/{id?}");
-    pattern: "{controller=Student}/{action=Dashboard}/{id?}"); //test giao diện Học viên
+    pattern: "{controller=Login}/{action=Login}/{id?}"); //test giao diện Học viên
 app.Run();
