@@ -1,104 +1,252 @@
-﻿@{
-    ViewBag.Title = "Assignment Management";
-    // Thiết lập Layout cho mô hình MPA
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewBag.Title = "Quản lý Bài tập";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
-
-    // @model YourNamespace.Models.AssignmentViewModel
+    var apiBaseUrl = Configuration["ApiSettings:BaseUrl"];
 }
 
-<div class="container-fluid p-0">
-    <h2 class="h4 mb-1">Assignment Management</h2>
+<div class="container-fluid py-4">
 
-    <div class="d-flex align-items-center mb-4">
-        <div class="input-group me-3" style="max-width: 300px;">
-            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control border-start-0" placeholder="Search for an assignment...">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold text-primary">Quản lý Bài tập</h4>
+            <p class="text-muted small">Theo dõi và quản lý bài tập của lớp</p>
         </div>
-
-        <a href="@Url.Action("Create", "Assignment")" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-1"></i> Create New Assignment
-        </a>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAssignmentModal">
+            <i class="bi bi-plus-lg"></i> Tạo bài tập
+        </button>
     </div>
 
-    <div class="d-flex align-items-center mb-4">
-        <div class="dropdown me-3">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                All Statuses
-            </button>
-            @* Menu Dropdown *@
-        </div>
-        <div class="dropdown me-3">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Course: All
-            </button>
-            @* Menu Dropdown *@
-        </div>
-        <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Sort by: Due Date
-            </button>
-            @* Menu Dropdown *@
+    <div class="row mb-3">
+        
+        <div class="col-md-3 ms-auto">
+            <select id="filterClass" class="form-select" onchange="loadAssignments()">
+                <option value="">Tất cả lớp</option>
+            </select>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table align-middle table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Assignment Title</th>
-                    <th>Course</th>
-                    <th>Due Date</th>
-                    <th>Status</th>
-                    <th>Submissions</th>
-                    <th></th> @* Cột Actions *@
-                </tr>
-            </thead>
-            <tbody>
-                @* Dữ liệu mẫu *@
-                <tr>
-                    <td><strong>Mid-Term Essay: The Renaissance</strong></td>
-                    <td>ART101</td>
-                    <td>Oct 25, 2023</td>
-                    <td><span class="badge bg-success-subtle text-success py-2 px-3">Published</span></td>
-                    <td>32/40 Submissions</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Lab Report 3: Photosynthesis</strong></td>
-                    <td>BIO204</td>
-                    <td>Oct 28, 2023</td>
-                    <td><span class="badge bg-primary-subtle text-primary py-2 px-3">Grading</span></td>
-                    <td>40/40 (15 Graded)</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Final Project Proposal</strong></td>
-                    <td>CS101</td>
-                    <td>
-                        <span class="text-danger">Oct 15, 2023</span>
-                        <br /><span class="badge bg-danger">Overdue</span>
-                    </td>
-                    <td><span class="badge bg-danger-subtle text-danger py-2 px-3">Overdue</span></td>
-                    <td>28/30 Submissions</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Weekly Reading Response 5</strong></td>
-                    <td>ENG204</td>
-                    <td>Nov 02, 2023</td>
-                    <td><span class="badge bg-warning-subtle text-warning py-2 px-3">Upcoming</span></td>
-                    <td>0/25 Submissions</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-                <tr>
-                    <td><strong>Final Exam Study Guide</strong></td>
-                    <td>PSY330</td>
-                    <td>Nov 10, 2023</td>
-                    <td><span class="badge bg-light text-muted py-2 px-3">Draft</span></td>
-                    <td>-</td>
-                    <td><a href="#" class="text-secondary"><i class="bi bi-three-dots-vertical"></i></a></td>
-                </tr>
-            </tbody>
-        </table>
+    <table class="table table-hover table-striped align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Tên bài tập</th>
+                <th>Lớp</th>
+                <th>Hạn nộp</th>
+                <th>Trạng thái</th>
+                <th>Tiến độ</th>
+            </tr>
+        </thead>
+        <tbody id="assignment-tbody"></tbody>
+    </table>
+</div>
+
+<!-- ================= CREATE MODAL ================= -->
+<div class="modal fade" id="createAssignmentModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Tạo bài tập</h5>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input id="asTitle" class="form-control mb-2" placeholder="Tiêu đề" />
+                <select id="asClassId" class="form-select mb-2"></select>
+                <input id="asDueDate" type="datetime-local" class="form-control mb-2" />
+                <textarea id="asDesc" class="form-control" rows="4" placeholder="Mô tả"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button class="btn btn-primary" id="btnPost">Đăng</button>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- ================= EDIT MODAL ================= -->
+<div class="modal fade" id="editAssignmentModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Chỉnh sửa</h5>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editId" />
+                <input id="editTitle" class="form-control mb-2" placeholder="Tiêu đề" />
+                <select id="editClassId" class="form-select mb-2"></select>
+                <input id="editDueDate" type="datetime-local" class="form-control mb-2" />
+                <textarea id="editDesc" class="form-control" rows="4" placeholder="Mô tả"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="deleteAs()">Xóa</button>
+                <button class="btn btn-primary" id="btnUpdate">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const lecturerId = 4;
+        const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
+
+        $(document).ready(() => {
+            loadClasses();       // Load danh sách lớp
+            loadAssignments();   // Load bài tập
+
+            // Search nhanh
+            $('#assignmentSearch').on('keyup', function () {
+                const v = $(this).val().toLowerCase();
+                $('#assignment-tbody tr').each(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(v) > -1);
+                });
+            });
+        });
+
+        // Load danh sách lớp cho cả create & edit
+        function loadClasses() {
+            $.get(`${apiBaseUrl}/Classes/Lecturer/${lecturerId}`, data => {
+                let optCreate = '<option value="">-- Chọn lớp --</option>';
+                let optFilter = '<option value="">Tất cả lớp</option>';
+                let optEdit = '<option value="">-- Chọn lớp --</option>';
+                data.forEach(c => {
+                    optCreate += `<option value="${c.classId}">${c.classCode}</option>`;
+                    optFilter += `<option value="${c.classCode}">${c.classCode}</option>`;
+                    optEdit += `<option value="${c.classId}">${c.classCode}</option>`;
+                });
+                $('#asClassId').html(optCreate);
+                $('#filterClass').html(optFilter);
+                $('#editClassId').html(optEdit);
+            });
+        }
+
+        // Load bài tập
+              function loadAssignments() {
+            $('#assignment-tbody').html('<tr><td colspan="5">Đang tải...</td></tr>');
+
+            $.get(`${apiBaseUrl}/Assignments/by-lecturer/${lecturerId}`, data => {
+                let html = '';
+                const filter = $('#filterClass').val();
+
+                data.forEach(a => {
+                    if (filter && a.classCode !== filter) return;
+
+                    const due = a.dueDate ? new Date(a.dueDate) : null;
+                    const overdue = due && due < new Date();
+
+                    const percent = a.totalStudents > 0
+                        ? Math.round(a.submissionCount * 100 / a.totalStudents)
+                        : 0;
+
+                    html += `
+                    <tr onclick="openEditModal(
+                        ${a.assignmentId},
+                        \`${a.title}\`,
+                        '${a.dueDate ?? ''}',
+                        \`${a.description ?? ''}\`,
+                        ${a.classId}
+                    )">
+                        <td>${a.title}</td>
+                        <td>${a.classCode}</td>
+                        <td>${due ? due.toLocaleString('vi-VN') : '—'}</td>
+
+                        <td>
+                            <span class="fw-bold ${overdue ? 'text-danger' : 'text-success'}">
+                                ${overdue ? 'Đã đóng' : 'Đang nhận'}
+                            </span>
+                        </td>
+
+                        <td>${a.submissionCount}/${a.totalStudents} (${percent}%)</td>
+                    </tr>`;
+                });
+
+                $('#assignment-tbody').html(html || '<tr><td colspan="5">Chưa có bài tập</td></tr>');
+            });
+        }
+
+        // ================= POST =================
+                 $('#btnPost').click(() => {
+            const classId = parseInt($('#asClassId').val());
+            if (!classId) { alert("Vui lòng chọn lớp!"); return; }
+
+            const data = {
+                Title: $('#asTitle').val().trim(),
+                ClassId: classId,
+                DueDate: $('#asDueDate').val() || null,
+                Description: $('#asDesc').val() || ''
+            };
+
+            $.ajax({
+                url: `${apiBaseUrl}/Assignments`,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: () => {
+                    $('#createAssignmentModal').modal('hide');
+                    $('#asTitle, #asDesc, #asDueDate, #asClassId').val('');
+                    loadAssignments();
+                },
+                error: err => {
+                    console.error(err.responseText);
+                    alert("Lỗi tạo bài tập. Kiểm tra console!");
+                }
+            });
+        });
+
+
+        // ================= EDIT MODAL =================
+        function openEditModal(id, title, due, desc, classId) {
+            $('#editId').val(id);
+            $('#editTitle').val(title);
+            $('#editClassId').val(classId);
+            $('#editDueDate').val(due ? due.substring(0,16) : '');
+            $('#editDesc').val(desc);
+            new bootstrap.Modal('#editAssignmentModal').show();
+        }
+
+        // ================= PUT =================
+                   $('#btnUpdate').click(() => {
+            const id = $('#editId').val();
+            const classId = $('#editClassId').val(); // Đảm bảo lấy được ID lớp
+
+            const data = {
+            AssignmentId: parseInt($('#editId').val()),
+            Title: $('#editTitle').val(),
+            Description: $('#editDesc').val(),
+            DueDate: $('#editDueDate').val(),
+            ClassId: parseInt($('#editClassId').val()) // Đảm bảo lấy được ID lớp từ dropdown/hidden input
+        };
+
+            $.ajax({
+                url: `${apiBaseUrl}/Assignments/${id}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: () => {
+                    alert("Cập nhật thành công!");
+                    bootstrap.Modal.getInstance(document.getElementById('editAssignmentModal')).hide();
+                    loadAssignments();
+                },
+                error: err => {
+                    console.log("Lỗi chi tiết:", err.responseJSON);
+                    alert("Vẫn còn lỗi Validation, kiểm tra Console");
+                }
+            });
+        });
+        // ================= DELETE =================
+        function deleteAs() {
+            if (!confirm("Xóa bài tập này?")) return;
+            const id = $('#editId').val();
+            $.ajax({
+                url: `${apiBaseUrl}/Assignments/${id}`,
+                type: 'DELETE',
+                success: () => {
+                    bootstrap.Modal.getInstance(
+                        document.getElementById('editAssignmentModal')
+                    ).hide();
+                    loadAssignments();
+                }
+            });
+        }
+    </script>
+}

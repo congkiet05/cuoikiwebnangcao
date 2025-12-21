@@ -21,7 +21,7 @@ public partial class Announcement
 
     public DateTime? UpdatedAt { get; set; }
 
-    public virtual User Author { get; set; } = null!;
+    public virtual User? Author { get; set; } = null!;
 
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 

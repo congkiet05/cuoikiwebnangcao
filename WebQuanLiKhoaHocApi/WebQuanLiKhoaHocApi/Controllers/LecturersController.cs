@@ -29,29 +29,57 @@ namespace WebQuanLiKhoaHocApi.Controllers
 
         // GET: api/Lecturers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Lecturer>> GetLecturer(int id)
+        public async Task<ActionResult<object>> GetLecturer(int id)
         {
-            var lecturer = await _context.Lecturers.FindAsync(id);
+            var lecturer = await _context.Lecturers
+                .Include(l => l.LecturerNavigation) // Kết nối sang bảng User
+                .Where(l => l.LecturerId == id)
+                .Select(l => new {
+                    // Lấy từ bảng Lecturer
+                    LecturerId = l.LecturerId,
+                    StaffNumber = l.StaffNumber, // Mã nhân viên
+                    FullName = l.FullName,      // Họ tên
+                    Department = l.Department,  // Khoa
+
+                    // Lấy từ bảng User (thông qua LecturerNavigation)
+                    Username = l.LecturerNavigation.Username, // Tên đăng nhập
+                    Email = l.LecturerNavigation.Email        // Email
+                })
+                .FirstOrDefaultAsync();
+
+            if (lecturer == null) return NotFound();
+
+            return Ok(lecturer);
+        }
+        [HttpPut("UpdateProfile/{id}")]
+        public async Task<IActionResult> PutLecturer(int id, LecturerProfileUpdateDto dto)
+        {
+            // 1. Lấy dữ liệu hiện tại từ Database kèm theo bảng User (Navigation)
+            var lecturer = await _context.Lecturers
+                .Include(l => l.LecturerNavigation)
+                .FirstOrDefaultAsync(l => l.LecturerId == id);
 
             if (lecturer == null)
             {
-                return NotFound();
+                return NotFound("Không tìm thấy giảng viên");
             }
 
-            return lecturer;
-        }
+            // 2. Cập nhật các trường thuộc bảng Lecturer
+            lecturer.FullName = dto.FullName;
+            lecturer.Department = dto.Department;
 
-        // PUT: api/Lecturers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLecturer(int id, Lecturer lecturer)
-        {
-            if (id != lecturer.LecturerId)
+            // 3. Cập nhật các trường thuộc bảng User (thông qua Navigation)
+            if (lecturer.LecturerNavigation != null)
             {
-                return BadRequest();
-            }
+                lecturer.LecturerNavigation.Email = dto.Email;
 
-            _context.Entry(lecturer).State = EntityState.Modified;
+                // Chỉ cập nhật mật khẩu nếu giảng viên có nhập mật khẩu mới
+                if (!string.IsNullOrEmpty(dto.NewPassword))
+                {
+                    // Lưu ý: Nếu có cơ chế mã hóa mật khẩu, hãy mã hóa ở đây
+                    lecturer.LecturerNavigation.Password = dto.NewPassword;
+                }
+            }
 
             try
             {
@@ -59,20 +87,12 @@ namespace WebQuanLiKhoaHocApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LecturerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!LecturerExists(id)) return NotFound();
+                else throw;
             }
 
             return NoContent();
-        }
-
-        // POST: api/Lecturers
+        }        // POST: api/Lecturers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Lecturer>> PostLecturer(Lecturer lecturer)
@@ -118,4 +138,11 @@ namespace WebQuanLiKhoaHocApi.Controllers
             return _context.Lecturers.Any(e => e.LecturerId == id);
         }
     }
+}
+public class LecturerProfileUpdateDto
+{
+    public string FullName { get; set; } = null!;
+    public string? Department { get; set; }
+    public string? Email { get; set; }
+    public string? NewPassword { get; set; }
 }

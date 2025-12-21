@@ -26,6 +26,25 @@ namespace WebQuanLiKhoaHocApi.Controllers
         {
             return await _context.Announcements.ToListAsync();
         }
+        [HttpGet("Author/{authorId}")]
+        public async Task<IActionResult> GetAnnouncementsByAuthor(int authorId)
+        {
+            var data = await _context.Announcements
+                .AsNoTracking()
+                .Where(a => a.AuthorId == authorId)
+                .OrderByDescending(a => a.CreatedAt)
+                .Select(a => new
+                {
+                    AnnouncementId = a.AnnouncementId,
+                    Title = a.Title,
+                    Body = a.Body,
+                    CreatedAt = a.CreatedAt,
+                    TargetClassId = a.TargetClassId
+                })
+                .ToListAsync();
+
+            return Ok(data);
+        }
 
         // GET: api/Announcements/5
         [HttpGet("{id}")]
@@ -50,6 +69,8 @@ namespace WebQuanLiKhoaHocApi.Controllers
             {
                 return BadRequest();
             }
+            announcement.Author = null;
+            announcement.TargetClass = null;
 
             _context.Entry(announcement).State = EntityState.Modified;
 

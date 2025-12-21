@@ -17,7 +17,7 @@ public partial class Assignment
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual Class Class { get; set; } = null!;
+    public virtual Class? Class { get; set; } = null!;
 
     public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
 }
