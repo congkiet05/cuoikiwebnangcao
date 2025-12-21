@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using WebQuanLiKhoaHoc_MVC.Service.Login;
 
-namespace WebQuanLiKhoaHoc_MVC.Controllers.Login
+namespace WebQuanLiKhoaHoc_MVC.Controllers
 {
     public class LoginController : Controller
     {
@@ -24,7 +24,6 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers.Login
             }
             return View("~/Views/Account/Login.cshtml");
         }
-        [HttpPost]
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
