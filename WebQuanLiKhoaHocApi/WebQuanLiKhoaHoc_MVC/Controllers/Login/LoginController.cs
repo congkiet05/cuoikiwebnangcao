@@ -82,7 +82,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers.Login
             {
                 case "Admin":
                     // Chuyển đến: Areas/Admin/Controllers/HomeController.cs -> Index
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Dashboard", "Admin");
 
                 case "Student":
                     // Chuyển đến: Areas/Student/Controllers/HomeController.cs -> Index
