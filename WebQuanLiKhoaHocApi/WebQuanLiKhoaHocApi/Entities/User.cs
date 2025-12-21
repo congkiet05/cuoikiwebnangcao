@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebQuanLiKhoaHocApi.Entities;
 
@@ -10,7 +11,7 @@ public partial class User
     public string Username { get; set; } = null!;
 
     public string? Email { get; set; }
-
+    [Column("Password")]
     public string PasswordHash { get; set; } = null!;
 
     public byte RoleId { get; set; }

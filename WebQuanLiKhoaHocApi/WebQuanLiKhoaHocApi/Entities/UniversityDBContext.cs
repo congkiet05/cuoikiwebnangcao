@@ -12,7 +12,7 @@ public partial class UniversityDBContext : DbContext
     }
 
     public UniversityDBContext(DbContextOptions<UniversityDBContext> options)
-        : base(options)
+         : base(options)
     {
     }
 
@@ -244,7 +244,7 @@ public partial class UniversityDBContext : DbContext
             entity.Property(e => e.Email).HasMaxLength(320);
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.LastLoginAt).HasPrecision(3);
-            entity.Property(e => e.PasswordHash).HasMaxLength(72);
+            entity.Property(e => e.PasswordHash).HasMaxLength(72).HasColumnName("Password"); 
             entity.Property(e => e.Username).HasMaxLength(100);
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)

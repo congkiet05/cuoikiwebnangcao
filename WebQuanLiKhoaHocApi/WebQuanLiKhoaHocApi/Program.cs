@@ -1,62 +1,73 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebQuanLiKhoaHocApi.Entities;
+using WebQuanLiKhoaHocApi.Entities; // Ensure this namespace is correct
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// --- 1. CONFIGURATION ---
 var jwtKey = builder.Configuration["JWT:Key"];
 var jwtIssuer = builder.Configuration["JWT:Issuer"];
 var jwtAudience = builder.Configuration["JWT:Audience"];
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// Get Connection String. Default to "DefaultConnection" based on your previous secrets.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<WebQuanLiKhoaHocApi.Entities.UniversityDBContext>( options =>
-    options.UseSqlServer(connectionString)
-);
+// --- 2. REGISTER SERVICES (Dependency Injection) ---
+
+// 👇👇👇 CRITICAL FIX: Register DbContext 👇👇👇
+builder.Services.AddDbContext<UniversityDBContext>(options =>
+    options.UseSqlServer(connectionString));
+// 👆👆👆 This line was likely missing or not executed 👆👆👆
+
+// Add CORS
+builder.Services.AddCors(p => p.AddPolicy("AllowAll", build => {
+    build.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
+
+// Add Controllers with JSON options
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = 
-            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthentication(options =>
+
+// Authentication
+if (!string.IsNullOrEmpty(jwtKey))
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+    builder.Services.AddAuthentication(options =>
     {
-        // Yêu cầu xác thực key (quan trọng nhất)
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateIssuer = true,
+            ValidIssuer = jwtIssuer,
+            ValidateAudience = true,
+            ValidAudience = jwtAudience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+}
 
-        // Yêu cầu xác thực Issuer (Người phát hành)
-        ValidateIssuer = true,
-        ValidIssuer = jwtIssuer,
-
-        // Yêu cầu xác thực Audience (Đối tượng)
-        ValidateAudience = true,
-        ValidAudience = jwtAudience,
-
-        // YêuG cầuxác thực thời gian sống của token
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero // Không cho phép chênh lệch thời gian
-    };
-});
 builder.Services.AddAuthorization();
 
-var app = builder.Build();
+var app = builder.Build(); // <--- Services must be registered BEFORE this line
 
-// Configure the HTTP request pipeline.
+// --- 3. PIPELINE ---
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -64,11 +75,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAll");
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

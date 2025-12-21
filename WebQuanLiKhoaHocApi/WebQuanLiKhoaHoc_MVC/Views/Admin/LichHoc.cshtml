@@ -1,0 +1,379 @@
+﻿@model List<WebQuanLiKhoaHoc_MVC.Models.ScheduleViewModel>
+@{
+    ViewData["Title"] = "Quản Lý Lịch Học";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    /* --- CUSTOM STYLES (Đồng bộ với các trang khác) --- */
+    .page-header {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.05);
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .table-card {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.05);
+        overflow: hidden;
+    }
+
+    .table thead th {
+        border-top: none;
+        border-bottom: 2px solid #e3e6f0;
+        font-weight: 700;
+        color: #4e73df;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-top: 1px solid #e3e6f0;
+        color: #5a5c69;
+    }
+
+    /* Soft Badges */
+    .badge-soft-primary {
+        background-color: #cfe2ff;
+        color: #084298;
+        padding: 0.5em 0.8em;
+    }
+
+    .badge-soft-info {
+        background-color: #cff4fc;
+        color: #055160;
+        padding: 0.5em 0.8em;
+    }
+
+    .badge-soft-warning {
+        background-color: #fff3cd;
+        color: #664d03;
+        padding: 0.5em 0.8em;
+    }
+
+    .badge-soft-danger {
+        background-color: #f8d7da;
+        color: #842029;
+        padding: 0.5em 0.8em;
+    }
+
+    /* Avatar Giảng viên */
+    .avatar-initial {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #eaecf4;
+        color: #5a5c69;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-right: 0.75rem;
+    }
+
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s;
+    }
+
+        .btn-action:hover {
+            transform: scale(1.1);
+        }
+</style>
+
+<div class="page-header">
+    <div>
+        <h3 class="fw-bold text-gray-800 mb-1"><i class="fas fa-calendar-alt me-2 text-primary"></i>Quản Lý Lịch Học</h3>
+        <p class="text-muted small mb-0">Sắp xếp và quản lý thời khóa biểu cho các lớp học phần.</p>
+    </div>
+    <button class="btn btn-primary shadow-sm fw-bold px-3" style="background-color: #4e73df; border: none; border-radius: 0.5rem;" onclick="openModalAdd()">
+        <i class="fas fa-plus fa-sm me-2"></i> Thêm Lịch Mới
+    </button>
+</div>
+
+<div class="card table-card mb-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="bg-light text-center">
+                    <tr>
+                        <th width="10%">Mã Lớp</th>
+                        <th width="25%" class="text-start">Môn Học</th>
+                        <th width="20%" class="text-start">Giảng Viên</th>
+                        <th width="20%">Thời Gian</th>
+                        <th width="10%">Phòng</th>
+                        <th width="15%">Tùy Chọn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <span class="badge badge-soft-primary rounded-pill fw-bold">@item.MaLopHoc</span>
+                                </td>
+
+                                <td>
+                                    <div class="fw-bold text-dark">@item.TenKhoaHoc</div>
+                                    <div class="small text-muted"><i class="fas fa-barcode fa-xs me-1"></i>@item.MaKhoaHoc</div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @{
+                                            var initial = !string.IsNullOrEmpty(item.TenGiangVien) && item.TenGiangVien != "Chưa xếp GV" ? item.TenGiangVien.Substring(0, 1).ToUpper() : "?";
+                                            var bgColors = new[] { "#4e73df", "#1cc88a", "#36b9cc", "#f6c23e" };
+                                            var randomColor = bgColors[new Random().Next(bgColors.Length)];
+                                        }
+                                        <div class="avatar-initial shadow-sm text-white" style="background-color: @randomColor">@initial</div>
+                                        <div>
+                                            <div class="fw-bold text-dark" style="font-size: 0.9rem;">@item.TenGiangVien</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="text-center">
+                                    @{
+                                        string thuText = "";
+                                        string badgeClass = "badge-soft-info";
+                                        switch (item.NgayTrongTuan)
+                                        {
+                                            case 1: thuText = "Thứ Hai"; break;
+                                            case 2: thuText = "Thứ Ba"; break;
+                                            case 3: thuText = "Thứ Tư"; break;
+                                            case 4: thuText = "Thứ Năm"; badgeClass = "badge-soft-warning"; break;
+                                            case 5: thuText = "Thứ Sáu"; badgeClass = "badge-soft-warning"; break;
+                                            case 6: thuText = "Thứ Bảy"; badgeClass = "badge-soft-danger"; break;
+                                            case 7: thuText = "Chủ Nhật"; badgeClass = "badge-soft-danger"; break;
+                                        }
+                                        string gio = $"{item.ThoiGianBatDau:HH:mm} - {item.ThoiGianKetThuc:HH:mm}";
+                                    }
+                                    <span class="badge @badgeClass rounded-pill mb-1">@thuText</span>
+                                    <div class="small fw-bold text-secondary mt-1">
+                                        <i class="far fa-clock me-1 text-gray-400"></i>@gio
+                                    </div>
+                                </td>
+
+                                <td class="text-center">
+                                    <span class="text-dark fw-bold"><i class="fas fa-map-marker-alt text-danger me-1"></i>@item.PhongHoc</span>
+                                </td>
+
+                                <td class="text-center">
+                                    <button class="btn btn-action btn-outline-info me-1" title="Sửa"
+                                            onclick="openModalEdit(@item.ScheduleId, '@item.MaLopHoc', '@item.MaKhoaHoc', '@item.TenGiangVien', '@item.PhongHoc', '@item.ThoiGianBatDau.ToString("HH:mm")', '@item.ThoiGianKetThuc.ToString("HH:mm")', @item.NgayTrongTuan)">
+                                        <i class="fas fa-pen fa-xs"></i>
+                                    </button>
+                                    <button class="btn btn-action btn-outline-danger" title="Xóa"
+                                            onclick="deleteItem(@item.ScheduleId)">
+                                        <i class="fas fa-trash fa-xs"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fas fa-calendar-times fa-3x mb-3 text-gray-300"></i>
+                                <p>Chưa có lịch học nào được tạo.</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="classModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 1rem;">
+            <div class="modal-header bg-primary text-white" style="border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                <h5 class="modal-title fw-bold" id="modalTitle"><i class="fas fa-edit me-2"></i>Thông Tin Lịch Học</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-light">
+                <form id="frmClass">
+                    <input type="hidden" id="ScheduleId" value="0">
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Mã Lớp</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-layer-group text-gray-400"></i></span>
+                                <input type="text" class="form-control border-start-0" id="MaLopHoc" placeholder="VD: CT101_A">
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Mã Môn (API)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-barcode text-gray-400"></i></span>
+                                <input type="text" class="form-control border-start-0" id="MaKhoaHoc" placeholder="VD: CT101">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary text-uppercase">Giảng Viên</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="fas fa-chalkboard-teacher text-gray-400"></i></span>
+                            <input type="text" class="form-control border-start-0" id="TenGiangVien" placeholder="Tên Giảng Viên">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Phòng Học</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-door-open text-gray-400"></i></span>
+                                <input type="text" class="form-control border-start-0" id="PhongHoc" placeholder="VD: A101">
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Thứ</label>
+                            <select class="form-select" id="NgayTrongTuan">
+                                <option value="1">Thứ Hai</option>
+                                <option value="2">Thứ Ba</option>
+                                <option value="3">Thứ Tư</option>
+                                <option value="4">Thứ Năm</option>
+                                <option value="5">Thứ Sáu</option>
+                                <option value="6">Thứ Bảy</option>
+                                <option value="7">Chủ Nhật</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Bắt Đầu</label>
+                            <input type="time" class="form-control" id="GioBatDau">
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">Kết Thúc</label>
+                            <input type="time" class="form-control" id="GioKetThuc">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 bg-white justify-content-center py-3" style="border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem;">
+                <button type="button" class="btn btn-secondary px-4 fw-bold rounded-pill" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary px-4 fw-bold rounded-pill shadow-sm" onclick="saveData()">
+                    <i class="fas fa-save me-2"></i>Lưu Dữ Liệu
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var myModal;
+
+    document.addEventListener("DOMContentLoaded", function(){
+        myModal = new bootstrap.Modal(document.getElementById('classModal'));
+    });
+
+    function openModalAdd() {
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle me-2"></i>Thêm Mới Lịch Học';
+        document.getElementById('frmClass').reset();
+        document.getElementById('ScheduleId').value = 0;
+        // Mặc định Thứ 2
+        document.getElementById('NgayTrongTuan').value = 1;
+        myModal.show();
+    }
+
+    // Hàm Sửa: Nhận thêm tham số 'thu' để set select box
+    function openModalEdit(id, maLop, maMon, gv, phong, start, end, thu) {
+        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit me-2"></i>Cập Nhật Lịch Học';
+        document.getElementById('ScheduleId').value = id;
+        document.getElementById('MaLopHoc').value = maLop;
+        document.getElementById('MaKhoaHoc').value = maMon;
+        document.getElementById('TenGiangVien').value = gv;
+        document.getElementById('PhongHoc').value = phong;
+        document.getElementById('GioBatDau').value = start;
+        document.getElementById('GioKetThuc').value = end;
+        document.getElementById('NgayTrongTuan').value = thu; // Set đúng thứ
+        myModal.show();
+    }
+
+            function saveData() {
+        var id = parseInt(document.getElementById('ScheduleId').value) || 0;
+
+            var data = {
+        maLopHoc: document.getElementById('MaLopHoc').value.trim(),
+        tenGiangVien: document.getElementById('TenGiangVien').value.trim(),
+        phongHoc: document.getElementById('PhongHoc').value.trim(),
+        ngayTrongTuan: parseInt(document.getElementById('NgayTrongTuan').value),
+        thoiGianBatDau: document.getElementById('GioBatDau').value,
+        thoiGianKetThuc: document.getElementById('GioKetThuc').value
+    };
+
+
+        if (!data.maLopHoc)
+            return Swal.fire('Thiếu dữ liệu', 'Vui lòng nhập mã lớp', 'warning');
+
+        const url = id === 0
+            ? '/Admin/CreateSchedule'
+            : `/Admin/UpdateSchedule/${id}`;
+
+        const method = id === 0 ? 'POST' : 'PUT';
+
+        fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            if (res.ok) {
+                Swal.fire('Thành công', 'Đã lưu lịch học', 'success')
+                    .then(() => location.reload());
+            } else {
+                return res.text().then(t => Swal.fire('Lỗi', t, 'error'));
+            }
+        });
+    }
+
+    function deleteItem(id) {
+        Swal.fire({
+            title: 'Bạn chắc chắn?',
+            text: "Hành động này sẽ xóa lịch học vĩnh viễn!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e74a3b',
+            cancelButtonColor: '#858796',
+            confirmButtonText: 'Vâng, xóa đi!',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/Admin/DeleteSchedule?id=' + id, { method: 'POST' })
+                .then(res => {
+                    if (res.ok) {
+                        Swal.fire('Đã xóa!', 'Lịch học đã được gỡ bỏ.', 'success').then(() => location.reload());
+                    } else {
+                        Swal.fire('Lỗi!', 'Không thể xóa mục này.', 'error');
+                    }
+                });
+            }
+        });
+    }
+</script>
