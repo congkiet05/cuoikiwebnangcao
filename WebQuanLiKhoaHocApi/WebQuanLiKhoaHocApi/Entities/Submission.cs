@@ -14,6 +14,8 @@ namespace WebQuanLiKhoaHocApi.Entities
         public DateTime? SubmittedAt { get; set; }
         public double? Grade { get; set; }
 
+        public virtual Student? Student { get; set; }
+
         // Navigation properties (Nếu cần link dữ liệu)
         [ForeignKey("AssignmentId")]
         public virtual Assignment? Assignment { get; set; }

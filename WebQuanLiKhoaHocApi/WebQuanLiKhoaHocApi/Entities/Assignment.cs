@@ -31,6 +31,8 @@ namespace WebQuanLiKhoaHocApi.Entities
         [NotMapped]
         public int TotalStudents { get; set; }   // Để chứa sĩ số lớp (Capacity)
 
+        public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+
         [NotMapped]
         public string? ClassCode { get; set; }   // Để chứa mã lớp (L01, L02...)
     }

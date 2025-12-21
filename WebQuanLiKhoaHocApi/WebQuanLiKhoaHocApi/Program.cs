@@ -2,77 +2,46 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using WebQuanLiKhoaHocApi.Interfaces.HocVien;
-using WebQuanLiKhoaHocApi.Services.HocVien;
+using WebQuanLiKhoaHocApi.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var jwtKey = builder.Configuration["JWT:Key"];
-var jwtIssuer = builder.Configuration["JWT:Issuer"];
-var jwtAudience = builder.Configuration["JWT:Audience"];
+// FIX: Tránh lỗi Null cho JWT Key
+var jwtKey = builder.Configuration["JWT:Key"] ?? "Key_Du_Phong_Sieu_Bao_Mat_32_Ky_Tu_Nay_2024";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<UniversityDBContext>(options =>
+    options.UseSqlServer(connectionString));
 
-builder.Services.AddDbContext<WebQuanLiKhoaHocApi.Entities.UniversityDBContext>( options =>
-    options.UseSqlServer(connectionString)
-);
 builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Encoder =
-            System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-
-        options.JsonSerializerOptions.ReferenceHandler = 
-            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    .AddJsonOptions(options => {
+        // Chống lỗi vòng lặp dữ liệu (Circular Reference)
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        // Yêu cầu xác thực key (quan trọng nhất)
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
 
-        // Yêu cầu xác thực Issuer (Người phát hành)
-        ValidateIssuer = true,
-        ValidIssuer = jwtIssuer,
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 
-        // Yêu cầu xác thực Audience (Đối tượng)
-        ValidateAudience = true,
-        ValidAudience = jwtAudience,
-
-        // YêuG cầuxác thực thời gian sống của token
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero // Không cho phép chênh lệch thời gian
-    };
-});
-builder.Services.AddAuthorization();
-builder.Services.AddScoped<IHoSoHocVien, HoSoHocVienService>();
-builder.Services.AddScoped<ILichHoc, LichHocService>();
-builder.Services.AddScoped<IXemDiem, HocVien_XemDiemService>();
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
-
