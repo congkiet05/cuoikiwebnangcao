@@ -9,7 +9,7 @@
 
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
-            <form asp-action="XemDiemTrungBinh" asp-controller="XemDiemTB" method="get" class="row g-3 justify-content-center">
+            <form asp-action="XemDiemTrungBinh" asp-controller="XemDiem" method="get" class="row g-3 justify-content-center">
                 <div class="col-auto">
                     <label for="inputMaSV" class="col-form-label fw-bold">Nhập Mã Sinh Viên:</label>
                 </div>
@@ -65,6 +65,15 @@
                                 {
                                     <span class="text-danger">@item.DiemTrungBinh</span>
                                 }
+                            </td>
+                            <td class="text-center">
+                                <a asp-controller="XemDiem"
+                                   asp-action="XemDiemMon"
+                                   asp-route-MaHocVien="@item.MaHocVien"
+                                   asp-route-MaHocPhan="@item.MaHocPhan"
+                                   class="btn btn-sm btn-info text-white">
+                                    <i class="fa fa-eye"></i> Chi tiết
+                                </a>
                             </td>
                         </tr>
                     }

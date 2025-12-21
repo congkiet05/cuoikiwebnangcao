@@ -1,0 +1,74 @@
+﻿@model List<WebQuanLiKhoaHoc_MVC.Models.HocVien.HocVien_XemDiemMonModels>
+@{
+    ViewData["Title"] = "Chi Tiết Điểm Môn Học";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Chi Tiết Điểm Thành Phần</h2>
+
+    <div class="mb-3">
+        <a href="@Url.Action("XemDiemTrungBinh", "XemDiem", new { MaHocVien = ViewBag.MaHocVien })" class="btn btn-secondary">
+            <i class="fa fa-arrow-left"></i> Quay lại bảng điểm tổng
+        </a>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="alert alert-primary">
+            <strong>Mã SV:</strong> @Model[0].StudentNumber - <strong>Tên SV:</strong> @Model[0].FullName <br />
+            <strong>Môn học:</strong> @Model[0].CourseName (@Model[0].CourseCode)
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tên Bài Tập / Đầu Điểm</th>
+                        <th>Ngày Tạo</th>
+                        <th>Hạn Nộp</th>
+                        <th>Ngày Nộp</th>
+                        <th class="text-center">Điểm Số</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.AssignmentTitle</td>
+                            <td>@(item.CreatedAt.HasValue? item.CreatedAt.Value.ToString("dd/MM/yyyy") : "-")</td>
+                            <td>@(item.DueDate.HasValue? item.DueDate.Value.ToString("dd/MM/yyyy") : "-")</td>
+
+                            <td>
+                                @if (item.SubmittedAt.HasValue)
+                                {
+                                    @item.SubmittedAt.Value.ToString("dd/MM/yyyy HH:mm")
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">Chưa nộp</span>
+                                }
+                            </td>
+
+                            <td class="text-center fw-bold">
+                                @if (item.Grade.HasValue)
+                                {
+                                    @item.Grade
+                                }
+                                else
+                                {
+                                    <span class="text-warning">Chưa chấm</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center">
+            Chưa có dữ liệu điểm thành phần cho môn học này.
+        </div>
+    }
+</div>

@@ -22,7 +22,7 @@ builder.Services.AddHttpClient("ApiClient", client =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<HoSoHocVienService>();
 builder.Services.AddHttpClient<HocVienLichHoc>();
-builder.Services.AddHttpClient<HocVien_XemDiemTBService>();
+builder.Services.AddHttpClient<HocVien_XemDiemService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

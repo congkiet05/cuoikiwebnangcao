@@ -4,10 +4,11 @@ using WebQuanLiKhoaHoc_MVC.Service;
 
 namespace WebQuanLiKhoaHoc_MVC.Controllers.HocVien
 {
-    public class XemDiemTBController : Controller
+    public class XemDiemController : Controller
     {
-        private readonly HocVien_XemDiemTBService hocVien_XemDiemTBService;
-        public XemDiemTBController(HocVien_XemDiemTBService hocVien_XemDiemTBService)
+        private readonly HocVien_XemDiemService hocVien_XemDiemTBService;
+        
+        public XemDiemController(HocVien_XemDiemService hocVien_XemDiemTBService)
         {
             this.hocVien_XemDiemTBService = hocVien_XemDiemTBService;
 
@@ -27,6 +28,20 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers.HocVien
 
             return View(viewPath, xemDiemTrungBinhs);
         }
+        public async Task<IActionResult> XemDiemMon(string MaHocVien , string MaHocPhan)
+        {
+            string viewPath = "~/Views/Student/XemDiemChiTiet.cshtml";
 
+            if (string.IsNullOrEmpty(MaHocVien))
+            {
+
+                return View(viewPath, new List<HocVien_XemDiemMonModels>());
+            }
+
+            var xemDiemMon = await hocVien_XemDiemTBService.XemDiemMonHoc(MaHocVien , MaHocPhan);
+            ViewBag.CurrentFilter = MaHocVien;
+
+            return View(viewPath, xemDiemMon);
+        }
     }
 }
