@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using WebQuanLiKhoaHoc_MVC.Interface;
 using WebQuanLiKhoaHoc_MVC.Service;
 using WebQuanLiKhoaHoc_MVC.Service.Login;
 using WebQuanLiKhoaHocApi.Entities;
@@ -19,13 +20,23 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied"; // Không có quyền thì chuyển về đây
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
     });
-
+builder.Services.AddHttpClient("ApiGeneric", client =>
+{
+    // Thay 7274 bằng Port của API (ví dụ 5204 hoặc 7137)
+    client.BaseAddress = new Uri("https://localhost:7274/api/");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<HoSoHocVienService>();
 builder.Services.AddHttpClient<HocVienLichHoc>();
 builder.Services.AddHttpClient<HocVien_XemDiemService>();
 builder.Services.AddHttpClient<BaiTapService>();
+
+builder.Services.AddScoped<IScheduleApiService, ScheduleApiService>();
+builder.Services.AddScoped<ApiService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
