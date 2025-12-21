@@ -40,6 +40,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMvcApp",
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:7274") // THAY BẰNG PORT CỦA PROJECT MVC
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+app.UseCors("AllowMvcApp");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

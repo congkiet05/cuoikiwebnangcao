@@ -1,0 +1,148 @@
+﻿@using WebQuanLiKhoaHocApi.DTOs
+@model IEnumerable<NotificationDTO>
+
+@{
+    ViewData["Title"] = "Bảng Tin Sinh Viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold text-primary text-uppercase">
+                <i class="fa fa-newspaper-o me-2"></i> Bảng Tin Nhà Trường
+            </h2>
+            <p class="text-muted fst-italic mb-0">Cập nhật tin tức, sự kiện và lịch học mới nhất.</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="@Url.Action("Index", "Announcement")" class="btn btn-outline-secondary btn-sm">
+                <i class="fa fa-refresh"></i> Làm mới
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    // --- XỬ LÝ GIAO DIỆN DỰA TRÊN DỮ LIỆU ---
+
+                    // 1. Phân loại màu sắc (Toàn trường = Primary, Lớp học = Success)
+                    bool isGlobal = item.Type == "Toàn trường";
+                    string borderClass = isGlobal ? "border-primary" : "border-success";
+                    string badgeColor = isGlobal ? "bg-primary" : "bg-success";
+                    string iconType = isGlobal ? "fa-university" : "fa-book";
+
+                    // 2. Xử lý cắt ngắn nội dung (nếu dài quá 180 ký tự)
+                    string summary = item.Body;
+                    if (!string.IsNullOrEmpty(summary) && summary.Length > 180)
+                    {
+                        summary = summary.Substring(0, 180) + "...";
+                    }
+
+                    // 3. Xử lý trạng thái Chưa đọc (In đậm tên, hiện chấm đỏ)
+                    string titleWeight = item.IsRead ? "fw-normal" : "fw-bold";
+                    string bgUnread = item.IsRead ? "bg-white" : "bg-light"; // Tin chưa đọc nền hơi xám
+
+                    // --- RENDER CARD ---
+                    <div class="card shadow-sm mb-4 @borderClass @bgUnread hover-effect" style="border-top: 4px solid;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge @badgeColor rounded-pill">
+                                    <i class="fa @iconType me-1"></i> @item.Type
+                                </span>
+                                <small class="text-muted">
+                                    <i class="fa fa-clock-o me-1"></i> @item.CreatedAt.ToString("HH:mm dd/MM/yyyy")
+                                </small>
+                            </div>
+
+                            <h5 class="card-title text-dark @titleWeight mb-1">
+                                @if (!item.IsRead)
+                                {
+                                    <i class="fa fa-circle text-danger me-1" style="font-size: 8px; vertical-align: middle;" title="Chưa xem"></i>
+                                }
+                                @item.Title
+                            </h5>
+
+                            <h6 class="card-subtitle mb-3 text-muted small">
+                                Đăng bởi: <span class="fw-bold">@item.AuthorName</span>
+                            </h6>
+
+                            <p class="card-text text-secondary">
+                                @Html.Raw(summary)
+                            </p>
+
+                            <div class="text-end">
+                                <button onclick="viewDetail(@item.AnnouncementId, this)" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                    Xem chi tiết <i class="fa fa-arrow-right ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="mb-3 text-muted">
+                        <i class="fa fa-folder-open-o fa-4x"></i>
+                    </div>
+                    <h4>Hiện không có thông báo nào</h4>
+                    <p class="text-muted">Bạn đã xem hết các tin tức mới nhất.</p>
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-4 d-none d-lg-block">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-white fw-bold">
+                    <i class="fa fa-filter text-secondary"></i> Tổng quan
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Tổng số tin
+                        <span class="badge bg-secondary rounded-pill">@(Model?.Count() ?? 0)</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Tin toàn trường
+                        <span class="badge bg-primary rounded-pill">@(Model?.Count(x => x.Type == "Toàn trường") ?? 0)</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Tin lớp học phần
+                        <span class="badge bg-success rounded-pill">@(Model?.Count(x => x.Type != "Toàn trường") ?? 0)</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Chưa đọc
+                        <span class="badge bg-danger rounded-pill">@(Model?.Count(x => !x.IsRead) ?? 0)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card shadow-sm border-0 bg-light">
+                <div class="card-body text-center">
+                    <h6 class="fw-bold">Hỗ trợ sinh viên</h6>
+                    <p class="small text-muted mb-3">Nếu bạn không thấy thông báo lớp học, vui lòng liên hệ phòng đào tạo.</p>
+                    <a href="#" class="btn btn-info text-white btn-sm w-100">Liên hệ ngay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Hiệu ứng khi di chuột vào thẻ tin */
+    .hover-effect {
+        transition: all 0.3s ease;
+    }
+    .hover-effect:hover {
+        transform: translateY(-3px); /* Nhấc thẻ lên nhẹ */
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Làm đẹp thanh cuộn nếu nội dung dài */
+    .card-text {
+        min-height: 40px;
+    }
+</style>
