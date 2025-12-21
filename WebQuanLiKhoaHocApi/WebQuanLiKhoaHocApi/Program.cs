@@ -15,14 +15,19 @@ var jwtAudience = builder.Configuration["JWT:Audience"];
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("SignalRCors", policy =>
+    options.AddPolicy("AllowMVCAndSignalR", policy =>
     {
-        policy.WithOrigins("https://localhost:7137") // URL chính xác của trang Web (xem ở thanh địa chỉ trình duyệt)
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials(); // Bắt buộc phải có để SignalR hoạt động qua CORS
+        policy
+            .WithOrigins(
+                "https://localhost:7274", // MVC
+                "https://localhost:7137"  // SignalR / Web khác
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
     });
 });
+
 
 builder.Services.AddSignalR();
 
@@ -81,8 +86,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors("AllowMVCAndSignalR");
 
-app.UseCors("SignalRCors");
 
 app.UseAuthentication();
 

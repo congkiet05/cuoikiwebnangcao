@@ -1,94 +1,130 @@
-﻿@{
-    ViewBag.Title = "My Profile";
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewBag.Title = "Hồ sơ cá nhân";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
-
-    // @model YourNamespace.Models.LecturerProfile
+    var apiBaseUrl = Configuration["ApiSettings:BaseUrl"];
 }
 
-<div class="card p-4 shadow-sm">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3 d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-person-circle me-2"></i>THÔNG TIN CÁ NHÂN</h5>
+                    <img id="profileImg" src="" class="rounded-circle border border-2 border-white" style="width: 40px; height: 40px; object-fit: cover;" />
+                </div>
+                <div class="card-body p-4">
+                    <form id="profileForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">MÃ SỐ GIẢNG VIÊN</label>
+                                <input type="text" id="staffNumber" class="form-control bg-light" readonly />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">TÊN ĐĂNG NHẬP</label>
+                                <input type="text" id="username" class="form-control bg-light" readonly />
+                            </div>
 
-    <h2 class="h4 mb-1">My Profile</h2>
-    <p class="text-muted mb-4">Update your personal and professional information.</p>
+                            <div class="col-md-12">
+                                <label class="form-label small fw-bold">HỌ VÀ TÊN</label>
+                                <input type="text" id="fullName" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">KHOA / BỘ MÔN</label>
+                                <input type="text" id="department" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">EMAIL</label>
+                                <input type="email" id="email" class="form-control" />
+                            </div>
 
-    @using (Html.BeginForm("UpdateProfile", "Lecturer", FormMethod.Post, new { id = "profileForm" }))
-    {
-        @* @Html.AntiForgeryToken() *@
+                            <div class="col-12"><hr class="my-3"></div>
 
-        <div class="row">
-            <div class="col-lg-4 mb-4">
-                <div class="p-3 text-center border rounded h-100">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-primary">MẬT KHẨU MỚI</label>
+                                <input type="password" id="newPassword" class="form-control" placeholder="Để trống nếu không đổi" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-primary">XÁC NHẬN MẬT KHẨU</label>
+                                <input type="password" id="confirmPassword" class="form-control" />
+                            </div>
+                        </div>
 
-                    <div class="position-relative d-inline-block mb-3">
-                        <img src="~/images/avatar.jpg" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                        <a href="#" class="btn btn-sm btn-light rounded-circle position-absolute top-0 start-100 translate-middle border border-primary p-1">
-                            <i class="bi bi-pencil" style="font-size: 0.75rem;"></i>
-                        </a>
-                    </div>
-
-                    <h5>Dr. Jane Doe</h5>
-                    <p class="text-muted mb-1">Associate Professor</p>
-                    <p class="text-muted small">Department of Computer Science</p>
-
-                    <h6 class="text-start mt-4 mb-2 border-top pt-3">Bio</h6>
-                    <textarea class="form-control" rows="4">Passionate about machine learning and its applications in healthcare. Committed to fostering a dynamic and inclusive learning environment.</textarea>
-
+                        <div class="text-end mt-4">
+                            <button type="button" onclick="updateProfile()" class="btn btn-primary px-4 fw-bold shadow-sm">
+                                <i class="bi bi-save me-2"></i>LƯU THAY ĐỔI
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="col-lg-8">
-
-                <h5 class="mb-3">Contact Information</h5>
-                <div class="row mb-4">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small text-muted">Email Address</label>
-                        <input type="email" class="form-control" value="jane.doe@university.edu" readonly>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label small text-muted">Phone Number</label>
-                        <input type="text" class="form-control" value="(123) 456-7890">
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label class="form-label small text-muted">Office Location</label>
-                        <input type="text" class="form-control" value="Science Building, Room 302">
-                    </div>
-                </div>
-
-                <h5 class="mb-3">Academic Background</h5>
-                <div class="mb-4">
-                    <div class="d-flex justify-content-between align-items-start border-bottom pb-2 mb-2">
-                        <div>
-                            <strong>Ph.D. in Computer Science</strong>
-                            <p class="text-muted small mb-0">Stanford University, 2012</p>
-                        </div>
-                        <a href="#" class="btn btn-sm text-secondary p-0"><i class="bi bi-pencil"></i></a>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-start border-bottom pb-2 mb-2">
-                        <div>
-                            <strong>M.S. in Computer Science</strong>
-                            <p class="text-muted small mb-0">Stanford University, 2008</p>
-                        </div>
-                        <a href="#" class="btn btn-sm text-secondary p-0"><i class="bi bi-pencil"></i></a>
-                    </div>
-                    <a href="#" class="btn btn-link btn-sm"><i class="bi bi-plus-circle me-1"></i> Add Qualification</a>
-                </div>
-
-                <h5 class="mb-3">Research Interests</h5>
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                    <span class="badge bg-primary text-white p-2">Machine Learning <a href="#" class="text-white ms-1" style="text-decoration: none;">&times;</a></span>
-                    <span class="badge bg-primary text-white p-2">AI Ethics <a href="#" class="text-white ms-1" style="text-decoration: none;">&times;</a></span>
-                    <span class="badge bg-primary text-white p-2">Computational Biology <a href="#" class="text-white ms-1" style="text-decoration: none;">&times;</a></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Add Interest...">
-
-            </div>
         </div>
-
-        <hr class="mt-5 mb-3" />
-        <div class="d-flex justify-content-end">
-            <a href="@Url.Action("Dashboard", "Lecturer")" class="btn btn-light me-2">Cancel</a>
-
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </div>
-    }
-
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        const lecturerId = 4; // Cố định theo yêu cầu của bạn
+        const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
+
+        $(document).ready(function() {
+            loadProfile();
+        });
+
+                function loadProfile() {
+            console.log("Đang gọi API lấy thông tin giảng viên...");
+
+            $.get(`${apiBaseUrl}/Lecturers/${lecturerId}`, function (data) {
+                console.log("Dữ liệu nhận được:", data);
+
+                // 1. Lấy thông tin từ Lecturer
+                $('#staffNumber').val(data.StaffNumber || data.staffNumber || "");
+                $('#fullName').val(data.FullName || data.fullName || "");
+                $('#department').val(data.Department || data.department || "");
+
+                // 2. Lấy thông tin từ User (Lúc này API đã trả về ngang hàng)
+                $('#username').val(data.Username || data.username || "");
+                $('#email').val(data.Email || data.email || "");
+
+                // 3. Cập nhật ảnh đại diện dựa trên tên mới lấy được
+                const name = data.FullName || data.fullName || "User";
+                $('#profileImg').attr('src', `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0d6efd&color=fff`);
+
+            }).fail(function (xhr) {
+                console.error("Lỗi API:", xhr.responseText);
+                alert("Không thể tải thông tin. Kiểm tra lại ID giảng viên!");
+            });
+        }
+
+                function updateProfile() {
+            const data = {
+                // Tên thuộc tính phải viết HOA chữ cái đầu để khớp DTO C#
+                FullName: $('#fullName').val().trim(),
+                Department: $('#department').val() || null,
+                Email: $('#email').val() || null,
+                NewPassword: $('#newPassword').val() || null
+            };
+
+            if (!data.FullName) {
+                alert("Họ và tên không được để trống!");
+                return;
+            }
+
+            $.ajax({
+                url: `${apiBaseUrl}/Lecturers/UpdateProfile/${lecturerId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function () {
+                    alert("Cập nhật hồ sơ thành công!");
+                    $('#newPassword, #confirmPassword').val(''); // Xóa ô pass sau khi đổi
+                    loadProfile(); // Tải lại thông tin mới
+                },
+                error: function (err) {
+                    console.error("Lỗi cập nhật:", err.responseText);
+                    alert("Không thể cập nhật hồ sơ!");
+                }
+            });
+        }
+    </script>
+}
