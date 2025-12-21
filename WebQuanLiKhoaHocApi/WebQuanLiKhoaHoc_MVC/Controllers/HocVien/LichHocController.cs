@@ -13,7 +13,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers.HocVien
         }
         public async Task<IActionResult> LichHoc(string MaHocVien)
         {
-            string viewPath = "~/Views/Student/LichHoc.cshtml";
+            string viewPath = "~/Views/Student/HocVien_LichHoc.cshtml";
 
             if (string.IsNullOrEmpty(MaHocVien))
             {

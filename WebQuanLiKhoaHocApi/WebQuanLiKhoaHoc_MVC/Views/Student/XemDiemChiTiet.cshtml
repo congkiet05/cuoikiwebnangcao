@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "Chi Tiết Điểm Môn Học";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
 
     // 2. Lấy danh sách bài tập từ Controller gửi sang
     var listBaiTap = ViewBag.ListBaiTapChuaNop as List<BaiTapCanNopViewModel>;

@@ -11,7 +11,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
         private readonly UniversityDBContext _context;
         public IActionResult Dashboard()
         {
-            return View(); // -> Views/Student/Dashboard.cshtml
+            return View("~/Views/Student/HocVien_Dashboard.cshtml"); // -> Views/Student/Dashboard.cshtml
         }
         public StudentController(UniversityDBContext context)
         {
