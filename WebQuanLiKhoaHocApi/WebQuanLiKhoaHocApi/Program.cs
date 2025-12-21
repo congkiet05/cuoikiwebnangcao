@@ -5,6 +5,7 @@ using System.Text;
 using WebQuanLiKhoaHocApi.Entities;
 using WebQuanLiKhoaHocApi.Hubs;
 using WebQuanLiKhoaHocApi.Interfaces.HocVien;
+using WebQuanLiKhoaHocApi.Services.BaiTap;
 using WebQuanLiKhoaHocApi.Services.HocVien;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -77,6 +78,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IHoSoHocVien, HoSoHocVienService>();
 builder.Services.AddScoped<ILichHoc,LichHocService>();
 builder.Services.AddScoped<IXemDiem, HocVien_XemDiemService>();
+builder.Services.AddScoped<IHocVien_NopBaiTap, HocVien_BaiTapService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

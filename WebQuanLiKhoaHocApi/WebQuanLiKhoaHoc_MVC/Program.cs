@@ -25,6 +25,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<HoSoHocVienService>();
 builder.Services.AddHttpClient<HocVienLichHoc>();
 builder.Services.AddHttpClient<HocVien_XemDiemService>();
+builder.Services.AddHttpClient<BaiTapService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
