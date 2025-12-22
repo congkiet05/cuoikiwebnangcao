@@ -47,10 +47,20 @@
 </a>
 <hr class="my-2" />
 
-<a href="#" class="sidebar-item d-flex align-items-center">
-    <i class="bi bi-gear me-2"></i>
-    <span>Cài đặt</span>
+<a href="#settingsSubmenu" data-bs-toggle="collapse" class="sidebar-item d-flex align-items-center justify-content-between" aria-expanded="false">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-gear me-2"></i>
+        <span>Cài đặt</span>
+    </div>
+    <i class="bi bi-chevron-down small" style="font-size: 0.8rem;"></i>
 </a>
+
+<div class="collapse" id="settingsSubmenu">
+    <a href="@Url.Action("Logout", "Login")" class="sidebar-item d-flex align-items-center ps-4 text-danger">
+        <i class="bi bi-box-arrow-right me-2"></i>
+        <span>Đăng xuất</span>
+    </a>
+</div>
 
 <a href="#" class="sidebar-item d-flex align-items-center">
     <i class="bi bi-question-circle me-2"></i>
