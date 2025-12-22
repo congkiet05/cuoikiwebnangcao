@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebQuanLiKhoaHocApi.Entities;
+using WebQuanLiKhoaHocApi.Entities; // Đảm bảo namespace này đúng với dự án của bạn
 
 namespace WebQuanLiKhoaHocApi.Controllers
 {
@@ -20,12 +20,42 @@ namespace WebQuanLiKhoaHocApi.Controllers
             _context = context;
         }
 
+        // =========================================================================
+        // PHẦN ĐÃ SỬA: Lấy danh sách thông báo và nối bảng User để lấy tên tác giả
+        // =========================================================================
         // GET: api/Announcements
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Announcement>>> GetAnnouncements()
+        public async Task<ActionResult<IEnumerable<object>>> GetAnnouncements()
         {
-            return await _context.Announcements.ToListAsync();
+            // Kiểm tra null để tránh lỗi
+            if (_context.Announcements == null)
+            {
+                return NotFound();
+            }
+
+            // JOIN bảng Announcement với bảng Users để lấy Username
+            var data = await _context.Announcements
+                .Join(_context.Users,               // Bảng User (trong Context phải có DbSet<User> Users)
+                    a => a.AuthorId,                // Khóa ngoại bên Announcement
+                    u => u.UserId,                  // Khóa chính bên User
+                    (a, u) => new                   // Trả về dữ liệu khớp với Model bên MVC
+                    {
+                        Id = a.AnnouncementId,      // MVC gọi là Id
+                        Title = a.Title,
+                        Body = a.Body,
+                        Author = u.Username,        // Lấy tên người dùng thay vì số ID
+                        CreatedAt = a.CreatedAt
+                    })
+                .OrderByDescending(x => x.CreatedAt) // Sắp xếp mới nhất lên đầu
+                .ToListAsync();
+
+            return Ok(data);
         }
+
+        // =========================================================================
+        // PHẦN GIỮ NGUYÊN CODE CỦA BẠN (KHÔNG THAY ĐỔI GÌ BÊN DƯỚI)
+        // =========================================================================
+
         [HttpGet("Author/{authorId}")]
         public async Task<IActionResult> GetAnnouncementsByAuthor(int authorId)
         {
@@ -69,8 +99,9 @@ namespace WebQuanLiKhoaHocApi.Controllers
             {
                 return BadRequest();
             }
-            announcement.Author = null;
-            announcement.TargetClass = null;
+            // Logic xử lý tránh lỗi vòng lặp hoặc update sai relation
+            announcement.Author = null;     // Giữ nguyên logic của bạn
+            announcement.TargetClass = null; // Giữ nguyên logic của bạn
 
             _context.Entry(announcement).State = EntityState.Modified;
 
