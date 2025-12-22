@@ -64,64 +64,68 @@
 
 @section Scripts {
     <script>
-        const lecturerId = 4; // Cố định theo yêu cầu của bạn
+        const lecturerId = parseInt("@ViewBag.CurrentUserId") || 0;
+        const token = "@ViewBag.AccessToken";
         const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
 
         $(document).ready(function() {
             loadProfile();
         });
 
-                function loadProfile() {
-            console.log("Đang gọi API lấy thông tin giảng viên...");
+        function loadProfile() {
+            $.ajax({
+                url: `${apiBaseUrl}/Lecturers/${lecturerId}`,
+                type: 'GET',
+                headers: {
+                    "Authorization": "Bearer " + token // Thêm token để xác thực với API
+                },
+                success: function (data) {
+                    $('#staffNumber').val(data.StaffNumber || data.staffNumber || "");
+                    $('#fullName').val(data.FullName || data.fullName || "");
+                    $('#department').val(data.Department || data.department || "");
+                    $('#username').val(data.Username || data.username || "");
+                    $('#email').val(data.Email || data.email || "");
 
-            $.get(`${apiBaseUrl}/Lecturers/${lecturerId}`, function (data) {
-                console.log("Dữ liệu nhận được:", data);
-
-                // 1. Lấy thông tin từ Lecturer
-                $('#staffNumber').val(data.StaffNumber || data.staffNumber || "");
-                $('#fullName').val(data.FullName || data.fullName || "");
-                $('#department').val(data.Department || data.department || "");
-
-                // 2. Lấy thông tin từ User (Lúc này API đã trả về ngang hàng)
-                $('#username').val(data.Username || data.username || "");
-                $('#email').val(data.Email || data.email || "");
-
-                // 3. Cập nhật ảnh đại diện dựa trên tên mới lấy được
-                const name = data.FullName || data.fullName || "User";
-                $('#profileImg').attr('src', `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0d6efd&color=fff`);
-
-            }).fail(function (xhr) {
-                console.error("Lỗi API:", xhr.responseText);
-                alert("Không thể tải thông tin. Kiểm tra lại ID giảng viên!");
+                    const name = data.FullName || data.fullName || "User";
+                    $('#profileImg').attr('src', `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0d6efd&color=fff`);
+                },
+                error: function (xhr) {
+                    console.error("Lỗi API:", xhr.responseText);
+                }
             });
         }
 
-                function updateProfile() {
+        function updateProfile() {
+            const newPass = $('#newPassword').val();
+            const confirmPass = $('#confirmPassword').val();
+
+            // Kiểm tra khớp mật khẩu ở client trước
+            if (newPass && newPass !== confirmPass) {
+                alert("Xác nhận mật khẩu mới không khớp!");
+                return;
+            }
+
             const data = {
-                // Tên thuộc tính phải viết HOA chữ cái đầu để khớp DTO C#
                 FullName: $('#fullName').val().trim(),
                 Department: $('#department').val() || null,
                 Email: $('#email').val() || null,
-                NewPassword: $('#newPassword').val() || null
+                NewPassword: newPass || null
             };
-
-            if (!data.FullName) {
-                alert("Họ và tên không được để trống!");
-                return;
-            }
 
             $.ajax({
                 url: `${apiBaseUrl}/Lecturers/UpdateProfile/${lecturerId}`,
                 type: 'PUT',
                 contentType: 'application/json',
+                headers: {
+                    "Authorization": "Bearer " + token // Gửi token khi cập nhật
+                },
                 data: JSON.stringify(data),
                 success: function () {
                     alert("Cập nhật hồ sơ thành công!");
-                    $('#newPassword, #confirmPassword').val(''); // Xóa ô pass sau khi đổi
-                    loadProfile(); // Tải lại thông tin mới
+                    $('#newPassword, #confirmPassword').val('');
+                    loadProfile();
                 },
                 error: function (err) {
-                    console.error("Lỗi cập nhật:", err.responseText);
                     alert("Không thể cập nhật hồ sơ!");
                 }
             });

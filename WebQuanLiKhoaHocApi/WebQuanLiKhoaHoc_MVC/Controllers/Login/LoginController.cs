@@ -50,11 +50,10 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
                 new Claim("JwtToken", loginResult.Token)      // Lưu token để dành gọi API khác
             };
 
-            // Lấy thêm UserId từ trong token (nếu có) để lưu vào Cookie
-            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "userId" || c.Type == "sub");
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "userId");
             if (userIdClaim != null)
             {
-                claims.Add(new Claim("UserId", userIdClaim.Value));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, userIdClaim.Value));
             }
 
             // 4. Thiết lập Cookie Authentication
@@ -91,7 +90,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
                 case "Lecturer":
                     // Chuyển đến: Areas/Lecturer/Controllers/HomeController.cs -> Index
                     // (Nếu API trả về là "GiangVien" thì sửa case này thành "GiangVien")
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Dashboard", "Lecturer");
 
                 default:
                     // Trường hợp không xác định hoặc user thường -> Về trang chủ chung

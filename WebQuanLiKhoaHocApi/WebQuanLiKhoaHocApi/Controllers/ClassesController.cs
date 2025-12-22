@@ -121,7 +121,7 @@ namespace WebQuanLiKhoaHocApi.Controllers
         public async Task<IActionResult> GetClassesByStudent(int studentId)
         {
             var classes = await _context.Registrations
-                .Where(r => r.StudentId == studentId && r.Status == "Enrolled") // Chỉ lấy lớp đã đăng ký học
+                .Where(r => r.StudentId == studentId && r.Status == "Registered") // Chỉ lấy lớp đã đăng ký học
                 .Include(r => r.Class)
                     .ThenInclude(c => c.Course)
                 .Select(r => new {

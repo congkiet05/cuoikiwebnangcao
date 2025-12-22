@@ -1,6 +1,6 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
-    ViewBag.Title = "Quản lý Thông báo";
+    ViewBag.Title = "Quản lý Thông báo Lớp học";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
 
     var apiBaseUrl = Configuration["ApiSettings:BaseUrl"];
@@ -8,81 +8,80 @@
 
 <div class="container-fluid py-4">
     <div class="row">
-
-        <!-- ================= CREATE ================= -->
         <div class="col-lg-5 mb-4">
             <div class="card shadow-sm border-0">
-                <div class="card-header bg-primary text-white fw-bold">
-                    <i class="bi bi-megaphone"></i> Tạo thông báo
+                <div class="card-header bg-primary text-white fw-bold py-3">
+                    <i class="bi bi-megaphone-fill me-2"></i> ĐĂNG THÔNG BÁO CHO LỚP
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <form id="formAnnouncement">
                         <div class="mb-3">
-                            <label class="form-label">Tiêu đề</label>
-                            <input id="annTitle" class="form-control" />
+                            <label class="form-label small fw-bold text-muted">TIÊU ĐỀ</label>
+                            <input id="annTitle" class="form-control shadow-sm" placeholder="Nhập tiêu đề thông báo..." />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Nội dung</label>
-                            <textarea id="annBody" class="form-control" rows="5"></textarea>
+                            <label class="form-label small fw-bold text-muted">NỘI DUNG</label>
+                            <textarea id="annBody" class="form-control shadow-sm" rows="5" placeholder="Nội dung chi tiết gửi đến sinh viên..."></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Lớp học</label>
-                            <select id="annClassId" class="form-select"></select>
+                            <label class="form-label small fw-bold text-muted">GỬI ĐẾN LỚP HỌC</label>
+                            <select id="annClassId" class="form-select shadow-sm"></select>
                         </div>
 
-                        <button type="button" id="btnPost" class="btn btn-primary w-100">
-                            Đăng thông báo
+                        <button type="button" id="btnPost" class="btn btn-primary w-100 py-2 fw-bold shadow">
+                            <i class="bi bi-send-fill me-2"></i> ĐĂNG THÔNG BÁO
                         </button>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- ================= LIST ================= -->
         <div class="col-lg-7">
-            <h5 class="fw-bold text-primary mb-3">
-                Lịch sử thông báo
-                <span class="badge bg-primary" id="annCount">0</span>
-            </h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-primary mb-0">
+                    <i class="bi bi-clock-history me-2"></i> LỊCH SỬ ĐÃ ĐĂNG
+                </h5>
+                <span class="badge bg-primary px-3 py-2 rounded-pill shadow-sm" id="annCount">0</span>
+            </div>
 
-            <div id="announcement-list"></div>
+            <div id="announcement-list" class="pe-2" style="max-height: 75vh; overflow-y: auto;">
+                <div class="text-center p-5 bg-white rounded shadow-sm">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- ================= EDIT MODAL ================= -->
 <div class="modal fade" id="editAnnModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Sửa thông báo</h5>
-                <button class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white py-3">
+                <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>CHỈNH SỬA THÔNG BÁO</h5>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <input type="hidden" id="editAnnId" />
-
                 <div class="mb-3">
-                    <label>Tiêu đề</label>
-                    <input id="editTitle" class="form-control" />
+                    <label class="form-label small fw-bold text-muted">TIÊU ĐỀ</label>
+                    <input id="editTitle" class="form-control shadow-sm" />
                 </div>
-
                 <div class="mb-3">
-                    <label>Nội dung</label>
-                    <textarea id="editBody" class="form-control" rows="5"></textarea>
+                    <label class="form-label small fw-bold text-muted">NỘI DUNG</label>
+                    <textarea id="editBody" class="form-control shadow-sm" rows="5"></textarea>
                 </div>
-
                 <div class="mb-3">
-                    <label>Lớp học</label>
-                    <select id="editClassId" class="form-select"></select>
+                    <label class="form-label small fw-bold text-muted">LỚP HỌC</label>
+                    <select id="editClassId" class="form-select shadow-sm"></select>
                 </div>
             </div>
 
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button class="btn btn-primary" id="btnUpdateAnn">Lưu</button>
+            <div class="modal-footer bg-light border-0">
+                <button class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">HỦY</button>
+                <button class="btn btn-primary px-4 fw-bold" id="btnUpdateAnn">CẬP NHẬT</button>
             </div>
         </div>
     </div>
@@ -91,76 +90,89 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-
-            const lecturerId = 4;
+            // 1. LẤY DỮ LIỆU THẬT TỪ SERVER
+            const lecturerId = parseInt("@ViewBag.CurrentUserId") || 0;
+            const token = "@ViewBag.AccessToken";
             const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
 
-            /* ================= LOAD CLASSES ================= */
+            if (lecturerId === 0) return;
+
+            /* ================= LOAD DANH SÁCH LỚP ================= */
             function loadClasses(target, selectedId = null) {
-                $.get(`${apiBaseUrl}/Classes/Lecturer/${lecturerId}`, function (data) {
-                    let html = '<option value="">-- Chọn lớp --</option>';
-                    data.forEach(c => {
-                        html += `<option value="${c.classId}" ${c.classId === selectedId ? 'selected' : ''}>
-                                    ${c.classCode} - ${c.courseName}
-                                 </option>`;
-                    });
-                    $(target).html(html);
+                $.ajax({
+                    url: `${apiBaseUrl}/Classes/Lecturer/${lecturerId}`,
+                    type: "GET",
+                    headers: { "Authorization": "Bearer " + token },
+                    success: function (data) {
+                        let html = '<option value="">-- Chọn lớp học --</option>';
+                        data.forEach(c => {
+                            html += `<option value="${c.classId}" ${c.classId === selectedId ? 'selected' : ''}>
+                                        [${c.classCode}] - ${c.courseName}
+                                     </option>`;
+                        });
+                        $(target).html(html);
+                    }
                 });
             }
 
-            /* ================= LOAD ANNOUNCEMENTS ================= */
+            /* ================= LOAD THÔNG BÁO ================= */
             function loadAnnouncements() {
-                $('#announcement-list').html('<div class="text-center">Đang tải...</div>');
+                $.ajax({
+                    url: `${apiBaseUrl}/Announcements/Author/${lecturerId}`,
+                    type: "GET",
+                    headers: { "Authorization": "Bearer " + token },
+                    success: function (data) {
+                        $('#annCount').text(data.length);
+                        if (!data.length) {
+                            $('#announcement-list').html('<div class="text-center p-5 bg-white rounded shadow-sm text-muted">Chưa có thông báo nào được đăng.</div>');
+                            return;
+                        }
 
-                $.get(`${apiBaseUrl}/Announcements/Author/${lecturerId}`, function (data) {
+                        let html = '';
+                        data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Mới nhất lên đầu
 
-                    $('#annCount').text(data.length);
-                    if (!data.length) {
-                        $('#announcement-list').html('<div class="text-muted">Chưa có thông báo</div>');
-                        return;
-                    }
-
-                    let html = '';
-                    data.forEach(a => {
-                        html += `
-                        <div class="card mb-3 shadow-sm border-start border-primary border-4">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="fw-bold">${a.title}</h6>
-                                    <div>
-                                        <button class="btn btn-sm text-primary"
-                                            onclick='openEditAnn(${JSON.stringify(a)})'>
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn btn-sm text-danger"
-                                            onclick="deleteAnn(${a.announcementId})">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                        data.forEach(a => {
+                            html += `
+                            <div class="card mb-3 shadow-sm border-0 border-start border-primary border-4">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-1">${a.title}</h6>
+                                            <span class="badge bg-secondary-subtle text-secondary small mb-2">Lớp: ${a.targetClassId}</span>
+                                        </div>
+                                        <div class="d-flex gap-1">
+                                            <button class="btn btn-sm btn-outline-primary border-0" onclick='openEditAnn(${JSON.stringify(a)})' title="Sửa">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger border-0" onclick="deleteAnn(${a.announcementId})" title="Xóa">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted small mb-2" style="white-space: pre-wrap;">${a.body}</p>
+                                    <div class="text-end border-top pt-2 mt-2">
+                                        <small class="text-muted"><i class="bi bi-clock me-1"></i>${new Date(a.createdAt).toLocaleString("vi-VN")}</small>
                                     </div>
                                 </div>
-                                <p class="text-muted small">${a.body}</p>
-                                <small>${new Date(a.createdAt).toLocaleString("vi-VN")}</small>
-                            </div>
-                        </div>`;
-                    });
-
-                    $('#announcement-list').html(html);
+                            </div>`;
+                        });
+                        $('#announcement-list').html(html);
+                    }
                 });
             }
 
-            /* ================= CREATE ================= */
+            /* ================= ĐĂNG THÔNG BÁO MỚI ================= */
             $('#btnPost').click(function () {
-
                 const data = {
                     authorId: lecturerId,
-                    title: $('#annTitle').val(),
-                    body: $('#annBody').val(),
+                    title: $('#annTitle').val().trim(),
+                    body: $('#annBody').val().trim(),
                     targetClassId: parseInt($('#annClassId').val()),
                     isGlobal: false
                 };
 
                 if (!data.title || !data.body || !data.targetClassId) {
-                    alert("Nhập đủ thông tin");
+                    alert("Vui lòng điền đầy đủ tiêu đề, nội dung và chọn lớp!");
                     return;
                 }
 
@@ -168,15 +180,17 @@
                     url: `${apiBaseUrl}/Announcements`,
                     type: "POST",
                     contentType: "application/json",
+                    headers: { "Authorization": "Bearer " + token },
                     data: JSON.stringify(data),
                     success: () => {
+                        alert("Đăng thông báo thành công!");
                         $('#formAnnouncement')[0].reset();
                         loadAnnouncements();
                     }
                 });
             });
 
-            /* ================= EDIT ================= */
+            /* ================= CHỈNH SỬA ================= */
             window.openEditAnn = function (a) {
                 $('#editAnnId').val(a.announcementId);
                 $('#editTitle').val(a.title);
@@ -185,54 +199,44 @@
                 new bootstrap.Modal('#editAnnModal').show();
             };
 
-                    $('#btnUpdateAnn').click(function () {
-            const id = $('#editAnnId').val();
+            $('#btnUpdateAnn').click(function () {
+                const id = $('#editAnnId').val();
+                const data = {
+                    announcementId: parseInt(id),
+                    authorId: lecturerId,
+                    title: $('#editTitle').val().trim(),
+                    body: $('#editBody').val().trim(),
+                    targetClassId: parseInt($('#editClassId').val()),
+                    isGlobal: false
+                };
 
-            // Tạo object khớp hoàn toàn với Model Announcement ở Server
-            const data = {
-                announcementId: parseInt(id), // BẮT BUỘC có Id trong Body để khớp URL
-                authorId: lecturerId,         // Nên gửi lại AuthorId để tránh null database
-                title: $('#editTitle').val().trim(),
-                body: $('#editBody').val().trim(),
-                targetClassId: parseInt($('#editClassId').val()),
-                isGlobal: false
-            };
-
-            if (!data.title || !data.body || !data.targetClassId) {
-                alert("Vui lòng nhập đủ thông tin");
-                return;
-            }
-
-            $.ajax({
-                url: `${apiBaseUrl}/Announcements/${id}`,
-                type: "PUT",
-                contentType: "application/json",
-                data: JSON.stringify(data),
-                success: function() {
-                    // Dùng API của Bootstrap để đóng modal an toàn
-                    bootstrap.Modal.getInstance(document.getElementById('editAnnModal')).hide();
-                    loadAnnouncements();
-                    alert("Cập nhật thành công!");
-                },
-                error: function(xhr) {
-                    console.error(xhr);
-                    alert("Lỗi cập nhật. Hãy kiểm tra Console (F12)");
-                }
+                $.ajax({
+                    url: `${apiBaseUrl}/Announcements/${id}`,
+                    type: "PUT",
+                    contentType: "application/json",
+                    headers: { "Authorization": "Bearer " + token },
+                    data: JSON.stringify(data),
+                    success: function() {
+                        bootstrap.Modal.getInstance(document.getElementById('editAnnModal')).hide();
+                        loadAnnouncements();
+                        alert("Cập nhật thông báo thành công!");
+                    }
+                });
             });
-        });
 
-            /* ================= DELETE ================= */
+            /* ================= XÓA ================= */
             window.deleteAnn = function (id) {
-                if (!confirm("Xóa thông báo?")) return;
+                if (!confirm("Bạn có chắc chắn muốn xóa thông báo này? Hành động này không thể hoàn tác.")) return;
 
                 $.ajax({
                     url: `${apiBaseUrl}/Announcements/${id}`,
                     type: "DELETE",
+                    headers: { "Authorization": "Bearer " + token },
                     success: loadAnnouncements
                 });
             };
 
-            /* ================= INIT ================= */
+            /* ================= KHỞI TẠO ================= */
             loadClasses('#annClassId');
             loadAnnouncements();
         });

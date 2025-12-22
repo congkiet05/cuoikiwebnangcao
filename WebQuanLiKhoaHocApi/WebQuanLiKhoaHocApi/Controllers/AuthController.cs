@@ -66,12 +66,10 @@ namespace WebQuanLiKhoaHocApi.Controllers
             // Tạo "claims" (thông tin trong token)
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("userId", user.UserId.ToString()) // Dùng thuộc tính "UserId"
+                new Claim("userId", user.UserId.ToString()),
+                new Claim(ClaimTypes.Role, role),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username)
             };
-
-            claims.Add(new Claim(ClaimTypes.Role, role));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

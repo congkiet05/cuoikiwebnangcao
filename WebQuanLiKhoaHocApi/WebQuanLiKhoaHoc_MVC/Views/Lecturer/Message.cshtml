@@ -49,39 +49,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
     <script>
         $(document).ready(function () {
-            const lecturerId = 2;
+            const userIdRaw = "@ViewBag.CurrentUserId";
+            const currentUserId = parseInt(userIdRaw) || 0;
+            const currentUserName = "@ViewBag.CurrentUserName";
+            const token = "@ViewBag.AccessToken";
+
             const apiBaseUrl = "https://localhost:7274/api";
             let currentClassId = null;
 
-            // --- 1. KHỞI TẠO KẾT NỐI ---
+            // --- 2. KHỞI TẠO KẾT NỐI SIGNALR ---
             const connection = new signalR.HubConnectionBuilder()
-                .withUrl("https://localhost:7274/chatHub")
+                .withUrl("https://localhost:7274/chatHub", {
+                    accessTokenFactory: () => token // Gửi token để Hub xác thực danh tính
+                })
                 .withAutomaticReconnect()
                 .build();
 
-            // Nhận tin nhắn từ Server
             connection.on("ReceiveMessage", function (data) {
-                // Chỉ hiển thị nếu tin nhắn thuộc lớp đang mở
-                // Lưu ý: data.senderId (chữ s thường) do SignalR tự camelCase
                 if (currentClassId == data.classId || !data.classId) {
                     renderMessage(data.senderId, data.content, data.sentAt);
                 }
             });
 
-            // Bắt đầu kết nối
             connection.start()
-                .then(() => console.log("SignalR Connected!"))
-                .catch(err => console.error("SignalR Connection Error: ", err));
+                .then(() => console.log("SignalR Connected as: " + currentUserName))
+                .catch(err => console.error("SignalR Error: ", err));
 
-            // --- 2. LOAD DANH SÁCH LỚP HỌC ---
+            // --- 3. LOAD DANH SÁCH LỚP HỌC (Dữ liệu thật) ---
             $.ajax({
-                // Đổi URL sang API Classes vừa tạo
-                url: `${apiBaseUrl}/Classes/Lecturer/${lecturerId}`,
+                url: `${apiBaseUrl}/Classes/Lecturer/${currentUserId}`,
                 type: "GET",
+                headers: { "Authorization": "Bearer " + token },
                 success: function (data) {
                     let html = '';
                     if (data.length === 0) {
-                        html = '<div class="p-3 text-center text-muted small">No classes found for this lecturer.</div>';
+                        html = '<div class="p-3 text-center text-muted small">No classes found.</div>';
                     } else {
                         data.forEach(c => {
                             html += `
@@ -96,45 +98,33 @@
                 },
                 error: function(err) {
                     console.error("Lỗi load lớp:", err);
-                    $('#class-list').html('<div class="p-3 text-danger small">Error loading class list.</div>');
                 }
             });
 
-            // --- 3. SỰ KIỆN CHỌN LỚP ---
+            // --- 4. SỰ KIỆN CHỌN LỚP ---
             $(document).on('click', '.class-item', function (e) {
                 e.preventDefault();
-                const selectedId = $(this).attr('data-id'); // Lấy ID chắc chắn hơn
+                currentClassId = $(this).attr('data-id');
 
-                if (!selectedId) return;
-
-                currentClassId = selectedId;
                 $('.class-item').removeClass('active bg-primary-subtle');
                 $(this).addClass('active bg-primary-subtle');
 
                 $('#chat-header, #chat-input-area').removeClass('d-none');
                 $('#current-class-name').text($(this).data('name'));
 
-                // Chỉ gọi invoke khi đã kết nối
                 if (connection.state === signalR.HubConnectionState.Connected) {
-                    connection.invoke("JoinClassGroup", currentClassId.toString())
-                        .catch(err => console.error(err));
+                    connection.invoke("JoinClassGroup", currentClassId.toString());
                 }
 
                 loadOldMessages(currentClassId);
             });
 
-            // --- 4. GỬI TIN NHẮN ---
+            // --- 5. GỬI TIN NHẮN ---
             function sendMessage() {
                 const content = $('#message-input').val();
-
-                if (connection.state !== signalR.HubConnectionState.Connected) {
-                    alert("Chưa kết nối được máy chủ chat!");
-                    return;
-                }
-
-                if (content.trim() !== "" && currentClassId) {
-                    // Chuyển đổi ID sang kiểu số để khớp với Backend (int classId)
-                    connection.invoke("SendMessage", parseInt(currentClassId), lecturerId, content)
+                if (content.trim() !== "" && currentClassId && connection.state === signalR.HubConnectionState.Connected) {
+                    // Gửi kèm currentUserId thật
+                    connection.invoke("SendMessage", parseInt(currentClassId), content)
                         .then(() => {
                             $('#message-input').val('').focus();
                         })
@@ -147,25 +137,27 @@
                 if (e.which == 13) sendMessage();
             });
 
-            // --- 5. HÀM HỖ TRỢ ---
+            // --- 6. HÀM HỖ TRỢ ---
             function loadOldMessages(classId) {
-                if (!classId) return;
                 $('#message-body').empty().html('<div class="m-auto spinner-border text-primary"></div>');
 
-                $.get(`${apiBaseUrl}/ClassMessages/${classId}`, function (messages) {
-                    $('#message-body').empty();
-                    messages.forEach(m => {
-                        renderMessage(m.senderId, m.content, m.sentAt);
-                    });
-                    // Cuộn xuống cuối
-                    $('#message-body').scrollTop($('#message-body')[0].scrollHeight);
-                }).fail(err => {
-                    $('#message-body').html('<div class="m-auto text-danger">Không thể tải tin nhắn cũ.</div>');
+                $.ajax({
+                    url: `${apiBaseUrl}/ClassMessages/${classId}`,
+                    type: "GET",
+                    headers: { "Authorization": "Bearer " + token },
+                    success: function (messages) {
+                        $('#message-body').empty();
+                        messages.forEach(m => {
+                            renderMessage(m.senderId, m.content, m.sentAt);
+                        });
+                        $('#message-body').scrollTop($('#message-body')[0].scrollHeight);
+                    }
                 });
             }
 
             function renderMessage(senderId, content, time) {
-                const isMe = senderId === lecturerId;
+                // Sửa: So sánh với currentUserId thay vì lecturerId
+                const isMe = senderId === currentUserId;
                 const msgHtml = `
                     <div class="message-item mb-3 ${isMe ? 'align-self-end bg-primary text-white' : 'align-self-start bg-white text-dark'} p-3 rounded shadow-sm" style="max-width: 75%;">
                         <p class="mb-0">${content}</p>

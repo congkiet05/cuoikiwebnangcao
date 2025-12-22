@@ -17,7 +17,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Login/Login"; // Nếu chưa đăng nhập thì tự chuyển về đây
-        options.AccessDeniedPath = "/Account/AccessDenied"; // Không có quyền thì chuyển về đây
+        options.AccessDeniedPath = "/Login/Login"; // Không có quyền thì chuyển về đây
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
     });
 builder.Services.AddHttpClient("ApiGeneric", client =>
@@ -58,6 +58,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
