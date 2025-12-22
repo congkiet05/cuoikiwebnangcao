@@ -36,5 +36,34 @@ namespace WebQuanLiKhoaHoc_MVC.Service.Login
             var responseString = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<LoginResponseModel>(responseString);
         }
+        public async Task<string> ForgotPasswordAsync(string email)
+        {
+            // LƯU Ý: Thay số 7274 bằng cổng (port) chính xác mà API của bạn đang chạy
+            // (Xem trong file Properties/launchSettings.json của Project API)
+            string apiUrl = "https://localhost:7274/api/auth/forgot-password";
+
+            var payload = new { Email = email };
+
+            // Sửa dòng này: Truyền apiUrl đầy đủ vào
+            var response = await _httpClient.PostAsJsonAsync(apiUrl, payload);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<dynamic>();
+                try { return result.GetProperty("token").GetString(); } catch { return "check-email"; }
+            }
+            return null;
+        }
+
+        public async Task<bool> ResetPasswordAsync(ResetPasswordViewModel model)
+        {
+            // LƯU Ý: Thay số 7274 bằng cổng (port) chính xác
+            string apiUrl = "https://localhost:7274/api/auth/reset-password";
+
+            // Sửa dòng này: Truyền apiUrl đầy đủ vào
+            var response = await _httpClient.PostAsJsonAsync(apiUrl, model);
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }

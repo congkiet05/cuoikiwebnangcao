@@ -102,7 +102,7 @@
             }
 
         .btn-login {
-            margin-top: 30px;
+            margin-top: 10px; /* Chỉnh lại chút margin để cân đối với link quên pass */
             height: 48px;
             border-radius: 14px;
             font-weight: 600;
@@ -130,6 +130,19 @@
             text-align: center;
         }
 
+        /* Style cho link quên mật khẩu */
+        .forgot-password-link {
+            font-size: 14px;
+            color: #0d6efd;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+            .forgot-password-link:hover {
+                color: #0a58ca;
+                text-decoration: underline;
+            }
+
         /* Razor cshtml: phải viết @@media */
         @@media (max-width: 768px) {
             .login-wrapper {
@@ -152,7 +165,6 @@
 
     <div class="login-wrapper">
 
-        <!-- LEFT INFO -->
         <div class="login-info">
             <h1>Academic Portal</h1>
             <p>
@@ -164,7 +176,6 @@
             </div>
         </div>
 
-        <!-- RIGHT FORM -->
         <div class="login-form">
 
             <h3>Đăng nhập hệ thống</h3>
@@ -174,6 +185,13 @@
             {
                 <div class="alert alert-danger text-center" role="alert">
                     @ViewBag.Error
+                </div>
+            }
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success text-center" role="alert">
+                    @TempData["Success"]
                 </div>
             }
 
@@ -188,7 +206,7 @@
                            required />
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="password" class="form-label">Mật khẩu</label>
                     <input type="password"
                            class="form-control"
@@ -196,6 +214,12 @@
                            name="password"
                            placeholder="Mật khẩu"
                            required />
+                </div>
+
+                <div class="d-flex justify-content-end mb-3">
+                    <a asp-controller="Login" asp-action="ForgotPassword" class="forgot-password-link">
+                        Quên mật khẩu?
+                    </a>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-login w-100">

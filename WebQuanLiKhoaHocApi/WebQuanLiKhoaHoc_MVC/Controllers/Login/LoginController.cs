@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using WebQuanLiKhoaHoc_MVC.Models.Login; // Đã thêm dòng này để dùng ViewModel
 using WebQuanLiKhoaHoc_MVC.Service.Login;
 
 namespace WebQuanLiKhoaHoc_MVC.Controllers
@@ -10,10 +11,12 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
     public class LoginController : Controller
     {
         private readonly AuthApiService _authApiService;
+
         public LoginController(AuthApiService authApiService)
         {
             _authApiService = authApiService;
         }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -24,6 +27,7 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
             }
             return View("~/Views/Account/Login.cshtml");
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
@@ -103,6 +107,68 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
+        }
+
+        // ============================================================
+        // PHẦN MỚI THÊM: QUÊN MẬT KHẨU & RESET PASSWORD
+        // ============================================================
+
+        // --- QUÊN MẬT KHẨU ---
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            // SỬA DÒNG NÀY: Trỏ đúng về thư mục Account
+            return View("~/Views/Account/ForgotPassword.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                // SỬA DÒNG NÀY
+                return View("~/Views/Account/ForgotPassword.cshtml", model);
+
+            var token = await _authApiService.ForgotPasswordAsync(model.Email);
+
+            if (token != null)
+            {
+                return RedirectToAction("ResetPassword", new { token = token });
+            }
+
+            ModelState.AddModelError("", "Email không tồn tại hoặc lỗi hệ thống.");
+            // SỬA DÒNG NÀY
+            return View("~/Views/Account/ForgotPassword.cshtml", model);
+        }
+
+        // --- ĐẶT LẠI MẬT KHẨU ---
+        [HttpGet]
+        public IActionResult ResetPassword(string token)
+        {
+            if (string.IsNullOrEmpty(token)) return RedirectToAction("Login");
+
+            var model = new ResetPasswordViewModel { Token = token };
+            // SỬA DÒNG NÀY
+            return View("~/Views/Account/ResetPassword.cshtml", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                // SỬA DÒNG NÀY
+                return View("~/Views/Account/ResetPassword.cshtml", model);
+
+            var result = await _authApiService.ResetPasswordAsync(model);
+
+            if (result)
+            {
+                TempData["Success"] = "Đổi mật khẩu thành công. Vui lòng đăng nhập lại.";
+                return RedirectToAction("Login");
+            }
+
+            ModelState.AddModelError("", "Đổi mật khẩu thất bại.");
+            // SỬA DÒNG NÀY
+            return View("~/Views/Account/ResetPassword.cshtml", model);
         }
     }
 }

@@ -34,4 +34,7 @@ public partial class User
     public virtual Role Role { get; set; } = null!;
 
     public virtual Student? Student { get; set; }
+
+    public string? PasswordResetToken { get; set; }
+    public DateTime? PasswordResetTokenExpiry { get; set; }
 }
