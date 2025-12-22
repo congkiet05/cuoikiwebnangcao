@@ -7,6 +7,7 @@ using WebQuanLiKhoaHocApi.Dtos;
 
 namespace WebQuanLiKhoaHoc_MVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly ApiService _api;
