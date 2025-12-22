@@ -19,39 +19,41 @@ namespace WebQuanLiKhoaHocApi.Services.HocVien
                         join c in _context.Classes on a.ClassId equals c.ClassId
                         join co in _context.Courses on c.CourseId equals co.CourseId
 
-                        // Xử lý LEFT JOIN Lecturer (vì Lecturer có thể null)
+                        
                         join l in _context.Lecturers on c.LecturerId equals l.LecturerId into lGroup
                         from l in lGroup.DefaultIfEmpty()
 
                         where s.StudentNumber == maHocVien
 
-                        // Group By theo các trường bạn muốn hiển thị
+                       
                         group sub by new
                         {
                             s.StudentNumber,
                             s.FullName,
                             s.Faculty,
+                            c.ClassCode,         
                             co.CourseCode,
                             co.CourseName,
-                            LecturerName = l.FullName, // Có thể null nếu Left Join không thấy
+                            LecturerName = l.FullName,
                             c.Semester
                         } into g
 
-                        // Select ra kết quả cuối cùng
+                        // Select: Lấy dữ liệu ra
                         select new HocVien_XemDiemTrungBinh
                         {
                             MaHocVien = g.Key.StudentNumber,
                             TenHocVien = g.Key.FullName,
                             NganhHoc = g.Key.Faculty,
+
+                            MaLop = g.Key.ClassCode, 
+
                             MaHocPhan = g.Key.CourseCode,
                             TenHocPhan = g.Key.CourseName,
-                            // Xử lý null cho tên giảng viên
                             GiangVien = g.Key.LecturerName ?? "Chưa phân công",
                             HocKi = g.Key.Semester,
-
-                            // Tính điểm trung bình
                             DiemTrungBinh = g.Average(x => x.Grade)
                         };
+
             return await query.ToListAsync();
         }
         public async Task<List<HocVien_XemDiemMon>> XemDiemMonHoc(string MaSinhVien, string MaKhoaHoc)

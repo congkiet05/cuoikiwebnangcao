@@ -42,6 +42,7 @@
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
+                        <th>Mã Lớp</th>
                         <th>Mã Học Phần</th>
                         <th>Tên Học Phần</th>
                         <th>Giảng Viên</th>
@@ -53,6 +54,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td class="fw-bold text-primary">@item.MaLop</td>
                             <td>@item.MaHocPhan</td>
                             <td>@item.TenHocPhan</td>
                             <td>@item.GiangVien</td>
