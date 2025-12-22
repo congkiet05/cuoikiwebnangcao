@@ -1,34 +1,52 @@
-﻿@{
-    ViewBag.Title = "My Timetable";
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewBag.Title = "Thời khóa biểu giảng dạy";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+    var apiBaseUrl = Configuration["ApiSettings:BaseUrl"];
 }
 
-<div class="container-fluid p-0">
-    <div class="timetable-grid bg-white border rounded p-2 shadow-sm" style="overflow-x: auto;">
-        <div class="d-flex" style="min-width: 1000px;">
-            @* Đảm bảo đủ rộng cho 7 ngày *@
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-primary mb-0"><i class="bi bi-calendar3 me-2"></i>LỊCH GIẢNG DẠY</h4>
+        <div class="badge bg-light text-dark border p-2">
+            <i class="bi bi-info-circle me-1"></i> Thời gian hiển thị từ 7:00 AM - 6:00 PM
+        </div>
+    </div>
 
-            <div class="time-column text-muted small me-2 flex-shrink-0" style="width: 60px; margin-top: 50px;">
-                @for (int i = 7; i <= 17; i++)
-                {
-                    <div class="time-slot">@(i < 12 ? i + ":00 AM" : (i == 12 ? "12:00 PM" : (i - 12) + ":00 PM"))</div>
-                }
-            </div>
+    <div class="timetable-grid bg-white border rounded shadow-sm overflow-hidden">
+        <div class="table-responsive">
+            <div class="d-flex" style="min-width: 1100px; position: relative;">
 
-            <div class="flex-grow-1 d-flex">
-                @{
-                    var weekDays = new List<string> { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
-                }
-
-                @for (int i = 0; i < weekDays.Count; i++)
-                {
-                    var dayValue = i + 1;
-                    <div class="day-column position-relative border-start" id="day-@dayValue" style="flex: 1;">
-                        <div class="day-header text-center p-2 mb-1 bg-light border-bottom">
-                            <div class="small text-uppercase text-muted">@weekDays[i]</div>
+                <div class="time-column text-muted small flex-shrink-0" style="width: 70px; margin-top: 50px; background: #f8f9fa;">
+                    @for (int i = 7; i <= 17; i++)
+                    {
+                        <div class="time-slot d-flex align-items-start justify-content-center border-bottom">
+                            <span>@(i <= 12 ? i + ":00" : (i - 12) + ":00") @(i < 12 ? "AM" : "PM")</span>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
+
+                <div class="flex-grow-1 d-flex">
+                    @{
+                        var weekDays = new List<string> { "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật" };
+                    }
+
+                    @for (int i = 0; i < weekDays.Count; i++)
+                    {
+                        var dayValue = i + 2; // Thứ 2 bắt đầu từ ID = 2 trong DB
+                        if (i == 6) dayValue = 1; // Chủ nhật thường là 1 (tùy DB của bạn)
+
+                        <div class="day-column position-relative border-start flex-grow-1" id="day-@dayValue">
+                            <div class="day-header text-center p-2 bg-primary text-white fw-bold border-bottom">
+                                <div class="small">@weekDays[i]</div>
+                            </div>
+                            @for (int j = 7; j <= 17; j++)
+                            {
+                                <div class="grid-line border-bottom" style="height: 60px;"></div>
+                            }
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
@@ -37,52 +55,72 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-            const lecturerId = 2;
-            const apiBaseUrl = "https://localhost:7274/api";
-            const startHour = 7; // Mốc bắt đầu là 7h sáng
-            const rowHeight = 60; // 1 giờ = 60px (1 phút = 1px)
+            // 1. LẤY DỮ LIỆU THẬT TỪ SESSION/COOKIE
+            const lecturerId = parseInt("@ViewBag.CurrentUserId") || 0;
+            const token = "@ViewBag.AccessToken";
+            const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
 
+            const startHour = 7;
+            const rowHeight = 60; // 1 giờ = 60px
+
+            if (lecturerId === 0) {
+                console.error("Không tìm thấy lecturerId");
+                return;
+            }
+
+            // 2. GỌI API LẤY LỊCH DẠY
             $.ajax({
                 url: `${apiBaseUrl}/ClassSchedules/Lecturer/${lecturerId}`,
                 type: "GET",
+                headers: { "Authorization": "Bearer " + token },
                 success: function (data) {
                     $(".timetable-event").remove();
 
                     data.forEach(item => {
-                        // 1. Phân tích Start Time
-                        const start = item.startTime.split(':');
-                        const hS = parseInt(start[0]);
-                        const mS = parseInt(start[1]);
+                        try {
+                            // Phân tích Start Time (HH:mm)
+                            const start = item.startTime.split(':');
+                            const hS = parseInt(start[0]);
+                            const mS = parseInt(start[1]);
 
-                        // 2. Phân tích End Time
-                        const end = item.endTime.split(':');
-                        const hE = parseInt(end[0]);
-                        const mE = parseInt(end[1]);
+                            // Phân tích End Time (HH:mm)
+                            const end = item.endTime.split(':');
+                            const hE = parseInt(end[0]);
+                            const mE = parseInt(end[1]);
 
-                        // 3. Tính vị trí Top: (Giờ hiện tại - Giờ bắt đầu) * 60 + số phút + offset header (50px)
-                        const topPos = ((hS - startHour) * rowHeight) + mS + 50;
+                            // Tính vị trí Top (Offset header 50px)
+                            const topPos = ((hS - startHour) * rowHeight) + mS + 50;
 
-                        // 4. Tính chiều cao thẻ: (Tổng phút kết thúc - Tổng phút bắt đầu)
-                        const duration = (hE * 60 + mE) - (hS * 60 + mS);
+                            // Tính chiều cao (Thời lượng giảng dạy)
+                            const duration = (hE * 60 + mE) - (hS * 60 + mS);
 
-                        // 5. Chọn màu sắc theo môn học (hoặc ngẫu nhiên)
-                        const colors = ['bg-info', 'bg-success', 'bg-warning', 'bg-primary', 'bg-purple'];
-                        const colorClass = colors[item.courseCode.length % colors.length];
+                            // Chọn màu sắc ngẫu nhiên bền vững
+                            const colors = ['bg-primary', 'bg-success', 'bg-warning', 'bg-info', 'bg-purple'];
+                            const colorClass = colors[item.courseCode.charCodeAt(0) % colors.length];
 
-                        const eventHtml = `
-                            <div class="timetable-event ${colorClass} text-white rounded shadow-sm position-absolute"
-                                 style="top: ${topPos}px; left: 4px; right: 4px; height: ${duration}px;">
-                                <div class="p-1 overflow-hidden">
-                                    <div class="fw-bold" style="font-size: 0.75rem;">${item.courseCode}</div>
-                                    <div style="font-size: 0.65rem;">
-                                        ${item.startTime}-${item.endTime}<br>
-                                        <i class="bi bi-geo-alt"></i> ${item.room || 'N/A'}
+                            const eventHtml = `
+                                <div class="timetable-event ${colorClass} text-white rounded shadow-sm position-absolute border-start border-4 border-dark"
+                                     style="top: ${topPos}px; left: 4px; right: 4px; height: ${duration}px; overflow: hidden; z-index: 10;">
+                                    <div class="p-2 h-100">
+                                        <div class="fw-bold mb-1" style="font-size: 0.8rem; line-height: 1.1;">
+                                            ${item.courseCode}
+                                        </div>
+                                        <div style="font-size: 0.7rem; opacity: 0.9;">
+                                            <i class="bi bi-clock"></i> ${item.startTime} - ${item.endTime} <br/>
+                                            <i class="bi bi-geo-alt-fill"></i> Phòng: ${item.room || 'N/A'}
+                                        </div>
                                     </div>
-                                </div>
-                            </div>`;
+                                </div>`;
 
-                        $(`#day-${item.dayOfWeek}`).append(eventHtml);
+                            // Append vào đúng cột ngày (item.dayOfWeek)
+                            $(`#day-${item.dayOfWeek}`).append(eventHtml);
+                        } catch (e) {
+                            console.error("Lỗi vẽ lịch cho item:", item, e);
+                        }
                     });
+                },
+                error: function (xhr) {
+                    console.error("Lỗi tải thời khóa biểu:", xhr.responseText);
                 }
             });
         });
@@ -91,36 +129,62 @@
     <style>
         .time-slot {
             height: 60px;
-            border-top: 1px dashed #eee;
-            padding-top: 5px;
-            line-height: 1;
+            padding-top: 2px;
+            font-weight: 500;
         }
 
         .day-column {
-            min-height: 660px; /* (17h - 7h) * 60px = 600px + header */
-            background-image: linear-gradient(#f9f9f9 1px, transparent 1px);
-            background-size: 100% 60px;
+            min-height: 650px;
+            background-color: #fff;
+        }
+
+        .grid-line {
+            pointer-events: none;
         }
 
         .day-header {
             height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 20;
         }
 
         .timetable-event {
-            z-index: 10;
-            border-left: 3px solid rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s ease;
             cursor: pointer;
+            opacity: 0.95;
         }
 
             .timetable-event:hover {
-                transform: scale(1.02);
-                z-index: 50;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important;
+                transform: scale(1.03);
+                z-index: 100 !important;
+                opacity: 1;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
             }
 
         .bg-purple {
             background-color: #6f42c1 !important;
+        }
+
+        /* Custom Scrollbar cho đẹp */
+        .table-responsive::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .table-responsive::-webkit-scrollbar-bar {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 }

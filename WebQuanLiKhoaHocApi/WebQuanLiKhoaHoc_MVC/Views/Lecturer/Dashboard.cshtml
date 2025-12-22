@@ -1,23 +1,25 @@
-﻿@{
-    ViewBag.Title = "Dashboard";
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewBag.Title = "Bảng điều khiển";
     Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+    var apiBaseUrl = Configuration["ApiSettings:BaseUrl"];
 }
 
 <div class="container-fluid p-0">
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card border-0 shadow-sm p-4 bg-white">
+            <div class="card border-0 shadow-sm p-4 bg-white animate__animated animate__fadeIn">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <p class="text-muted mb-1" id="today-date">Loading date...</p>
-                        <h2 class="fw-bold mb-0">Good morning, <span id="welcome-name">Lecturer</span>.</h2>
-                        <p class="text-muted mb-0">Here is your daily summary.</p>
+                        <h2 class="fw-bold mb-0"><span id="greeting-text">Good morning</span>, <span id="welcome-name" class="text-primary">Lecturer</span>.</h2>
+                        <p class="text-muted mb-0">Đây là tóm tắt công việc của bạn trong ngày hôm nay.</p>
                     </div>
-                    <div class="d-none d-md-flex align-items-center border rounded-pill px-3 py-2 bg-light">
-                        <img src="~/images/avatar.jpg" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                    <div class="d-none d-md-flex align-items-center border rounded-pill px-3 py-2 bg-light shadow-sm">
+                        <img id="dashboard-avatar" src="https://ui-avatars.com/api/?name=User&background=0d6efd&color=fff" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
                         <div>
                             <div class="fw-bold small" id="badge-name">Loading...</div>
-                            <div class="text-muted" style="font-size: 0.7rem;">Lecturer</div>
+                            <div class="text-muted" style="font-size: 0.7rem;">Giảng viên</div>
                         </div>
                     </div>
                 </div>
@@ -28,12 +30,13 @@
     <div class="row">
         <div class="col-lg-8 mb-4">
             <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white border-0 pt-4 px-4">
-                    <h5 class="fw-bold"><i class="bi bi-calendar3 text-primary me-2"></i>Today's Schedule</h5>
+                <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-calendar3 text-primary me-2"></i>Lịch giảng dạy hôm nay</h5>
+                    <a href="@Url.Action("Timetable", "Lecturer")" class="btn btn-sm btn-outline-primary rounded-pill px-3">Xem lịch tuần</a>
                 </div>
                 <div id="schedule-list" class="card-body px-4">
                     <div class="text-center p-5 text-muted">
-                        <div class="spinner-border spinner-border-sm me-2"></div> Fetching your schedule...
+                        <div class="spinner-border spinner-border-sm text-primary me-2"></div> Đang tải lịch trình...
                     </div>
                 </div>
             </div>
@@ -43,17 +46,17 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold mb-0"><i class="bi bi-bell text-warning me-2"></i>Notifications</h5>
-                        <a href="@Url.Action("Notification", "Lecturer")" class="small text-decoration-none">View all <i class="bi bi-arrow-right"></i></a>
+                        <h5 class="fw-bold mb-0"><i class="bi bi-bell text-warning me-2"></i>Thông báo mới</h5>
+                        <a href="@Url.Action("Notification", "Lecturer")" class="small text-decoration-none">Xem tất cả <i class="bi bi-arrow-right"></i></a>
                     </div>
 
-                    <div class="mb-4 p-4 bg-light rounded text-center">
+                    <div class="mb-4 p-4 bg-primary bg-opacity-10 rounded-4 text-center border border-primary border-opacity-25">
                         <h2 class="mb-0 fw-bold text-primary" id="unread-count">0</h2>
-                        <p class="text-muted small mb-0">Unread Notifications</p>
+                        <p class="text-primary small mb-0 fw-medium">Thông báo chưa đọc</p>
                     </div>
 
-                    <div id="latest-notifications">
-                        <p class="text-muted small text-center">Checking for new alerts...</p>
+                    <div id="latest-notifications" class="overflow-auto" style="max-height: 300px;">
+                        <p class="text-muted small text-center">Đang kiểm tra thông báo...</p>
                     </div>
                 </div>
             </div>
@@ -64,109 +67,147 @@
 @section scripts {
     <script>
         $(document).ready(function () {
-            const lecturerId = 2;
-            const apiBaseUrl = "https://localhost:7274/api";
+            // 1. LẤY DỮ LIỆU THẬT TỪ HỆ THỐNG
+            const lecturerId = parseInt("@ViewBag.CurrentUserId") || 0;
+            const token = "@ViewBag.AccessToken";
+            const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
 
-            // --- 1. LẤY THÔNG TIN GIẢNG VIÊN ---
+            if (lecturerId === 0) return;
+
+            // 2. CẬP NHẬT THỜI GIAN VÀ LỜI CHÀO
+            function updateDateTime() {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                $('#today-date').text('Hôm nay, ' + now.toLocaleDateString('vi-VN', options));
+
+                const hour = now.getHours();
+                let greeting = "Chào buổi sáng";
+                if (hour >= 12 && hour < 18) greeting = "Chào buổi chiều";
+                else if (hour >= 18) greeting = "Chào buổi tối";
+                $('#greeting-text').text(greeting);
+            }
+            updateDateTime();
+
+            // 3. LẤY THÔNG TIN GIẢNG VIÊN (Tên và Avatar)
             $.ajax({
                 url: `${apiBaseUrl}/Lecturers/${lecturerId}`,
                 type: "GET",
+                headers: { "Authorization": "Bearer " + token },
                 success: function (data) {
                     if (data) {
-                        const nameParts = data.fullName.trim().split(' ');
+                        const fullName = data.fullName || data.FullName;
+                        const nameParts = fullName.trim().split(' ');
                         const firstName = nameParts[nameParts.length - 1];
+
                         $('#welcome-name').text(firstName);
-                        $('#badge-name').text(data.fullName);
+                        $('#badge-name').text(fullName);
+                        $('#dashboard-avatar').attr('src', `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=0d6efd&color=fff`);
                     }
                 }
             });
 
-            // --- 2. CẬP NHẬT NGÀY THÁNG ---
-            const options = { weekday: 'long', month: 'short', day: 'numeric' };
-            const today = new Date().toLocaleDateString('en-US', options);
-            $('#today-date').text('Today is ' + today);
-
-            // --- 3. LẤY SỐ LƯỢNG THÔNG BÁO CHƯA ĐỌC (DỮ LIỆU THẬT) ---
+            // 4. LẤY SỐ LƯỢNG THÔNG BÁO CHƯA ĐỌC
             $.ajax({
                 url: `${apiBaseUrl}/Notifications/Lecturer/${lecturerId}`,
                 type: "GET",
+                headers: { "Authorization": "Bearer " + token },
                 success: function (data) {
-                    // Lọc những thông báo có IsRead === false
                     const unreadItems = data.filter(n => n.isRead === false);
                     $('#unread-count').text(unreadItems.length);
 
-                    // Hiển thị nhanh 1-2 tiêu đề thông báo mới nhất bên dưới con số
                     if (unreadItems.length > 0) {
-                        let notifyHtml = '<div class="small border-top pt-3">';
-                        unreadItems.slice(0, 2).forEach(item => {
+                        let notifyHtml = '<div class="list-group list-group-flush">';
+                        unreadItems.slice(0, 3).forEach(item => {
                             notifyHtml += `
-                                <div class="mb-2">
-                                    <span class="fw-bold text-dark d-block text-truncate">${item.title}</span>
-                                    <span class="text-muted" style="font-size:0.75rem;">${new Date(item.createdAt).toLocaleDateString()}</span>
+                                <div class="list-group-item px-0 border-0 mb-2">
+                                    <div class="d-flex align-items-start">
+                                        <div class="bg-warning p-2 rounded-circle me-3 mt-1"></div>
+                                        <div class="overflow-hidden">
+                                            <span class="fw-bold text-dark d-block text-truncate small">${item.title}</span>
+                                            <span class="text-muted" style="font-size:0.7rem;">${new Date(item.createdAt).toLocaleDateString('vi-VN')}</span>
+                                        </div>
+                                    </div>
                                 </div>`;
                         });
                         notifyHtml += '</div>';
                         $('#latest-notifications').html(notifyHtml);
                     } else {
-                        $('#latest-notifications').html('<p class="text-muted small text-center mt-3">You are all caught up!</p>');
+                        $('#latest-notifications').html('<div class="text-center py-4"><i class="bi bi-check-all text-success fs-1"></i><p class="text-muted small mt-2">Tuyệt vời! Bạn đã đọc hết thông báo.</p></div>');
                     }
-                },
-                error: function() {
-                    $('#unread-count').text("!");
                 }
             });
 
-            // --- 4. LẤY LỊCH TRÌNH HÔM NAY ---
+            // 5. LẤY LỊCH TRÌNH HÔM NAY
             $.ajax({
-                url: `${apiBaseUrl}/ClassSchedules/Lecturer/${lecturerId}/Today`,
+                url: `${apiBaseUrl}/ClassSchedules/Lecturer/${lecturerId}`,
                 type: "GET",
+                headers: { "Authorization": "Bearer " + token },
                 success: function (data) {
-                    let html = '';
-                    if (!data || data.length === 0) {
-                        html = `
-                            <div class="text-center p-5">
-                                <i class="bi bi-calendar-check text-muted" style="font-size: 3rem;"></i>
-                                <p class="mt-3 text-muted">No classes scheduled for today.</p>
-                            </div>`;
-                    } else {
-                        data.forEach(item => {
-                            const hour = parseInt(item.startTime.split(':')[0]);
-                            const period = hour < 12 ? 'AM' : 'PM';
+                    // Lọc lịch trình theo ngày hiện tại (JavaScript: 0=Sun, 1=Mon, ..., 6=Sat)
+                    // Lưu ý: Đối chiếu với DayOfWeek trong DB của bạn (ví dụ Thứ 2 = 2)
+                    const todayNum = new Date().getDay() + 1;
+                    const dbDayNum = (todayNum === 1) ? 1 : todayNum; // Chỉnh lại theo logic DB của bạn
 
+                    const todaySchedules = data.filter(s => s.dayOfWeek == dbDayNum);
+
+                    if (todaySchedules.length === 0) {
+                        $('#schedule-list').html(`
+                            <div class="text-center p-5">
+                                <i class="bi bi-calendar-x text-light" style="font-size: 4rem;"></i>
+                                <p class="mt-3 text-muted">Hôm nay bạn không có lịch giảng dạy.</p>
+                            </div>`);
+                    } else {
+                        let html = '';
+                        // Sắp xếp theo giờ bắt đầu
+                        todaySchedules.sort((a, b) => a.startTime.localeCompare(b.startTime));
+
+                        todaySchedules.forEach(item => {
                             html += `
-                            <div class="d-flex align-items-center p-3 mb-3 border rounded shadow-sm hover-shadow transition">
-                                <div class="text-center border-end pe-3 me-3" style="min-width: 80px;">
-                                    <div class="fw-bold text-primary">${item.startTime}</div>
-                                    <div class="small text-muted">${period}</div>
+                            <div class="d-flex align-items-center p-3 mb-3 border-start border-primary border-4 rounded shadow-sm bg-white hover-card transition">
+                                <div class="text-center border-end pe-3 me-3" style="min-width: 90px;">
+                                    <div class="fw-bold text-primary fs-5">${item.startTime}</div>
+                                    <div class="small text-muted text-uppercase">${item.endTime}</div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1 fw-bold">${item.courseName}</h6>
+                                    <h6 class="mb-1 fw-bold text-dark">${item.courseCode} - ${item.courseName || 'Lớp học'}</h6>
                                     <div class="small text-muted">
-                                        <i class="bi bi-geo-alt me-1"></i> ${item.room || 'N/A'} |
-                                        <i class="bi bi-book me-1"></i> ${item.courseCode}
+                                        <span class="me-3"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Phòng: ${item.room || 'N/A'}</span>
+                                        <span><i class="bi bi-people-fill text-info me-1"></i>Lớp: ${item.classCode || 'N/A'}</span>
                                     </div>
+                                </div>
+                                <div class="ms-auto d-none d-sm-block">
+                                    <i class="bi bi-chevron-right text-light fs-4"></i>
                                 </div>
                             </div>`;
                         });
+                        $('#schedule-list').html(html);
                     }
-                    $('#schedule-list').html(html);
                 },
                 error: function() {
-                    $('#schedule-list').html('<div class="text-danger p-3 text-center">Unable to load schedule.</div>');
+                    $('#schedule-list').html('<div class="alert alert-danger">Không thể tải lịch trình. Vui lòng thử lại sau.</div>');
                 }
             });
         });
     </script>
 
     <style>
-        .hover-shadow:hover {
-            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        .hover-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.1) !important;
             border-color: #0d6efd !important;
             cursor: pointer;
         }
 
         .transition {
-            transition: all 0.3s ease;
+            transition: all 0.25s ease-in-out;
+        }
+
+        .bg-opacity-10 {
+            --bs-bg-opacity: 0.1;
+        }
+
+        .animate__animated {
+            animation-duration: 0.8s;
         }
     </style>
 }

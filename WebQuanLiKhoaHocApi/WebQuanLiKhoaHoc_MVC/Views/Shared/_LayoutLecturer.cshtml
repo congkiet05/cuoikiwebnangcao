@@ -121,27 +121,31 @@
 
     <script>
         $(document).ready(function() {
-            // Khi người dùng click vào nút Toggle (|||)
+            // --- 1. XỬ LÝ ĐÓNG/MỞ SIDEBAR (TOGGLE) ---
             $("#sidebarToggle").on('click', function(e) {
                 e.preventDefault();
-                // ✅ Thao tác này sẽ xóa hoặc thêm class "toggled" vào thẻ <body>
-                // CSS sẽ tự động ẩn/hiện Sidebar dựa vào class này
                 $("body").toggleClass("toggled");
             });
-        });
 
-        $(document).ready(function () {
-            $.ajax({
-                url: "https://localhost:7274/api/Lecturers/2",
-                type: "GET",
-                success: function (data) {
-                    // Đổ tên vào Sidebar
-                    $('#sidebar-fullname').text(data.fullName);
-                },
-                error: function () {
-                    $('#sidebar-fullname').text("Error Loading");
-                }
-            });
+            // --- 2. CẬP NHẬT THÔNG TIN GIẢNG VIÊN THẬT ---
+            // Lấy dữ liệu từ ViewBag truyền xuống từ LecturerController
+            const fullName = "@ViewBag.CurrentUserName";
+            const lecturerId = "@ViewBag.CurrentUserId";
+            const token = "@ViewBag.AccessToken"; // Dùng nếu bạn muốn gọi thêm API khác
+
+            if (fullName && fullName !== "" && fullName !== "Giảng viên") {
+                // Cập nhật tên lên Sidebar
+                $('#sidebar-fullname').text(fullName);
+
+                // Cập nhật ảnh đại diện dựa trên tên thật (UI Avatars)
+                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=0d6efd&color=fff`;
+
+                // Đảm bảo ID thẻ img trong Sidebar là 'sidebar-avatar'
+                $('#sidebar-avatar').attr('src', avatarUrl);
+            } else {
+                // Trường hợp dự phòng nếu ViewBag trống
+                $('#sidebar-fullname').text("Giảng viên");
+            }
         });
     </script>
 

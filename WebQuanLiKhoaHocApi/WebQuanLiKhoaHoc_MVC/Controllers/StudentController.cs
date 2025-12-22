@@ -23,7 +23,10 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers
 
         public IActionResult Message()
         {
-            return View(); // -> Views/Student/Dashboard.cshtml
+            ViewBag.CurrentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0";
+            ViewBag.AccessToken = User.FindFirst("JwtToken")?.Value ?? "";
+            ViewBag.CurrentUserName = User.Identity?.Name;
+            return View();
         }
 
     }

@@ -87,7 +87,8 @@
 
 @section Scripts {
     <script>
-        const lecturerId = 4;
+        const lecturerId = parseInt("@ViewBag.CurrentUserId") || 0;
+        const token = "@ViewBag.AccessToken";
         const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
 
         $(document).ready(() => {
@@ -121,46 +122,43 @@
         }
 
         // Load bài tập
-              function loadAssignments() {
-            $('#assignment-tbody').html('<tr><td colspan="5">Đang tải...</td></tr>');
+        function loadAssignments() {
+            $('#assignment-tbody').html('<tr><td colspan="5" class="text-center">Đang tải...</td></tr>');
 
-            $.get(`${apiBaseUrl}/Assignments/by-lecturer/${lecturerId}`, data => {
-                let html = '';
-                const filter = $('#filterClass').val();
+            $.ajax({
+                url: `${apiBaseUrl}/Assignments/by-lecturer/${lecturerId}`,
+                type: 'GET',
+                headers: { "Authorization": "Bearer " + token },
+                success: function (data) {
+                    let html = '';
+                    const filter = $('#filterClass').val();
 
-                data.forEach(a => {
-                    if (filter && a.classCode !== filter) return;
+                    data.forEach(a => {
+                        if (filter && a.classCode !== filter) return;
+                        const due = a.dueDate ? new Date(a.dueDate) : null;
+                        const overdue = due && due < new Date();
+                        const percent = a.totalStudents > 0 ? Math.round(a.submissionCount * 100 / a.totalStudents) : 0;
 
-                    const due = a.dueDate ? new Date(a.dueDate) : null;
-                    const overdue = due && due < new Date();
-
-                    const percent = a.totalStudents > 0
-                        ? Math.round(a.submissionCount * 100 / a.totalStudents)
-                        : 0;
-
-                    html += `
-                    <tr onclick="openEditModal(
-                        ${a.assignmentId},
-                        \`${a.title}\`,
-                        '${a.dueDate ?? ''}',
-                        \`${a.description ?? ''}\`,
-                        ${a.classId}
-                    )">
-                        <td>${a.title}</td>
-                        <td>${a.classCode}</td>
-                        <td>${due ? due.toLocaleString('vi-VN') : '—'}</td>
-
-                        <td>
-                            <span class="fw-bold ${overdue ? 'text-danger' : 'text-success'}">
-                                ${overdue ? 'Đã đóng' : 'Đang nhận'}
-                            </span>
-                        </td>
-
-                        <td>${a.submissionCount}/${a.totalStudents} (${percent}%)</td>
-                    </tr>`;
-                });
-
-                $('#assignment-tbody').html(html || '<tr><td colspan="5">Chưa có bài tập</td></tr>');
+                        html += `
+                        <tr style="cursor: pointer" onclick="openEditModal(${a.assignmentId}, \`${a.title}\`, '${a.dueDate ?? ''}', \`${a.description ?? ''}\`, ${a.classId})">
+                            <td>${a.title}</td>
+                            <td><span class="badge bg-secondary">${a.classCode}</span></td>
+                            <td>${due ? due.toLocaleString('vi-VN') : '—'}</td>
+                            <td>
+                                <span class="fw-bold ${overdue ? 'text-danger' : 'text-success'}">
+                                    <i class="bi ${overdue ? 'bi-lock-fill' : 'bi-unlock-fill'}"></i> ${overdue ? 'Đã đóng' : 'Đang nhận'}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="progress" style="height: 10px; width: 100px;">
+                                    <div class="progress-bar" role="progressbar" style="width: ${percent}%"></div>
+                                </div>
+                                <small>${a.submissionCount}/${a.totalStudents} (${percent}%)</small>
+                            </td>
+                        </tr>`;
+                    });
+                    $('#assignment-tbody').html(html || '<tr><td colspan="5" class="text-center">Chưa có bài tập nào</td></tr>');
+                }
             });
         }
 
@@ -180,6 +178,7 @@
                 url: `${apiBaseUrl}/Assignments`,
                 type: 'POST',
                 contentType: 'application/json',
+                headers: { "Authorization": "Bearer " + token }, 
                 data: JSON.stringify(data),
                 success: () => {
                     $('#createAssignmentModal').modal('hide');
@@ -221,6 +220,7 @@
                 url: `${apiBaseUrl}/Assignments/${id}`,
                 type: 'PUT',
                 contentType: 'application/json',
+                headers: { "Authorization": "Bearer " + token }, 
                 data: JSON.stringify(data),
                 success: () => {
                     alert("Cập nhật thành công!");
@@ -240,6 +240,7 @@
             $.ajax({
                 url: `${apiBaseUrl}/Assignments/${id}`,
                 type: 'DELETE',
+                headers: { "Authorization": "Bearer " + token }, 
                 success: () => {
                     bootstrap.Modal.getInstance(
                         document.getElementById('editAssignmentModal')
