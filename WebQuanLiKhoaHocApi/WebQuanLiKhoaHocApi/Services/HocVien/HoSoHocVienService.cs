@@ -13,18 +13,19 @@ namespace WebQuanLiKhoaHocApi.Services.HocVien
         }
         public async Task<HocVien_HoSoCaNhan?> LayHoSoHocvien(string MaHocvien)
         {
-            var hocVien = await context.Students
-                .Where(hv => hv.StudentNumber == MaHocvien)
-                .Select(hv => new HocVien_HoSoCaNhan()
-                {
-                    MaHocVien = hv.StudentNumber,
-                    HoVaTen = hv.FullName,
-                    NgaySinh = hv.DateOfBirth,
-                    NganhHoc = hv.Faculty,
-                    KhoaNhapHoc = hv.Year
-                })
-                .FirstOrDefaultAsync();
-            return hocVien;
+            var query = from u in context.Users
+                        join s in context.Students on u.UserId equals s.StudentId // Giả sử UserId khớp với StudentId
+                        where u.Username == MaHocvien // So sánh với Username "student1"
+                        select new HocVien_HoSoCaNhan
+                        {
+                            MaHocVien = s.StudentNumber, // Trả về "SV001"
+                            HoVaTen = s.FullName,
+                            NgaySinh = s.DateOfBirth,
+                            NganhHoc = s.Faculty,
+                            KhoaNhapHoc = s.Year
+                        };
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }
