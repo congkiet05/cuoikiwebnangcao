@@ -35,7 +35,14 @@ builder.Services.AddHttpClient<BaiTapService>();
 
 builder.Services.AddScoped<IScheduleApiService, ScheduleApiService>();
 builder.Services.AddScoped<ApiService>();
-
+builder.Services.AddHttpClient<HocVien_thongbao>()
+    .ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        return new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+        };
+    });
 
 var app = builder.Build();
 

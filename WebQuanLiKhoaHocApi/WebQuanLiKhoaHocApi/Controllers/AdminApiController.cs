@@ -424,7 +424,7 @@ namespace WebQuanLiKhoaHocApi.Controllers
             // Kiểm tra AuthorId, mặc định là Admin (1) nếu null
             int authorId = model.AuthorId ?? 1;
 
-            var announcement = new Announcement
+            var announcement = new Entities.Announcement
             {
                 Title = model.Title,
                 Body = model.Body,
