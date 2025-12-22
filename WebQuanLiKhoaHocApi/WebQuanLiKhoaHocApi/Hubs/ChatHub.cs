@@ -23,24 +23,29 @@ namespace WebQuanLiKhoaHocApi.Hubs
         // Phương thức gửi tin nhắn
         public async Task SendMessage(int classId, int senderId, string content)
         {
-            // Bước 1: Lưu vào cơ sở dữ liệu
+            // 1. Khởi tạo đối tượng với đầy đủ thông tin (Thay cho dấu ... bị lỗi)
             var newMessage = new ClassMessage
             {
                 ClassId = classId,
                 SenderId = senderId,
                 Content = content,
-                SentAt = DateTime.Now
+                SentAt = DateTime.Now // Gán thời gian hiện tại
             };
 
+            // 2. Lưu vào Database
             _context.ClassMessages.Add(newMessage);
             await _context.SaveChangesAsync();
 
-            // Bước 2: Lấy thông tin người gửi (để hiển thị tên trên giao diện chat)
-            var sender = await _context.Users.FindAsync(senderId);
-            var senderName = sender?.Username ?? "Unknown";
+            // 3. Lấy Tên hiển thị (FullName) từ bảng Student hoặc Lecturer
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == senderId);
+            var lecturer = await _context.Lecturers.FirstOrDefaultAsync(l => l.LecturerId == senderId);
 
-            // Bước 3: Đẩy tin nhắn tới TẤT CẢ mọi người trong Group (lớp học) này
-            // Client sẽ lắng nghe sự kiện tên là "ReceiveMessage"
+            // Ưu tiên lấy FullName, nếu không có thì lấy Username từ bảng User
+            string senderName = student?.FullName ?? lecturer?.FullName ??
+                               (await _context.Users.FindAsync(senderId))?.Username ?? "Unknown";
+
+            // 4. Gửi tin nhắn đến Group lớp học
+            // Sử dụng định dạng giờ HH:mm (Ví dụ: 14:30)
             await Clients.Group(classId.ToString()).SendAsync("ReceiveMessage", new
             {
                 SenderId = senderId,

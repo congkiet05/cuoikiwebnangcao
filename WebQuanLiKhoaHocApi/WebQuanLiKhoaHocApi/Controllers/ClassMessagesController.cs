@@ -17,19 +17,21 @@ public class ClassMessagesController : ControllerBase
     [HttpGet("{classId}")]
     public async Task<IActionResult> GetMessages(int classId)
     {
-        // 1. Lấy dữ liệu thô từ DB về RAM trước
-        var rawMessages = await _context.ClassMessages
+        var messages = await _context.ClassMessages
+            .Include(m => m.Sender) // Join bảng User
             .Where(m => m.ClassId == classId)
             .OrderBy(m => m.SentAt)
+            .Select(m => new {
+                m.SenderId,
+                // Lấy FullName từ Student hoặc Lecturer tương ứng
+                SenderName = _context.Students.Where(s => s.StudentId == m.SenderId).Select(s => s.FullName).FirstOrDefault()
+                             ?? _context.Lecturers.Where(l => l.LecturerId == m.SenderId).Select(l => l.FullName).FirstOrDefault()
+                             ?? "Hệ thống",
+                m.Content,
+                SentAt = m.SentAt.HasValue ? m.SentAt.Value.ToString("HH:mm") : ""
+            })
             .ToListAsync();
 
-        // 2. Định dạng hiển thị trên RAM
-        var result = rawMessages.Select(m => new {
-            m.SenderId,
-            m.Content,
-            SentAt = m.SentAt.HasValue ? m.SentAt.Value.ToString("HH:mm") : ""
-        });
-
-        return Ok(result);
+        return Ok(messages);
     }
 }
