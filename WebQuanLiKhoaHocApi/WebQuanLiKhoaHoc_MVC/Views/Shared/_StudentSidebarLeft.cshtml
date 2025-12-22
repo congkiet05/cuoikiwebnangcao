@@ -1,5 +1,8 @@
 ﻿@* Views/Shared/_StudentSidebar.cshtml *@
-
+@{
+    // Lấy Username (Mã học viên) từ Identity của người dùng đã đăng nhập
+    var currentMaHocVien = User.Identity?.Name ?? "";
+}
 <div class="sidebar-title">HỌC VIÊN</div>
 
 <a href="@Url.Action("Dashboard", "Student")" class="sidebar-item d-flex align-items-center">
@@ -32,7 +35,8 @@
     <span>Bài tập / Assignment</span>
 </a>
 
-<a href="@Url.Action("HoSoHocVien","HoSoHocVien" ,  new {MaHocVien = "SV001"})" class="sidebar-item d-flex align-items-center">
+<a href="@Url.Action("HoSoHocVien", "HoSoHocVien", new { MaHocVien = currentMaHocVien })"
+   class="sidebar-item d-flex align-items-center">
     <i class="bi bi-person-circle me-2"></i>
     <span>Hồ sơ cá nhân</span>
 </a>

@@ -9,7 +9,7 @@ using WebQuanLiKhoaHocApi.Services.HocVien;
 
 namespace WebQuanLiKhoaHocApi.Controllers.HocVien
 {
-    [Route("api/HocVien/[controller]")]
+    [Route("api/HocVien")]
     [ApiController]
     public class HoSoHocVienController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace WebQuanLiKhoaHocApi.Controllers.HocVien
         {
             _hoSoHocVienService = hoSoHocVienService;
         }
-        [HttpGet("{MaHocVien}")]
+        [HttpGet("HoSoHocVien/{MaHocVien}")]
         public async Task<ActionResult<HocVien_HoSoCaNhan?>> LayHoSoHocVien(string MaHocVien)
         {
             var hoSoHocVien = await _hoSoHocVienService.LayHoSoHocvien(MaHocVien);
