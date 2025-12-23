@@ -57,12 +57,13 @@ namespace WebQuanLiKhoaHoc_MVC.Controllers.HocVien
 
             if (ketQua)
             {
-                // Thành công: Quay lại trang xem điểm chi tiết hoặc trang thông báo
-                return Content("🎉 Nộp bài thành công! File đã lưu và CSDL đã cập nhật.");
+                ViewBag.Error = "Nộp Bài Thành Công , Chúc Mừng Bạn ";
+                // Để tránh lỗi Model null khi return View, bạn nên redirect hoặc load lại Model
+                return RedirectToAction("XemDiemMon","XemDiem");
             }
             else
             {
-                return Content("❌ Lỗi: Không thể lưu vào cơ sở dữ liệu.");
+                return Content("❌ Lỗi: Không thể nộp bài tập");
             }
         }
     }

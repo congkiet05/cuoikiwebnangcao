@@ -58,14 +58,19 @@
             <div class="col-md-3">
                 @await Html.PartialAsync("_StudentSidebarLeft")
             </div>
-            
+            @{
+                bool hideRight = ViewData["HideRightSidebar"] as bool? ?? false;
+                string mainClass = hideRight ? "col-md-9" : "col-md-6";
+            }
             <div class="col-md-6">
                 @RenderBody()
             </div>
-
-            <div class="col-md-3">
-                @await Html.PartialAsync("_StudentSidebarRight")
-            </div>
+            @if (!hideRight)
+            {
+                <div class="col-md-3">
+                    @await Html.PartialAsync("_StudentSidebarRight")
+                </div>
+            }
         </div>
     </main>
 

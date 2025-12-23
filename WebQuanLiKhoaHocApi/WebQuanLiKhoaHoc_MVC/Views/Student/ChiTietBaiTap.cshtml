@@ -49,7 +49,7 @@
                 <div class="card-body">
                     <form asp-controller="BaiTap" asp-action="NopBaiSubmit" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="AssignmentId" value="@Model.AssignmentId" />
-
+                        
                         <div class="mb-4">
                             <label class="form-label fw-bold">1. Chọn file bài làm:</label>
                             <input type="file" name="fileBaiLam" class="form-control" required />
