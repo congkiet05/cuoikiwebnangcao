@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "Help Center";
+    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+}
+
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary">Help Center</h1>
+        <p class="text-muted fs-5">Hướng dẫn sử dụng hệ thống quản lý dành cho Giảng viên</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="sticky-top" style="top: 20px;">
+                <div class="list-group shadow-sm border-0">
+                    <a href="#intro" class="list-group-item list-group-item-action fw-bold border-0">1. Giới thiệu chung</a>
+                    <a href="#dashboard" class="list-group-item list-group-item-action fw-bold border-0">2. Bảng điều khiển</a>
+                    <a href="#timetable" class="list-group-item list-group-item-action fw-bold border-0">3. Thời khóa biểu</a>
+                    <a href="#announcement" class="list-group-item list-group-item-action fw-bold border-0">4. Quản lý thông báo</a>
+                    <a href="#account" class="list-group-item list-group-item-action fw-bold border-0">5. Tài khoản & Bảo mật</a>
+                </div>
+
+                <div class="card mt-4 border-0 shadow-sm bg-light">
+                    <div class="card-body">
+                        <h6 class="fw-bold"><i class="bi bi-headset me-2"></i>Hỗ trợ kỹ thuật</h6>
+                        <p class="small text-muted mb-0">Email: support@ute.edu.vn</p>
+                        <p class="small text-muted">Hotline: (028) 3896 8641</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm p-4">
+
+                <section id="intro" class="mb-5">
+                    <h4 class="fw-bold border-bottom pb-2 text-dark"><i class="bi bi-info-circle me-2"></i>1. Giới thiệu chung</h4>
+                    <p>Chào mừng Quý thầy/cô đến với hệ thống quản lý học tập tích hợp. Hệ thống này được thiết kế để hỗ trợ giảng viên trong việc theo dõi lịch dạy, tương tác với sinh viên và quản lý các hoạt động đào tạo một cách trực quan nhất.</p>
+                </section>
+
+                <section id="dashboard" class="mb-5">
+                    <h4 class="fw-bold border-bottom pb-2 text-dark"><i class="bi bi-grid me-2"></i>2. Bảng điều khiển (Dashboard)</h4>
+                    <p>Đây là nơi tổng hợp các thông tin quan trọng nhất trong ngày:</p>
+                    <ul>
+                        <li><strong>Lịch dạy hôm nay:</strong> Hiển thị các ca dạy sắp tới theo thứ tự thời gian.</li>
+                        <li><strong>Thông báo mới:</strong> Các tin tức từ Nhà trường hoặc Admin sẽ xuất hiện tại mục thông báo.</li>
+                        <li><strong>Thống kê nhanh:</strong> Số lượng tin nhắn và thông báo chưa đọc.</li>
+                    </ul>
+                </section>
+
+                <section id="timetable" class="mb-5">
+                    <h4 class="fw-bold border-bottom pb-2 text-dark"><i class="bi bi-calendar-week me-2"></i>3. Thời khóa biểu (Timetable)</h4>
+                    <p>Trang này cung cấp cái nhìn tổng thể về lịch dạy trong toàn bộ tuần từ Thứ 2 đến Chủ nhật:</p>
+                    <div class="alert alert-info border-0 shadow-sm">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        <strong>Mẹo:</strong> Các khối màu khác nhau đại diện cho các phòng học hoặc môn học khác nhau. Thầy/cô có thể xem từ 7:00 AM đến 5:00 PM.
+                    </div>
+                </section>
+
+                <section id="announcement" class="mb-5">
+                    <h4 class="fw-bold border-bottom pb-2 text-dark"><i class="bi bi-megaphone me-2"></i>4. Quản lý thông báo</h4>
+                    <p>Giảng viên có thể nhận và tạo thông báo:</p>
+                    <ul>
+                        <li><strong>Thông báo hệ thống:</strong> Xem các chỉ thị từ Ban giám hiệu.</li>
+                        <li><strong>Thông báo lớp học:</strong> Tạo thông báo cho một lớp cụ thể. Hệ thống sẽ tự động gửi thông báo đến từng sinh viên trong lớp đó thông qua <strong>Trigger</strong> tự động.</li>
+                    </ul>
+                </section>
+
+                <section id="account" class="mb-5">
+                    <h4 class="fw-bold border-bottom pb-2 text-dark"><i class="bi bi-shield-lock me-2"></i>5. Tài khoản & Bảo mật</h4>
+                    <p>Tại trang <strong>Settings</strong>, Thầy/cô có thể tùy chỉnh các thiết lập cá nhân:</p>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded bg-light">
+                                <h6 class="fw-bold"><i class="bi bi-moon-stars me-2"></i>Dark Mode</h6>
+                                <p class="small text-muted mb-0">Chuyển đổi giao diện sang màu tối để bảo vệ mắt khi làm việc ban đêm.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded bg-light">
+                                <h6 class="fw-bold"><i class="bi bi-translate me-2"></i>Ngôn ngữ</h6>
+                                <p class="small text-muted mb-0">Hệ thống hỗ trợ chuyển đổi giữa Tiếng Anh và Tiếng Việt.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <style>
+        /* Hiệu ứng mượt khi nhấn vào menu bên trái */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .list-group-item {
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+            .list-group-item:hover {
+                background-color: #f8f9fa;
+                color: #0d6efd;
+                padding-left: 1.5rem;
+            }
+
+        section h4 {
+            margin-top: 1rem;
+        }
+
+        /* Dark mode support cho trang Help */
+        body.dark-mode .card,
+        body.dark-mode .list-group-item,
+        body.dark-mode .bg-light {
+            background-color: #1e1e1e !important;
+            color: #e0e0e0 !important;
+            border-color: #333 !important;
+        }
+
+        body.dark-mode .text-dark {
+            color: #fff !important;
+        }
+    </style>
+}
+

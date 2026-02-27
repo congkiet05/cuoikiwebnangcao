@@ -1,0 +1,134 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewBag.Title = "Hồ sơ cá nhân";
+    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+    var apiBaseUrl = Configuration["ApiSettings:BaseUrl"];
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3 d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-person-circle me-2"></i>THÔNG TIN CÁ NHÂN</h5>
+                    <img id="profileImg" src="" class="rounded-circle border border-2 border-white" style="width: 40px; height: 40px; object-fit: cover;" />
+                </div>
+                <div class="card-body p-4">
+                    <form id="profileForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">MÃ SỐ GIẢNG VIÊN</label>
+                                <input type="text" id="staffNumber" class="form-control bg-light" readonly />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">TÊN ĐĂNG NHẬP</label>
+                                <input type="text" id="username" class="form-control bg-light" readonly />
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label small fw-bold">HỌ VÀ TÊN</label>
+                                <input type="text" id="fullName" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">KHOA / BỘ MÔN</label>
+                                <input type="text" id="department" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">EMAIL</label>
+                                <input type="email" id="email" class="form-control" />
+                            </div>
+
+                            <div class="col-12"><hr class="my-3"></div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-primary">MẬT KHẨU MỚI</label>
+                                <input type="password" id="newPassword" class="form-control" placeholder="Để trống nếu không đổi" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-primary">XÁC NHẬN MẬT KHẨU</label>
+                                <input type="password" id="confirmPassword" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-4">
+                            <button type="button" onclick="updateProfile()" class="btn btn-primary px-4 fw-bold shadow-sm">
+                                <i class="bi bi-save me-2"></i>LƯU THAY ĐỔI
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const lecturerId = parseInt("@ViewBag.CurrentUserId") || 0;
+        const token = "@ViewBag.AccessToken";
+        const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
+
+        $(document).ready(function() {
+            loadProfile();
+        });
+
+        function loadProfile() {
+            $.ajax({
+                url: `${apiBaseUrl}/Lecturers/${lecturerId}`,
+                type: 'GET',
+                headers: {
+                    "Authorization": "Bearer " + token // Thêm token để xác thực với API
+                },
+                success: function (data) {
+                    $('#staffNumber').val(data.StaffNumber || data.staffNumber || "");
+                    $('#fullName').val(data.FullName || data.fullName || "");
+                    $('#department').val(data.Department || data.department || "");
+                    $('#username').val(data.Username || data.username || "");
+                    $('#email').val(data.Email || data.email || "");
+
+                    const name = data.FullName || data.fullName || "User";
+                    $('#profileImg').attr('src', `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0d6efd&color=fff`);
+                },
+                error: function (xhr) {
+                    console.error("Lỗi API:", xhr.responseText);
+                }
+            });
+        }
+
+        function updateProfile() {
+            const newPass = $('#newPassword').val();
+            const confirmPass = $('#confirmPassword').val();
+
+            // Kiểm tra khớp mật khẩu ở client trước
+            if (newPass && newPass !== confirmPass) {
+                alert("Xác nhận mật khẩu mới không khớp!");
+                return;
+            }
+
+            const data = {
+                FullName: $('#fullName').val().trim(),
+                Department: $('#department').val() || null,
+                Email: $('#email').val() || null,
+                NewPassword: newPass || null
+            };
+
+            $.ajax({
+                url: `${apiBaseUrl}/Lecturers/UpdateProfile/${lecturerId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                headers: {
+                    "Authorization": "Bearer " + token // Gửi token khi cập nhật
+                },
+                data: JSON.stringify(data),
+                success: function () {
+                    alert("Cập nhật hồ sơ thành công!");
+                    $('#newPassword, #confirmPassword').val('');
+                    loadProfile();
+                },
+                error: function (err) {
+                    alert("Không thể cập nhật hồ sơ!");
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,120 @@
+
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using WebQuanLiKhoaHocApi.Entities;
+using WebQuanLiKhoaHocApi.Hubs;
+using WebQuanLiKhoaHocApi.Interfaces.HocVien;
+using WebQuanLiKhoaHocApi.Services.BaiTap;
+using WebQuanLiKhoaHocApi.Services.HocVien;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var jwtKey = builder.Configuration["JWT:Key"];
+var jwtIssuer = builder.Configuration["JWT:Issuer"];
+var jwtAudience = builder.Configuration["JWT:Audience"];
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMVCAndSignalR", policy =>
+    {
+        policy
+            .WithOrigins(
+                "https://localhost:7274", // MVC
+                "https://localhost:7137"  // SignalR / Web khác
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
+
+
+builder.Services.AddSignalR();
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+builder.Services.AddDbContext<WebQuanLiKhoaHocApi.Entities.UniversityDBContext>( options =>
+    options.UseSqlServer(connectionString)
+);
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = 
+            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        // Yêu cầu xác thực key (quan trọng nhất)
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+
+        // Yêu cầu xác thực Issuer (Người phát hành)
+        ValidateIssuer = true,
+        ValidIssuer = jwtIssuer,
+
+        // Yêu cầu xác thực Audience (Đối tượng)
+        ValidateAudience = true,
+        ValidAudience = jwtAudience,
+
+        // YêuG cầuxác thực thời gian sống của token
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero // Không cho phép chênh lệch thời gian
+    };
+    // Hỗ trợ SignalR gửi Token qua Query String khi kết nối
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatHub"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+builder.Services.AddAuthorization();
+builder.Services.AddScoped<IHoSoHocVien, HoSoHocVienService>();
+builder.Services.AddScoped<ILichHoc,LichHocService>();
+builder.Services.AddScoped<IXemDiem, HocVien_XemDiemService>();
+builder.Services.AddScoped<IHocVien_NopBaiTap, HocVien_BaiTapService>();
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseRouting();
+app.UseCors("AllowMVCAndSignalR");
+
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.MapHub<ChatHub>("/chatHub");
+
+app.Run();

@@ -1,0 +1,172 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewBag.Title = "Trung tâm Thông báo";
+    Layout = "~/Views/Shared/_LayoutLecturer.cshtml";
+    var apiBaseUrl = Configuration["ApiSettings:BaseUrl"];
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                        <div>
+                            <h2 class="h4 mb-1 fw-bold text-primary"><i class="bi bi-megaphone me-2"></i>Admin Announcements</h2>
+                            <p class="text-muted small mb-0">Theo dõi các tin tức và thông báo mới nhất từ ban quản trị nhà trường.</p>
+                        </div>
+                        <button id="mark-all-read" class="btn btn-outline-primary btn-sm px-3 shadow-sm">
+                            <i class="bi bi-check2-all me-1"></i> Đánh dấu tất cả đã đọc
+                        </button>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-white border-end-0 text-muted">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" id="search-notification" class="form-control border-start-0 ps-0"
+                                   placeholder="Tìm kiếm thông báo theo tiêu đề hoặc nội dung...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="notification-container" class="list-group shadow-sm border-0 rounded-3 overflow-hidden">
+                <div class="text-center p-5 bg-white">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Đang tải thông báo...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // 1. LẤY DỮ LIỆU THẬT TỪ SESSION
+            const lecturerId = parseInt("@ViewBag.CurrentUserId") || 0;
+            const token = "@ViewBag.AccessToken";
+            const apiBaseUrl = '@Html.Raw(apiBaseUrl)'.replace(/\/$/, '');
+
+            if (lecturerId === 0) return;
+
+            // 2. Hàm load danh sách thông báo
+            function loadNotifications(searchQuery = "") {
+                $.ajax({
+                    url: `${apiBaseUrl}/Notifications/Lecturer/${lecturerId}`,
+                    type: "GET",
+                    headers: { "Authorization": "Bearer " + token }, // Gửi token xác thực
+                    success: function (data) {
+                        let html = '';
+
+                        // Client-side filtering
+                        const filteredData = data.filter(n =>
+                            (n.title || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            (n.body || "").toLowerCase().includes(searchQuery.toLowerCase())
+                        );
+
+                        if (filteredData.length === 0) {
+                            html = `
+                                <div class="list-group-item text-center py-5 bg-white text-muted">
+                                    <i class="bi bi-inbox-fill d-block mb-2" style="font-size: 2rem;"></i>
+                                    Không tìm thấy thông báo nào.
+                                </div>`;
+                        } else {
+                            filteredData.forEach(item => {
+                                const unreadClass = item.isRead ? "" : "bg-light border-start border-primary border-4";
+                                const badgeRead = item.isRead ? "" : '<span class="badge bg-primary rounded-pill ms-2">Mới</span>';
+                                const iconClass = item.isRead ? "bi-envelope-open text-muted" : "bi-envelope-fill text-primary";
+
+                                html += `
+                                    <div class="list-group-item list-group-item-action p-3 ${unreadClass} notification-item">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="flex-grow-1" onclick="markAsRead(${item.notificationId})">
+                                                <div class="d-flex align-items-center mb-1">
+                                                    <i class="bi ${iconClass} me-2"></i>
+                                                    <h6 class="fw-bold mb-0">${item.title}</h6>
+                                                    ${badgeRead}
+                                                </div>
+                                                <p class="text-muted small mb-2 text-wrap" style="max-width: 90%">${item.body}</p>
+                                                <div class="d-flex align-items-center text-muted" style="font-size: 0.75rem;">
+                                                    <span class="badge bg-secondary-subtle text-secondary me-2">Admin Post</span>
+                                                    <i class="bi bi-clock me-1"></i> ${new Date(item.createdAt).toLocaleString('vi-VN')}
+                                                </div>
+                                            </div>
+                                            <div class="ms-3">
+                                                <button class="btn btn-link text-decoration-none p-0 mark-single-read"
+                                                        title="Đánh dấu đã đọc"
+                                                        onclick="markAsRead(${item.notificationId})">
+                                                    <i class="bi bi-check-circle${item.isRead ? '-fill text-success' : ' text-muted'}"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                            });
+                        }
+                        $('#notification-container').html(html);
+                    },
+                    error: function (xhr) {
+                        $('#notification-container').html('<div class="list-group-item text-danger text-center py-4">Lỗi kết nối máy chủ thông báo.</div>');
+                    }
+                });
+            }
+
+            // Gọi lần đầu
+            loadNotifications();
+
+            // Tìm kiếm (Real-time search)
+            $('#search-notification').on('keyup', function () {
+                loadNotifications($(this).val());
+            });
+
+            // Đánh dấu tất cả đã đọc
+            $('#mark-all-read').on('click', function () {
+                if(!confirm("Bạn muốn đánh dấu tất cả thông báo là đã đọc?")) return;
+
+                $.ajax({
+                    url: `${apiBaseUrl}/Notifications/Lecturer/${lecturerId}/MarkAllRead`,
+                    type: "PUT",
+                    headers: { "Authorization": "Bearer " + token },
+                    success: function () {
+                        loadNotifications();
+                    }
+                });
+            });
+
+            // Hàm xử lý đọc từng thông báo (Gắn vào window để gọi từ onclick)
+            window.markAsRead = function(id) {
+                $.ajax({
+                    url: `${apiBaseUrl}/Notifications/${id}/MarkAsRead`,
+                    type: "PUT",
+                    headers: { "Authorization": "Bearer " + token },
+                    success: function() {
+                        loadNotifications($('#search-notification').val());
+                    }
+                });
+            };
+        });
+    </script>
+
+    <style>
+        .notification-item {
+            transition: all 0.2s ease;
+        }
+
+            .notification-item:hover {
+                background-color: #f1f4f9;
+            }
+
+        .border-4 {
+            border-left-width: 4px !important;
+        }
+
+        .notification-item p {
+            line-height: 1.4;
+            color: #444 !important;
+        }
+    </style>
+}

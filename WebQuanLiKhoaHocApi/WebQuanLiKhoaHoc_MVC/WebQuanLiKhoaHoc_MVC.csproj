@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c8a6e61d-789c-4c10-9f29-6d31455b211b</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <Compile Remove="Views\StudentSchedule\**" />
+    <Content Remove="Views\StudentSchedule\**" />
+    <EmbeddedResource Remove="Views\StudentSchedule\**" />
+    <None Remove="Views\StudentSchedule\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.22" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\StudentSchedule\" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebQuanLiKhoaHocApi\WebQuanLiKhoaHocApi.csproj" />
+  </ItemGroup>
+
+</Project>

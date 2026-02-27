@@ -1,0 +1,277 @@
+﻿@model List<WebQuanLiKhoaHoc_MVC.Models.KhoaHocViewModel>
+@{
+    ViewData["Title"] = "Quản Lý Khóa Học";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using System.Text.Json
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    /* --- Styles đồng bộ --- */
+    .page-header {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.05);
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .table-card {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.05);
+        overflow: hidden;
+    }
+
+    .avatar-initial {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 1rem;
+        color: #fff;
+    }
+
+    .credit-badge {
+        min-width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #e3e6f0;
+        color: #5a5c69;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.85rem;
+    }
+
+    .credit-high {
+        background-color: #ffe5d0;
+        color: #e67e22;
+    }
+
+    .credit-med {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+</style>
+
+<div class="page-header">
+    <div>
+        <h3 class="fw-bold text-gray-800 mb-1"><i class="fas fa-shapes me-2 text-primary"></i>Quản Lý Môn Học</h3>
+        <p class="text-muted small mb-0">Danh mục các môn học, tín chỉ và mô tả chi tiết.</p>
+    </div>
+    <button class="btn btn-primary shadow-sm fw-bold px-3" onclick="openModal(0)">
+        <i class="fas fa-plus fa-sm me-2"></i> Thêm Môn Học
+    </button>
+</div>
+
+<div class="card table-card mb-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="bg-light text-center">
+                    <tr>
+                        <th width="5%">#ID</th>
+                        <th width="15%">Mã Môn</th>
+                        <th width="30%" class="text-start">Tên Môn Học</th>
+                        <th width="10%">Tín Chỉ</th>
+                        <th width="30%" class="text-start">Mô Tả</th>
+                        <th width="10%">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center text-muted fw-bold">@item.Id</td>
+                                <td class="text-center">
+                                    <span class="badge bg-light text-primary border border-primary">@item.MaMon</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @{
+                                            var initial = !string.IsNullOrEmpty(item.TenMon) ? item.TenMon.Substring(0, 1).ToUpper() : "M";
+                                            var bgColors = new[] { "#4e73df", "#1cc88a", "#36b9cc", "#f6c23e" };
+                                            var randomColor = bgColors[item.Id % bgColors.Length];
+                                        }
+                                        <div class="avatar-initial shadow-sm" style="background-color: @randomColor">@initial</div>
+                                        <span class="fw-bold text-dark">@item.TenMon</span>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span class="credit-badge @(item.TinChi >= 4 ? "credit-high" : "credit-med")">@item.TinChi</span>
+                                </td>
+                                <td class="small text-muted text-truncate" style="max-width: 200px;" title="@item.MoTa">
+                                    @(!string.IsNullOrEmpty(item.MoTa) ? item.MoTa : "Chưa có mô tả")
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-info rounded-circle me-1"
+                                            onclick='openModal(
+                                            @item.Id,
+                                            @Html.Raw(JsonSerializer.Serialize(item.MaMon)),
+                                            @Html.Raw(JsonSerializer.Serialize(item.TenMon)),
+                                            @item.TinChi,
+                                            @Html.Raw(JsonSerializer.Serialize(item.MoTa))
+                                        )'>
+                                            <i class="fas fa-pen"></i>
+                                    </button>
+
+                                    <button class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteItem(@item.Id)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="6" class="text-center py-5 text-muted">Chưa có dữ liệu môn học.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="subjectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold"><i class="fas fa-book-open me-2"></i>Thông Tin Môn Học</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 bg-light">
+                <input type="hidden" id="CourseId" value="0">
+
+                <div class="row mb-3">
+                    <div class="col-8">
+                        <label class="form-label small fw-bold text-uppercase">Mã Môn Học (*)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-barcode"></i></span>
+                            <input class="form-control fw-bold text-primary" id="MaMon" placeholder="VD: CT101">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label small fw-bold text-uppercase">Tín Chỉ</label>
+                        <input type="number" class="form-control text-center fw-bold" id="TinChi" value="3" min="1" max="10">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-uppercase">Tên Môn Học (*)</label>
+                    <input class="form-control" id="TenMon" placeholder="VD: Lập trình C nâng cao">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-uppercase">Mô Tả / Ghi Chú</label>
+                    <textarea class="form-control" id="MoTa" rows="3" placeholder="Nhập mô tả về môn học..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-0 bg-white pb-4">
+                <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary px-4 rounded-pill shadow-sm" onclick="saveData()">
+                    <i class="fas fa-save me-2"></i>Lưu Dữ Liệu
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var myModal;
+        document.addEventListener("DOMContentLoaded", () => {
+            // Lưu ý: ID của Modal trong HTML là subjectModal
+            var el = document.getElementById('subjectModal');
+            if (el) myModal = new bootstrap.Modal(el);
+        });
+
+                function openModal(id, ma = '', ten = '', tinchi = 3, mota = '') {
+                document.getElementById('CourseId').value = id;
+                document.getElementById('MaMon').value = ma;
+                document.getElementById('TenMon').value = ten;
+                document.getElementById('TinChi').value = tinchi;
+                document.getElementById('MoTa').value = mota;
+
+                if (id > 0) {
+                    document.getElementById('MaMon').readOnly = true;
+                } else {
+                    document.getElementById('MaMon').readOnly = false;
+                }
+                myModal.show();
+        }
+
+        function saveData() {
+            // 1. Lấy giá trị ID và ép kiểu số nguyên
+            var id = parseInt(document.getElementById('CourseId').value) || 0;
+
+            var ma = document.getElementById('MaMon').value.trim();
+            var ten = document.getElementById('TenMon').value.trim();
+            var tinchi = parseInt(document.getElementById('TinChi').value) || 3;
+            var mota = document.getElementById('MoTa').value;
+
+            if (!ma || !ten) return Swal.fire('Thiếu thông tin', 'Vui lòng nhập Mã và Tên môn học!', 'warning');
+
+            // 2. Đóng gói dữ liệu (Mapping chính xác với KhoaHocDto)
+            var data = {
+                    id: id,
+                    maMon: ma,
+                    tenMon: ten,
+                    tinChi: tinchi,
+                    moTa: mota
+                };
+
+
+            Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+
+            fetch('/Admin/SaveCourse', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(async res => {
+                if (res.ok) {
+                    Swal.fire('Thành công', 'Dữ liệu môn học đã được lưu.', 'success').then(() => location.reload());
+                } else {
+                    const errorMsg = await res.text();
+                    Swal.fire('Lỗi', errorMsg || 'Có lỗi xảy ra khi lưu dữ liệu.', 'error');
+                }
+            })
+            .catch(err => {
+                Swal.fire('Lỗi kết nối', 'Không thể kết nối tới máy chủ.', 'error');
+            });
+        }
+
+        function deleteItem(id) {
+            Swal.fire({
+                title: 'Xóa môn học này?',
+                text: "Toàn bộ dữ liệu liên quan sẽ bị xóa vĩnh viễn!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e74a3b',
+                confirmButtonText: 'Xóa ngay',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/Admin/DeleteCourse?id=' + id, { method: 'POST' })
+                    .then(res => {
+                        if (res.ok) {
+                            Swal.fire('Đã xóa!', 'Môn học đã được xóa khỏi hệ thống.', 'success').then(() => location.reload());
+                        } else {
+                            Swal.fire('Lỗi!', 'Không thể xóa môn học này (có thể do ràng buộc dữ liệu).', 'error');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

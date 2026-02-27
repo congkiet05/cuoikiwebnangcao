@@ -1,0 +1,381 @@
+﻿@model List<WebQuanLiKhoaHoc_MVC.Models.UserViewModel>
+@{
+    ViewData["Title"] = "Quản Lý Người Dùng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    .avatar-initial {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+
+    .badge-soft-success {
+        background-color: #d1e7dd;
+        color: #0f5132;
+        padding: 0.5em 0.8em;
+    }
+
+    .badge-soft-danger {
+        background-color: #f8d7da;
+        color: #842029;
+        padding: 0.5em 0.8em;
+    }
+
+    .badge-soft-warning {
+        background-color: #fff3cd;
+        color: #664d03;
+        padding: 0.5em 0.8em;
+    }
+
+    .badge-soft-info {
+        background-color: #cff4fc;
+        color: #055160;
+        padding: 0.5em 0.8em;
+    }
+
+    .badge-soft-primary {
+        background-color: #cfe2ff;
+        color: #084298;
+        padding: 0.5em 0.8em;
+    }
+</style>
+
+<div class="page-header mb-4 p-4 bg-white rounded shadow-sm d-flex justify-content-between align-items-center">
+    <div>
+        <h3 class="fw-bold text-gray-800 mb-1"><i class="fas fa-users me-2 text-primary"></i>Quản Lý Người Dùng</h3>
+        <p class="text-muted small mb-0">Quản lý tài khoản, phân quyền và thông tin chi tiết.</p>
+    </div>
+    <button class="btn btn-primary fw-bold px-3 shadow-sm" onclick="openModal(0)">
+        <i class="fas fa-user-plus fa-sm me-2"></i> Thêm User Mới
+    </button>
+</div>
+
+<div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="bg-light text-center">
+                    <tr>
+                        <th width="5%">ID</th>
+                        <th width="15%">Tài Khoản</th>
+                        <th width="20%" class="text-start ps-4">Thông Tin</th>
+                        <th width="10%">Vai Trò</th>
+                        <th width="15%">Khoa / Môn Học</th>
+                        <th width="10%">Trạng Thái</th>
+                        <th width="10%">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center fw-bold text-muted">#@item.Id</td>
+                                <td class="text-center fw-bold text-primary">@item.Username</td>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        @{
+                                            var initial = !string.IsNullOrEmpty(item.HoTen) ? item.HoTen.Substring(0, 1).ToUpper() : "U";
+                                            var bgColors = new[] { "#4e73df", "#1cc88a", "#36b9cc", "#f6c23e", "#e74a3b" };
+                                            var randomColor = bgColors[item.Id % bgColors.Length];
+                                        }
+                                        <div class="avatar-initial shadow-sm" style="background-color: @randomColor">@initial</div>
+                                        <div>
+                                            <div class="fw-bold text-dark">@item.HoTen</div>
+                                            <div class="small text-muted">@item.Email</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    @if (item.RoleId == 4)
+                                    {
+                                        <span class="badge badge-soft-danger rounded-pill">Admin</span>
+                                    }
+                                    else if (item.RoleId == 3)
+                                    {
+
+                                        <span class="badge badge-soft-warning rounded-pill">Giảng Viên</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span class="badge badge-soft-info rounded-pill">Sinh Viên</span>
+                                    }
+                                </td>
+                                <td class="text-center"><span class="badge badge-soft-primary">@item.BoMon</span></td>
+                                <td class="text-center">
+                                    @if (item.TrangThai == 2)
+                                    {
+                                        <span class="badge badge-soft-success"><i class="fas fa-check me-1"></i>Active</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span class="badge badge-soft-danger"><i class="fas fa-lock me-1"></i>Locked</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-info rounded-circle me-1"
+                                            onclick="openModal(@item.Id, '@item.HoTen', '@item.Email', '@item.BoMon', @item.TrangThai, '@item.Username', @item.RoleId)">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteItem(@item.Id)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="7" class="text-center py-5 text-muted">Không có dữ liệu.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold"><i class="fas fa-user-edit me-2"></i>Thông Tin User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 bg-light">
+                <input type="hidden" id="UserId">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-uppercase">Họ và Tên (*)</label>
+                        <input class="form-control" id="HoTen" placeholder="VD: Nguyễn Văn A">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-uppercase">Email (*)</label>
+                        <input class="form-control" id="Email" placeholder="email@ute.edu.vn">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-uppercase">Tài khoản (*)</label>
+                        <input class="form-control fw-bold text-primary" id="Username" placeholder="user123">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-uppercase">Mật Khẩu (*)</label>
+                        <input type="text" class="form-control text-danger" id="Password" placeholder="Nhập mật khẩu">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-uppercase text-danger">Vai Trò (*)</label>
+                        <select class="form-select fw-bold" id="RoleId" onchange="updateBoMonOptions()">
+                            <option value="2">Sinh Viên</option>
+                            <option value="3">Giảng Viên</option>
+                            <option value="4">Quản Trị Viên (Admin)</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold text-uppercase" id="lblBoMon">Môn Học / Khoa</label>
+                        <select class="form-select" id="BoMon">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-uppercase">Trạng Thái</label>
+                    <select class="form-select" id="TrangThai">
+                        <option value="2">Hoạt động (Active)</option>
+                        <option value="0">Khóa (Locked)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-0 bg-white pb-4">
+                <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary px-4 rounded-pill shadow-sm" onclick="saveData()">
+                    <i class="fas fa-save me-2"></i>Lưu Dữ Liệu
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var myModal;
+
+        // Dữ liệu từ SQL của bạn (Hardcode vào JS để thao tác nhanh)
+        const courses = [
+            "Nhập môn CNTT", "Lập trình C", "Lập trình Java", "Cơ sở dữ liệu",
+            "Web cơ bản", "Web nâng cao", "Mạng máy tính", "Phân tích thiết kế HTTT",
+            "AI cơ bản", "Hệ điều hành"
+        ];
+
+        const departments = [
+            "Công nghệ Phần mềm", "Hệ thống Thông tin", "Mạng máy tính", "Khoa học máy tính"
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            var el = document.getElementById('userModal');
+            if(el) myModal = new bootstrap.Modal(el);
+            updateBoMonOptions(); // Khởi tạo lần đầu
+        });
+
+        // Hàm thay đổi danh sách dropdown dựa trên Vai trò
+        function updateBoMonOptions() {
+            var roleId = document.getElementById('RoleId').value;
+            var boMonSelect = document.getElementById('BoMon');
+            var label = document.getElementById('lblBoMon');
+
+            boMonSelect.innerHTML = ""; // Xóa hết option cũ
+
+            if (roleId == "2") { // Sinh Viên -> Hiện Môn Học (Bảng Course)
+                label.innerText = "Đăng ký Môn Học (Course)";
+                courses.forEach(c => {
+                    var opt = document.createElement('option');
+                    opt.value = c;
+                    opt.innerHTML = c;
+                    boMonSelect.appendChild(opt);
+                });
+                boMonSelect.disabled = false;
+            }
+            else if (roleId == "3") { // Giảng Viên -> Hiện Bộ Môn (Bảng Lecturer)
+                label.innerText = "Thuộc Bộ Môn (Department)";
+                departments.forEach(d => {
+                    var opt = document.createElement('option');
+                    opt.value = d;
+                    opt.innerHTML = d;
+                    boMonSelect.appendChild(opt);
+                });
+                boMonSelect.disabled = false;
+            }
+            else { // Admin -> Không cần chọn
+                label.innerText = "Không áp dụng";
+                var opt = document.createElement('option');
+                opt.value = "Quản trị viên";
+                opt.innerHTML = "Quản trị viên";
+                boMonSelect.appendChild(opt);
+                boMonSelect.disabled = true;
+            }
+        }
+
+        function openModal(id, name='', email='', bomon='', status=2, username='', roleId=2) {
+            document.getElementById('UserId').value = id;
+            document.getElementById('HoTen').value = name;
+            document.getElementById('Email').value = email;
+            document.getElementById('TrangThai').value = status;
+            document.getElementById('Username').value = username;
+            document.getElementById('RoleId').value = roleId;
+            document.getElementById('Password').value = "";
+
+            // Cập nhật lại list BoMon trước khi gán giá trị
+            updateBoMonOptions();
+
+            // Nếu có dữ liệu bộ môn cũ thì chọn nó, không thì để mặc định cái đầu
+            if(bomon) {
+                // Kiểm tra xem option có tồn tại không, nếu không (do đổi role) thì thêm tạm vào
+                var exists = Array.from(document.getElementById('BoMon').options).some(o => o.value === bomon);
+                if(!exists && roleId != 4) {
+                     var opt = document.createElement('option');
+                     opt.value = bomon;
+                     opt.innerHTML = bomon;
+                     document.getElementById('BoMon').appendChild(opt);
+                }
+                document.getElementById('BoMon').value = bomon;
+            }
+
+            const titleEl = document.querySelector('.modal-title');
+            if(id > 0) {
+                titleEl.innerHTML = '<i class="fas fa-user-edit me-2"></i>Cập Nhật User';
+                document.getElementById('Username').readOnly = true;
+                document.getElementById('Password').placeholder = "Để trống nếu không đổi";
+                document.getElementById('RoleId').setAttribute("readonly", true); // Sửa thì khóa Role
+                document.getElementById('BoMon').disabled = false;
+            } else {
+                titleEl.innerHTML = '<i class="fas fa-user-plus me-2"></i>Thêm User Mới';
+                document.getElementById('Username').readOnly = false;
+                document.getElementById('Password').placeholder = "Nhập mật khẩu";
+                document.getElementById('RoleId').disabled = false;
+                document.getElementById('BoMon').disabled = false;
+            }
+            myModal.show();
+        }
+
+        function saveData() {
+            var id = parseInt(document.getElementById('UserId').value);
+            var username = document.getElementById('Username').value.trim();
+            var password = document.getElementById('Password').value.trim();
+            var roleId = parseInt(document.getElementById('RoleId').value);
+            var hoTen = document.getElementById('HoTen').value.trim();
+            var email = document.getElementById('Email').value.trim();
+
+            if (!username || !hoTen || !email) return Swal.fire('Thiếu thông tin', 'Vui lòng điền đủ các trường!', 'warning');
+            if (id === 0 && !password) return Swal.fire('Thiếu thông tin', 'Vui lòng nhập Mật khẩu', 'warning');
+
+         var data = {
+            id: id,
+            username: username,
+            hoTen: hoTen,
+            email: email,
+            roleId: roleId,
+            boMon: document.getElementById('BoMon').value,
+            trangThai: parseInt(document.getElementById('TrangThai').value),
+            password: password ? password : null
+        };
+
+
+
+            if (password) {
+                data.Password = password;
+            }
+
+
+            Swal.fire({ title: 'Đang xử lý...', didOpen: () => Swal.showLoading() });
+
+            fetch('/Admin/SaveUser', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(async res => {
+                if (res.ok) Swal.fire('Thành công', 'Đã lưu dữ liệu!', 'success').then(() => location.reload());
+                else {
+                    var errorText = await res.text();
+                    console.error(errorText);
+                    Swal.fire('Lỗi', 'Không thể lưu. Kiểm tra lại Username/Email.', 'error');
+                }
+            })
+            .catch(err => Swal.fire('Lỗi mạng', 'Không thể kết nối Server', 'error'));
+        }
+
+        function deleteItem(id) {
+            Swal.fire({
+                title: 'Xóa User này?',
+                text: "Dữ liệu liên quan sẽ bị xóa vĩnh viễn!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xóa ngay',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/Admin/DeleteUser?id=' + id, { method: 'POST' })
+                    .then(res => {
+                        if (res.ok) Swal.fire('Đã xóa!', '', 'success').then(() => location.reload());
+                        else Swal.fire('Lỗi!', 'Không thể xóa.', 'error');
+                    });
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,17 @@
+diff a/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/XemDiemTb.cshtml b/WebQuanLiKhoaHocApi/WebQuanLiKhoaHoc_MVC/Views/Student/XemDiemTb.cshtml	(rejected hunks)
+@@ -66,6 +66,15 @@
+                                     <span class="text-danger">@item.DiemTrungBinh</span>
+                                 }
+                             </td>
++                            <td class="text-center">
++                                <a asp-controller="XemDiem"
++                                   asp-action="XemDiemMon"
++                                   asp-route-MaHocVien="@item.MaHocVien"
++                                   asp-route-MaHocPhan="@item.MaHocPhan"
++                                   class="btn btn-sm btn-info text-white">
++                                    <i class="fa fa-eye"></i> Chi tiết
++                                </a>
++                            </td>
+                         </tr>
+                     }
+                 </tbody>

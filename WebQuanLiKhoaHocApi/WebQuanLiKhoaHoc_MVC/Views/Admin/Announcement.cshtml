@@ -1,0 +1,209 @@
+﻿@model IEnumerable<WebQuanLiKhoaHoc_MVC.Models.AnnouncementAdminViewModel>
+@{
+    ViewData["Title"] = "Quản Lý Thông Báo";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Danh sách thông báo</h2>
+
+<button class="btn btn-primary mb-3" onclick="openModal()">Thêm thông báo</button>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tiêu đề</th>
+            <th>Nội dung</th>
+            <th>Người tạo</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="announcementBody">
+        @foreach (var a in Model)
+        {
+            <tr id="row-@a.AnnouncementId">
+                <td>@a.Title</td>
+                <td>@a.Body</td>
+                <td>@a.AuthorName</td>
+                <td>@a.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    <button class="btn btn-sm btn-warning"
+                            onclick="openModal(@a.AnnouncementId, '@System.Web.HttpUtility.JavaScriptStringEncode(Uri.EscapeDataString(a.Title ?? ""))', '@System.Web.HttpUtility.JavaScriptStringEncode(Uri.EscapeDataString(a.Body ?? ""))')">
+                        Sửa
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteAnnouncement(@a.AnnouncementId)">Xóa</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="announcementModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Thêm thông báo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="AnnouncementId" value="0" />
+                <div class="mb-3">
+                    <label for="Title" class="form-label">Tiêu đề</label>
+                    <input type="text" class="form-control" id="Title" />
+                </div>
+                <div class="mb-3">
+                    <label for="Body" class="form-label">Nội dung</label>
+                    <textarea class="form-control" id="Body" rows="4"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="saveAnnouncement()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Khai báo biến toàn cục để quản lý Modal
+        let modalInstance = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Khởi tạo modal khi trang vừa load
+            var el = document.getElementById('announcementModal');
+            modalInstance = new bootstrap.Modal(el);
+        });
+
+        // Mở modal, điền dữ liệu nếu sửa
+        function openModal(id = 0, titleEncoded = '', bodyEncoded = '') {
+            // 1. Reset form hoặc điền dữ liệu
+            document.getElementById('AnnouncementId').value = id;
+
+            // Giải mã dữ liệu (vì bên Razor đã Encode)
+            // Nếu thêm mới (id=0) thì để trống
+            document.getElementById('Title').value = id === 0 ? '' : decodeURIComponent(titleEncoded);
+            document.getElementById('Body').value = id === 0 ? '' : decodeURIComponent(bodyEncoded);
+
+            document.getElementById('modalTitle').innerText = id === 0 ? 'Thêm thông báo' : 'Sửa thông báo';
+
+            // 2. Hiển thị Modal (Đây là phần code cũ bị thiếu)
+            if (modalInstance) {
+                modalInstance.show();
+            }
+        }
+
+        // Lưu thông báo (thêm hoặc cập nhật)
+        async function saveAnnouncement() {
+            const id = parseInt(document.getElementById('AnnouncementId').value);
+            const titleVal = document.getElementById('Title').value;
+            const bodyVal = document.getElementById('Body').value;
+
+            // Validate cơ bản
+            if (!titleVal || !bodyVal) {
+                alert("Vui lòng nhập đủ tiêu đề và nội dung");
+                return;
+            }
+
+            const payload = {
+                announcementId: id,
+                title: titleVal,
+                body: bodyVal,
+                isGlobal: true,
+                targetClassId: null
+            };
+
+            let url = '/Admin/CreateAnnouncement';
+            let method = 'POST';
+
+            // Nếu id khác 0 thì là Update
+            if (id !== 0) {
+                url = `/Admin/UpdateAnnouncement/${id}`;
+                // method = 'POST'; // Code C# bạn dùng POST cho Update nên giữ nguyên
+            }
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    const announcement = await res.json();
+                    const tbody = document.getElementById('announcementBody');
+
+                    // Lấy dữ liệu trả về để vẽ lên giao diện
+                    const aId = announcement.announcementId;
+                    const aTitle = announcement.title;
+                    const aBody = announcement.body;
+                    const aAuthorName = announcement.authorName || "Admin"; // Fallback nếu null
+                    const aCreatedAt = new Date(announcement.createdAt).toLocaleString('vi-VN');
+
+                    // Chuẩn bị chuỗi encoded để gán lại vào nút Sửa mới (QUAN TRỌNG)
+                    const encodedTitle = encodeURIComponent(aTitle);
+                    const encodedBody = encodeURIComponent(aBody);
+
+                    if (id !== 0) {
+                        // === LOGIC SỬA ===
+                        const row = document.getElementById(`row-${id}`);
+                        if (row) {
+                            row.innerHTML = `
+                                <td>${aTitle}</td>
+                                <td>${aBody}</td>
+                                <td>${aAuthorName}</td>
+                                <td>${aCreatedAt}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning" onclick="openModal(${aId}, '${encodedTitle}', '${encodedBody}')">Sửa</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteAnnouncement(${aId})">Xóa</button>
+                                </td>
+                            `;
+                        }
+                    } else {
+                        // === LOGIC THÊM MỚI ===
+                        const row = document.createElement('tr');
+                        row.id = `row-${aId}`;
+                        row.innerHTML = `
+                            <td>${aTitle}</td>
+                            <td>${aBody}</td>
+                            <td>${aAuthorName}</td>
+                            <td>${aCreatedAt}</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" onclick="openModal(${aId}, '${encodedTitle}', '${encodedBody}')">Sửa</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteAnnouncement(${aId})">Xóa</button>
+                            </td>
+                        `;
+                        tbody.prepend(row);
+                    }
+
+                    // Đóng modal sau khi thành công
+                    if (modalInstance) modalInstance.hide();
+
+                } else {
+                    const text = await res.text();
+                    alert('Lỗi server: ' + text);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Có lỗi xảy ra khi kết nối tới server.');
+            }
+        }
+
+        // Xóa thông báo
+        async function deleteAnnouncement(id) {
+            if (!confirm("Bạn có chắc muốn xóa thông báo này?")) return;
+
+            try {
+                const res = await fetch(`/Admin/DeleteAnnouncement/${id}`, { method: 'POST' });
+                if (res.ok) {
+                    const row = document.getElementById(`row-${id}`);
+                    if (row) row.remove();
+                } else {
+                    alert('Không thể xóa thông báo. Vui lòng thử lại.');
+                }
+            } catch (err) {
+                alert('Lỗi kết nối.');
+            }
+        }
+    </script>
+}

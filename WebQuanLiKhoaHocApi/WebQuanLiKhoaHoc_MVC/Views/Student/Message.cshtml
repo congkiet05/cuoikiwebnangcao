@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "Class Messages";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+    ViewData["HideRightSidebar"] = true;
+}
+
+<div class="container-fluid p-0 shadow-sm rounded-3 overflow-hidden bg-white" style="height: 80vh;">
+    <div class="row g-0 h-100">
+        <div class="col-md-4 col-lg-3 border-end h-100 d-flex flex-column">
+            <div class="p-3 border-bottom bg-light">
+                <h5 class="fw-bold mb-0">My Classes</h5>
+            </div>
+            <div class="list-group list-group-flush overflow-auto flex-grow-1" id="class-list">
+                <div class="p-3 text-center text-muted small">Loading classes...</div>
+            </div>
+        </div>
+
+        <div class="col-md-8 col-lg-9 h-100 d-flex flex-column bg-light">
+            <div id="chat-header" class="p-3 bg-white border-bottom d-none">
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold" id="current-class-name">Class Name</h6>
+                        <small class="text-success">Online Community</small>
+                    </div>
+                </div>
+            </div>
+
+            <div id="message-body" class="p-4 overflow-auto flex-grow-1 d-flex flex-column" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');">
+                <div class="m-auto text-center text-muted">
+                    <i class="bi bi-chat-dots" style="font-size: 3rem;"></i>
+                    <p>Select a class to start messaging</p>
+                </div>
+            </div>
+
+            <div id="chat-input-area" class="p-3 bg-white border-top d-none">
+                <div class="input-group">
+                    <input type="text" id="message-input" class="form-control border-0 bg-light" placeholder="Type a message...">
+                    <button class="btn btn-primary px-4" id="btn-send">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 1. LẤY DỮ LIỆU THẬT TỪ SERVER (Không dùng ID cứng 10)
+            const studentId = parseInt("@ViewBag.CurrentUserId") || 0;
+            const token = "@ViewBag.AccessToken";
+            const apiBaseUrl = "https://localhost:7274/api";
+            let currentClassId = null;
+
+            if (studentId === 0) return;
+
+            // --- 2. KHỞI TẠO KẾT NỐI SIGNALR VỚI TOKEN ---
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("https://localhost:7274/chatHub", {
+                    accessTokenFactory: () => token // Cần thiết để Hub [Authorize] nhận diện sinh viên
+                })
+                .withAutomaticReconnect()
+                .build();
+
+            connection.on("ReceiveMessage", function (data) {
+                if (currentClassId == data.classId || !data.classId) {
+                    renderMessage(data.senderId, data.content, data.sentAt);
+                }
+            });
+
+            connection.start()
+                .then(() => console.log("SignalR Connected as Student!"))
+                .catch(err => console.error("SignalR Connection Error: ", err));
+
+            // --- 3. LOAD DANH SÁCH LỚP HỌC CỦA HỌC VIÊN ---
+            $.ajax({
+                url: `${apiBaseUrl}/Classes/Student/${studentId}`,
+                type: "GET",
+                headers: { "Authorization": "Bearer " + token }, // Thêm Header bảo mật
+                success: function (data) {
+                    let html = '';
+                    if (!data || data.length === 0) {
+                        html = '<div class="p-3 text-center text-muted small">Bạn chưa đăng ký lớp học nào.</div>';
+                    } else {
+                        data.forEach(c => {
+                            html += `
+                                <a href="#" class="list-group-item list-group-item-action p-3 border-0 class-item"
+                                   data-id="${c.classId}" data-name="${c.courseName}">
+                                    <div class="fw-bold text-success">${c.classCode}</div>
+                                    <div class="small text-muted text-truncate">${c.courseName}</div>
+                                </a>`;
+                        });
+                    }
+                    $('#class-list').html(html);
+                }
+            });
+
+            // --- 4. SỰ KIỆN CHỌN LỚP ---
+            $(document).on('click', '.class-item', function (e) {
+                e.preventDefault();
+                currentClassId = $(this).attr('data-id');
+
+                $('.class-item').removeClass('active bg-success-subtle');
+                $(this).addClass('active bg-success-subtle');
+
+                $('#chat-header, #chat-input-area').removeClass('d-none');
+                $('#current-class-name').text($(this).data('name'));
+
+                if (connection.state === signalR.HubConnectionState.Connected) {
+                    connection.invoke("JoinClassGroup", currentClassId.toString());
+                }
+
+                loadOldMessages(currentClassId);
+            });
+
+            // --- 5. GỬI TIN NHẮN ---
+            function sendMessage() {
+                const content = $('#message-input').val();
+
+                if (content.trim() !== "" && currentClassId && connection.state === signalR.HubConnectionState.Connected) {
+                    // Chỉ gửi classId và content, Hub sẽ tự lấy senderId từ Token
+                    connection.invoke("SendMessage", parseInt(currentClassId), content)
+                        .then(() => $('#message-input').val('').focus())
+                        .catch(err => console.error("Gửi tin lỗi: ", err));
+                }
+            }
+
+            $('#btn-send').click(sendMessage);
+            $('#message-input').on('keypress', function (e) {
+                if (e.which == 13) sendMessage();
+            });
+
+            // --- 6. HÀM HỖ TRỢ ---
+            function loadOldMessages(classId) {
+                $('#message-body').empty().html('<div class="m-auto spinner-border text-success"></div>');
+
+                $.ajax({
+                    url: `${apiBaseUrl}/ClassMessages/${classId}`,
+                    type: "GET",
+                    headers: { "Authorization": "Bearer " + token },
+                    success: function (messages) {
+                        $('#message-body').empty();
+                        messages.forEach(m => renderMessage(m.senderId, m.content, m.sentAt));
+                        $('#message-body').scrollTop($('#message-body')[0].scrollHeight);
+                    }
+                });
+            }
+
+            function renderMessage(senderId, content, time) {
+                const isMe = senderId === studentId;
+                const msgHtml = `
+                    <div class="message-item mb-3 ${isMe ? 'align-self-end bg-success text-white' : 'align-self-start bg-white text-dark'} p-3 rounded shadow-sm" style="max-width: 75%;">
+                        <p class="mb-0">${content}</p>
+                        <small class="${isMe ? 'text-white-50' : 'text-muted'}" style="font-size: 0.65rem;">${time}</small>
+                    </div>`;
+                $('#message-body').append(msgHtml);
+                $('#message-body').scrollTop($('#message-body')[0].scrollHeight);
+            }
+        });
+    </script>
+}

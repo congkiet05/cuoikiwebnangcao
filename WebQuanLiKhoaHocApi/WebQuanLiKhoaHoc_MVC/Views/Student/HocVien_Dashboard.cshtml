@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ học viên";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+<style>
+    /* CSS để định dạng ảnh sự kiện */
+    .news-container img {
+        width: 100%;
+        height: 350px; /* Điều chỉnh độ cao cho giống khung xám cũ */
+        object-fit: cover;
+        border: 1px solid #dee2e6;
+        transition: 0.3s;
+    }
+
+        /* Hiệu ứng khi di chuột vào ảnh */
+        .news-container img:hover {
+            opacity: 0.85;
+            transform: scale(1.01); /* Phóng to nhẹ tạo cảm giác sinh động */
+            cursor: pointer;
+        }
+
+    .news-title {
+        color: #003366; /* Màu xanh đậm đồng bộ với header */
+        margin-top: 15px;
+    }
+</style>
+
+<div class="news-container mb-3">
+    <img src="~/images/AnhSuKien.jpg"
+         alt="Tập huấn chuyên môn"
+         class="img-fluid rounded-3 shadow-sm">
+</div>
+
+<h5 class="news-title"><b>Sở GD&ĐT tổ chức tập huấn chuyên môn đầu năm học</b></h5>
+<p class="text-muted" style="text-align: justify; line-height: 1.6;">
+    Sáng ngày 19/11, Sở Giáo dục và Đào tạo (GD&ĐT) Thành phố Hà Nội đã chính thức khai mạc chương trình tập huấn
+    chuyên môn trọng điểm dành cho cán bộ quản lý và giáo viên cốt cán các cấp học trên toàn địa bàn. Buổi tập huấn
+    tập trung vào việc đổi mới phương pháp giảng dạy theo chương trình giáo dục phổ thông mới, đồng thời đẩy mạnh
+    ứng dụng chuyển đổi số trong quản lý lớp học. Phát biểu tại hội nghị, đại diện lãnh đạo Sở nhấn mạnh tầm quan
+    trọng của việc cập nhật kiến thức liên tục nhằm nâng cao chất lượng dạy và học, đáp ứng yêu cầu ngày càng cao
+    của xã hội trong kỷ nguyên công nghệ 4.0. Chương trình dự kiến sẽ kéo dài trong 3 ngày với nhiều chuyên đề
+    thực hành chuyên sâu và thảo luận nhóm sôi nổi.
+</p>
+<div class="news-thumb"></div>

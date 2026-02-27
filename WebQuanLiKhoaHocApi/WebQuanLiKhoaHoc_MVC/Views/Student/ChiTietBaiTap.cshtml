@@ -1,0 +1,74 @@
+﻿@model WebQuanLiKhoaHoc_MVC.Models.BaiTap.BaiTapChiTietViewModel
+
+@{
+    ViewData["Title"] = "Chi Tiết Bài Tập";
+    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+}
+
+<div class="container mt-5">
+    <a href="javascript:history.back()" class="btn btn-outline-secondary mb-3">
+        <i class="fa fa-arrow-left"></i> Quay lại
+    </a>
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">@Model.Title</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">
+                        <i class="fa fa-book"></i> <strong>Môn học:</strong> @Model.TenMon
+                    </p>
+                    <p class="text-danger">
+                        <i class="fa fa-clock-o"></i> <strong>Hạn nộp:</strong>
+                        @(Model.DueDate.HasValue? Model.DueDate.Value.ToString("dd/MM/yyyy HH:mm") : "Không thời hạn")
+                    </p>
+                    <hr />
+
+                    <h5 class="text-primary">Nội dung đề bài:</h5>
+                    <div class="p-4 bg-light border rounded">
+                        @if (string.IsNullOrEmpty(Model.Description))
+                        {
+                            <span class="text-muted fst-italic">Giáo viên không mô tả chi tiết cho bài tập này.</span>
+                        }
+                        else
+                        {
+                            <p style="white-space: pre-line;">@Model.Description</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card shadow-sm border-success h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fa fa-upload"></i> Nộp Bài Làm</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="BaiTap" asp-action="NopBaiSubmit" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="AssignmentId" value="@Model.AssignmentId" />
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">1. Chọn file bài làm:</label>
+                            <input type="file" name="fileBaiLam" class="form-control" required />
+                            <small class="text-muted fst-italic">Hỗ trợ: .zip, .rar, .docx, .pdf</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">2. Ghi chú cho giáo viên (nếu có):</label>
+                            <textarea name="GhiChu" class="form-control" rows="4" placeholder="Em nộp bài ạ..."></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success py-2 fw-bold">
+                                <i class="fa fa-paper-plane"></i> NỘP BÀI NGAY
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

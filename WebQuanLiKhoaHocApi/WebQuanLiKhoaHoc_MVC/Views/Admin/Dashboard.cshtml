@@ -1,0 +1,503 @@
+﻿@{
+    ViewData["Title"] = "Dashboard Overview";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+    :root {
+        --primary: #4e73df;
+        --secondary: #858796;
+        --success: #1cc88a;
+        --info: #36b9cc;
+        --warning: #f6c23e;
+        --danger: #e74a3b;
+        --light: #f8f9fc;
+        --dark: #2e343b;
+        --card-bg: #ffffff;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f3f4f6; /* Nền xám nhẹ hiện đại hơn */
+        color: #4b5563;
+    }
+
+    .dashboard-container {
+        padding: 2rem;
+    }
+
+    /* --- MODERN CARDS --- */
+    .card-stat {
+        border: none;
+        border-radius: 16px;
+        background: var(--card-bg);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .card-stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+    /* Icon Box mới: Gradient nhẹ */
+    .icon-box {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .icon-box-primary {
+        background: linear-gradient(135deg, rgba(78, 115, 223, 0.1) 0%, rgba(78, 115, 223, 0.2) 100%);
+        color: var(--primary);
+    }
+
+    .icon-box-success {
+        background: linear-gradient(135deg, rgba(28, 200, 138, 0.1) 0%, rgba(28, 200, 138, 0.2) 100%);
+        color: var(--success);
+    }
+
+    .icon-box-info {
+        background: linear-gradient(135deg, rgba(54, 185, 204, 0.1) 0%, rgba(54, 185, 204, 0.2) 100%);
+        color: var(--info);
+    }
+
+    .icon-box-warning {
+        background: linear-gradient(135deg, rgba(246, 194, 62, 0.1) 0%, rgba(246, 194, 62, 0.2) 100%);
+        color: var(--warning);
+    }
+
+    .card-stat:hover .icon-box {
+        transform: scale(1.1);
+    }
+
+    /* Typography Stats */
+    .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+        color: #9ca3af;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #111827;
+        line-height: 1.2;
+    }
+
+    /* --- TABLE MODERN --- */
+    .table-card {
+        border-radius: 16px;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .table thead th {
+        background-color: #f9fafb;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6b7280;
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .table tbody td {
+        padding: 1rem 1.5rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 0.9rem;
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f9fafb;
+    }
+
+    /* Badges */
+    .badge-soft {
+        padding: 0.4em 0.8em;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+
+    .badge-soft-success {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+
+    .badge-soft-danger {
+        background-color: #fee2e2;
+        color: #991b1b;
+    }
+
+    .badge-soft-primary {
+        background-color: #dbeafe;
+        color: #1e40af;
+    }
+
+    /* Avatar */
+    .avatar-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .avatar-initial {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px; /* Bo góc mềm thay vì tròn hẳn */
+        object-fit: cover;
+    }
+
+    /* Chart Header */
+    .chart-header-title {
+        font-weight: 700;
+        color: #374151;
+        font-size: 1rem;
+    }
+
+    .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
+</style>
+<div class="dashboard-container">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-5">
+        <div>
+            <h3 class="fw-bold text-dark mb-1">Tổng quan Dashboard</h3>
+            <p class="text-muted mb-0">
+                Cập nhật lần cuối: <span class="fw-bold text-primary">@DateTime.Now.ToString("HH:mm - dd/MM/yyyy")</span>
+            </p>
+        </div>
+        <div class="mt-3 mt-md-0">
+            <button class="btn btn-light bg-white border shadow-sm btn-sm px-3 me-2 rounded-pill">
+                <i class="fas fa-filter me-2 text-muted"></i> Bộ lọc
+            </button>
+            <a href="#" class="btn btn-primary shadow-sm btn-sm px-4 py-2 fw-bold rounded-pill">
+                <i class="fas fa-download fa-sm text-white-50 me-2"></i> Xuất Báo Cáo
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-stat h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="stat-label mb-1">Tổng Sinh Viên</div>
+                            <div class="stat-value">@ViewBag.TotalUsers</div>
+                            <div class="mt-2 text-xs font-weight-bold">
+                                <span class="text-success"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                                <span class="text-muted fw-normal ms-1">so với tháng trước</span>
+                            </div>
+                        </div>
+                        <div class="icon-box icon-box-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-stat h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="stat-label mb-1">Khóa Học Active</div>
+                            <div class="stat-value">@ViewBag.TotalCourses</div>
+                            <div class="mt-2 text-xs font-weight-bold">
+                                <span class="text-success"><i class="fa fa-arrow-up"></i> 12%</span>
+                                <span class="text-muted fw-normal ms-1">khóa mới mở</span>
+                            </div>
+                        </div>
+                        <div class="icon-box icon-box-success">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-stat h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="stat-label mb-1">Online</div>
+                            <div class="stat-value">@ViewBag.ActiveUsers</div>
+                            <div class="mt-2 text-xs font-weight-bold">
+                                <span class="spinner-grow spinner-grow-sm text-info me-1" role="status" style="width: 0.7rem; height: 0.7rem;"></span>
+                                <span class="text-info">Đang hoạt động</span>
+                            </div>
+                        </div>
+                        <div class="icon-box icon-box-info">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card card-stat h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="stat-label mb-1">Doanh Thu</div>
+                            <div class="stat-value text-dark">
+                                @(ViewBag.Revenue != null ? string.Format("{0:N0}", ViewBag.Revenue) : "0")
+                            </div>
+                            <div class="mt-2 text-xs font-weight-bold">
+                                <span class="text-warning"><i class="fa fa-arrow-up"></i> 5.2%</span>
+                                <span class="text-muted fw-normal ms-1">mục tiêu tháng</span>
+                            </div>
+                        </div>
+                        <div class="icon-box icon-box-warning">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card card-stat h-100">
+                <div class="card-header bg-white border-0 py-3 px-4 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 chart-header-title">Xu hướng đăng ký</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle text-muted" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div class="chart-area" style="height: 320px;">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+            <div class="card card-stat h-100">
+                <div class="card-header bg-white border-0 py-3 px-4">
+                    <h6 class="m-0 chart-header-title">Phân bổ theo Khoa</h6>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div class="chart-pie pt-2 pb-2">
+                        <canvas id="myPieChart" style="height: 245px; width: 100%;"></canvas>
+                    </div>
+                    <div id="pie-chart-legend" class="mt-4 d-flex flex-wrap justify-content-center small">
+                        @if (ViewBag.PieLabels != null)
+                        {
+                            var colors = new string[] { "text-primary", "text-success", "text-info", "text-warning", "text-danger", "text-secondary" };
+                            for (int i = 0; i < ((string[])ViewBag.PieLabels).Length; i++)
+                            {
+                                var colorClass = colors[i % colors.Length];
+                                <div class="me-3 mb-2">
+                                    <i class="fas fa-circle @colorClass me-1" style="font-size: 0.6rem;"></i>
+                                    <span class="text-muted fw-bold">@(((string[])ViewBag.PieLabels)[i])</span>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-stat table-card mb-4">
+                <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 chart-header-title">Sinh viên đăng ký gần đây</h6>
+                    <a href="@Url.Action("User", "Admin")" class="btn btn-sm btn-light text-primary fw-bold rounded-pill px-3">
+                        Xem tất cả <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Thông tin Sinh Viên</th>
+                                    <th>Email liên hệ</th>
+                                    <th>Khoa / Bộ Môn</th>
+                                    <th class="text-center">Trạng Thái</th>
+                                    <th class="text-end pe-4">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.NewUsers != null)
+                                {
+                                    foreach (var user in ViewBag.NewUsers)
+                                    {
+                                        <tr>
+                                            <td class="ps-4">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-wrapper me-3">
+                                                        <img src="https://ui-avatars.com/api/?name=@user.HoTen&background=4e73df&color=fff&bold=true&length=1"
+                                                             class="avatar-initial shadow-sm" alt="@user.HoTen">
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-bold text-dark">@user.HoTen</div>
+                                                        <div class="small text-muted" style="font-size: 0.75rem;">ID: <span class="font-monospace">#@user.Id</span></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="text-secondary">@user.Email</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-soft badge-soft-primary">@user.BoMon</span>
+                                            </td>
+                                            <td class="text-center">
+                                                @if (user.TrangThai == 2)
+                                                {
+                                                    <span class="badge badge-soft badge-soft-success">
+                                                        <i class="fas fa-check-circle me-1"></i>Hoạt động
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-soft badge-soft-danger">
+                                                        <i class="fas fa-lock me-1"></i>Đã khóa
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td class="text-end pe-4">
+                                                <button class="btn btn-sm btn-white border shadow-sm rounded-circle me-1" title="Chỉnh sửa">
+                                                    <i class="fas fa-pen text-primary" style="font-size: 0.8rem;"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-white border shadow-sm rounded-circle" title="Xem chi tiết">
+                                                    <i class="fas fa-ellipsis-h text-secondary" style="font-size: 0.8rem;"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="5" class="text-center py-5 text-muted">Không có dữ liệu mới</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- CHART CONFIGURATION ---
+    Chart.defaults.font.family = "'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif";
+    Chart.defaults.color = '#858796';
+    // Set default font family
+    Chart.defaults.font.family = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.color = '#858796';
+
+    // 1. AREA CHART (Line)
+    var ctx = document.getElementById("myAreaChart");
+    var myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(Json.Serialize(ViewBag.ChartLabels ?? new string[] { })),
+            datasets: [{
+                label: "Đăng ký mới",
+                tension: 0.3, // Curve smoothing
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: @Html.Raw(Json.Serialize(ViewBag.ChartData ?? new int[] { })),
+                fill: true
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            layout: { padding: { left: 10, right: 25, top: 25, bottom: 0 } },
+            scales: {
+                x: {
+                    grid: { display: false, drawBorder: false },
+                    ticks: { maxTicksLimit: 7 }
+                },
+                y: {
+                    ticks: { maxTicksLimit: 5, padding: 10 },
+                    grid: { color: "rgb(234, 236, 244)", zeroLineColor: "rgb(234, 236, 244)", drawBorder: false, borderDash: [2], zeroLineBorderDash: [2] }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleColor: '#6e707e',
+                    titleFont: { size: 14 },
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10,
+                }
+            }
+        }
+    });
+
+    // 2. PIE CHART
+        var ctxPie = document.getElementById("myPieChart");
+    var myPieChart = new Chart(ctxPie, {
+        type: 'doughnut',
+        data: {
+            labels: @Html.Raw(Json.Serialize(ViewBag.PieLabels ?? new string[] { })),
+            datasets: [{
+                data: @Html.Raw(Json.Serialize(ViewBag.PieData ?? new int[] { })),
+                // Dải màu hiện đại khớp với các class text-primary, text-success...
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#5a5c69'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+                borderWidth: 2
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false } // Ẩn legend mặc định vì ta đã tự làm legend đẹp hơn ở trên
+            },
+            cutout: '75%', // Tạo độ mỏng cho biểu đồ doughnut
+        },
+    });
+</script>
